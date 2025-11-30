@@ -1,35 +1,36 @@
-/* js/script.js */
+/**
+ * Main Script for Style Library
+ * Handles interactions like Navbar toggle and dynamic behaviors
+ */
 
-// Wait for the DOM to fully load
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Navbar Toggle Logic
+    const navbarToggler = document.getElementById('navbarToggler');
+    const navbarMenu = document.getElementById('navbarMenu');
 
-    // Select all buttons with the class 'btn'
-    const buttons = document.querySelectorAll('.btn');
+    if (navbarToggler && navbarMenu) {
+        navbarToggler.addEventListener('click', () => {
+            navbarMenu.classList.toggle('active');
+            
+            // Optional: Animate hamburger icon (transform to X)
+            const spans = navbarToggler.querySelectorAll('span');
+            if (navbarMenu.classList.contains('active')) {
+                // Simple animation logic if needed
+            }
+        });
+    }
 
-    // Add click event listener to each button
-    buttons.forEach(button => {
-        button.addEventListener('click', function () {
-            // Prevent action if button is already disabled
-            if (this.disabled) return;
-
-            // 1. Save original text
-            const originalText = this.innerText;
-
-            // 2. Change state to "Loading"
-            this.innerText = 'Processing...';
-            this.style.opacity = '0.7';
-            this.style.cursor = 'wait';
-
-            // 3. Simulate an API call (2 seconds delay)
-            setTimeout(() => {
-                // Restore original state
-                this.innerText = originalText;
-                this.style.opacity = '1';
-                this.style.cursor = 'pointer';
-
-                // Optional: Log action for debugging
-                console.log(`Button "${originalText}" clicked`);
-            }, 2000);
+    // 2. Close mobile menu when clicking a link
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                navbarMenu.classList.remove('active');
+            }
         });
     });
+
+    // Future: Add logic for Career Map or Chat interactions here
+    console.log('Style Library Loaded Successfully');
 });

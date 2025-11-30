@@ -1,57 +1,132 @@
-/* Core Component: Navigation Bar */
+/* Navbar Component - Responsive */
 
-/* The main container */
 .navbar {
-    background-color: white;
-    /* Use flexbox for layout - Layout Rules */
     display: flex;
     justify-content: space-between;
-    /* Space between Logo and Links */
     align-items: center;
-    /* Vertical center */
-    padding: var(--spacing-md) var(--spacing-lg);
-
-    /* Stick to the top of the page */
-    position: sticky;
+    background-color: white; /* Clean white background */
+    padding: 16px 24px;
+    box-shadow: var(--shadow-sm);
+    position: sticky; /* Stick to top */
     top: 0;
-    z-index: 1000;
-
-    /* Add shadow for separation */
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    z-index: 1000; /* Ensure it stays on top */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
-/* Brand/Logo Area */
 .navbar-brand {
     font-size: 20px;
-    font-weight: 800;
-    color: var(--primary-color);
+    font-weight: 700;
+    color: var(--text-main);
     text-decoration: none;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
 }
 
-/* Links Container */
+/* Navigation Links Container */
 .navbar-menu {
     display: flex;
-    gap: var(--spacing-lg);
-    /* Space between links */
+    gap: 32px;
+    align-items: center;
+    transition: all 0.3s ease;
 }
 
-/* Individual Links */
 .nav-link {
     text-decoration: none;
-    color: var(--text-main);
+    color: var(--text-light);
     font-weight: 500;
     font-size: 15px;
     transition: color 0.2s ease;
+    position: relative;
 }
 
-/* Interaction Rule: Hover State */
-.nav-link:hover {
-    color: var(--primary-color);
-}
-
-/* Interaction Rule: Active State (Current Page) */
+.nav-link:hover,
 .nav-link.active {
     color: var(--primary-color);
-    font-weight: 700;
+}
+
+/* Underline effect for active/hover */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: var(--primary-gradient);
+    transition: width 0.2s ease;
+    border-radius: 2px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Hamburger Menu Button (Hidden on Desktop) */
+.navbar-toggler {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.navbar-toggler span {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* --- Mobile Responsive Styles --- */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 16px;
+        flex-wrap: wrap; /* Allow items to wrap */
+    }
+
+    .navbar-toggler {
+        display: flex; /* Show hamburger */
+    }
+
+    .navbar-menu {
+        display: none; /* Hide menu by default */
+        width: 100%; /* Full width */
+        flex-direction: column; /* Stack vertically */
+        align-items: flex-start;
+        gap: 16px;
+        padding-top: 16px;
+        margin-top: 16px;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+
+    /* Show menu when active class is added via JS */
+    .navbar-menu.active {
+        display: flex;
+        animation: slideDown 0.3s ease forwards;
+    }
+
+    .nav-link {
+        display: block;
+        width: 100%;
+        padding: 8px 0;
+        font-size: 16px;
+    }
+    
+    .nav-link::after {
+        display: none; /* Remove underline effect on mobile */
+    }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

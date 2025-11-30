@@ -12,6 +12,20 @@
     margin-bottom: 20px;
 }
 
+@media (max-width: 768px) {
+    .card {
+        padding: 16px;
+    }
+    
+    .card-footer {
+        flex-direction: column;
+    }
+
+    .card-footer .btn {
+        width: 100%;
+    }
+}
+
 .card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
