@@ -6,24 +6,6 @@
 @import 'base/typography.css';
 @import 'base/layout.css';
 
-/* Global Background - Mesh Gradient Mesh */
-body {
-    background-color: #f0f2f5;
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-        radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-        radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-    /* Modern Light Theme Mesh */
-    background-image: 
-        radial-gradient(at 80% 0%, var(--mesh-2) 0px, transparent 50%),
-        radial-gradient(at 0% 50%, var(--mesh-1) 0px, transparent 50%),
-        radial-gradient(at 80% 50%, var(--mesh-2) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, var(--mesh-1) 0px, transparent 50%),
-        radial-gradient(at 0% 0%, var(--mesh-3) 0px, transparent 50%);
-    background-attachment: fixed; /* Keep background steady when scrolling */
-    min-height: 100vh;
-}
-
 /* 2. Core Components */
 @import 'components/buttons.css';
 @import 'components/inputs.css';
