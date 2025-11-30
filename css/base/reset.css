@@ -9,7 +9,8 @@
 body {
     /* Use system fonts for best performance */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-color);
+    background: var(--bg-body);
+    min-height: 100vh; /* Ensure gradient covers full height */
     color: var(--text-main);
     /* padding: 20px; Removed to use .container instead */
 }

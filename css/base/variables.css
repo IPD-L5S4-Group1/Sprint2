@@ -1,24 +1,29 @@
 :root {
-    /* 1. Color Palette */
+    /* 1. Color Palette - Modern & Vibrant */
     --primary-color: #007AFF;
-    /* Brand Blue */
+    --primary-gradient: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
     --secondary-color: #5AC8FA;
-    /* Light Blue */
     --success-color: #34C759;
-    /* Green */
     --danger-color: #FF3B30;
-    /* Red */
 
     /* 2. Typography Colors */
-    --text-main: #333333;
-    /* Main Body Text */
-    --text-light: #888888;
-    /* Secondary Text */
-    --bg-color: #F5F5F7;
-    /* Background Gray */
+    --text-main: #1D1D1F;
+    --text-light: #86868B;
+    
+    /* 3. Backgrounds for Glassmorphism */
+    --bg-body: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --bg-glass: rgba(255, 255, 255, 0.7);
+    --border-glass: rgba(255, 255, 255, 0.5);
 
-    /* 3. Spacing System */
+    /* 4. Spacing & Shape (Radius 12px as requested) */
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
+    --border-radius: 12px;
+
+    /* 5. Effects (Soft Shadows & Transitions) */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    --transition-speed: 0.3s;
+    --backdrop-blur: blur(12px);
 }
