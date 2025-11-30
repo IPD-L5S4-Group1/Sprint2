@@ -1,247 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Career Agent - Style Library</title>
+    <title>Style Library & Design System</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+    <!-- Navigation (Core Component) -->
     <nav class="navbar">
         <a href="#" class="navbar-brand">AI Career Agent</a>
-        
-        <!-- Hamburger Menu Button -->
         <button class="navbar-toggler" id="navbarToggler">
             <span></span>
             <span></span>
             <span></span>
         </button>
-
         <div class="navbar-menu" id="navbarMenu">
-            <a href="#" class="nav-link active">Home</a>
-            <a href="#" class="nav-link">Career Map</a>
-            <a href="#" class="nav-link">Resume Analysis</a>
-            <a href="#" class="nav-link">Profile</a>
+            <a href="#global" class="nav-link">Foundation</a>
+            <a href="#components" class="nav-link">Components</a>
+            <a href="#modules" class="nav-link">Modules</a>
         </div>
     </nav>
 
-    <div class="container">
-        <h1>Style Library</h1>
-        <p>Core components for the AI Career Agent Application.</p>
+    <div class="container pt-lg pb-xl">
+        
+        <div class="mb-xl text-center">
+            <h1 class="text-h1">Design System</h1>
+            <p class="text-body text-light">A centralized system for visual and interaction specifications.</p>
+        </div>
 
-        <hr style="margin: 20px 0;">
+        <hr class="mb-xl" style="opacity: 0.1">
 
-        <section>
-            <h2>1. Buttons</h2>
-            <div style="margin-top: 10px;">
-                <button class="btn btn-primary">Primary Action</button>
-                <button class="btn btn-secondary">Secondary Action</button>
-                <button class="btn btn-danger">Delete Item</button>
-            </div>
-        </section>
-
-        <section>
-            <h2>2. Input Fields</h2>
-            <div style="max-width: 400px; margin-top: 10px;">
-                <div class="input-group">
-                    <label class="input-label">Full Name</label>
-                    <input type="text" class="input-field" placeholder="Enter your name">
-                </div>
-
-                <div class="input-group">
-                    <label class="input-label">Ask AI Agent</label>
-                    <input type="text" class="input-field" placeholder="Type your question here...">
-                </div>
-
-                <div class="input-group">
-                    <label class="input-label">System ID (Disabled)</label>
-                    <input type="text" class="input-field" value="USER-88291" disabled>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>3. Cards</h2>
-            <div style="max-width: 400px; margin-top: 10px;">
+        <!-- 1. Global Foundation -->
+        <section id="global" class="mb-xl">
+            <h2 class="text-h2 mb-lg">1. Global Foundation</h2>
+            
+            <!-- Typography -->
+            <div class="mb-lg">
+                <h3 class="text-h3">Typography Scale</h3>
                 <div class="card">
-                    <div class="card-title">Junior Vue.js Developer</div>
-                    <div class="card-body">
-                        Looking for a passionate developer familiar with Vue 3, HTML5, and CSS3.
-                        Great opportunity for Sino-British program students.
+                    <div class="mb-md"><span class="text-caption">H1 / 32px Bold</span><br><span class="text-h1">The Quick Brown Fox</span></div>
+                    <div class="mb-md"><span class="text-caption">H2 / 24px Bold</span><br><span class="text-h2">Jumped Over The Lazy Dog</span></div>
+                    <div class="mb-md"><span class="text-caption">H3 / 20px Semi-bold</span><br><span class="text-h3">Pack My Box With Five Dozen</span></div>
+                    <div class="mb-md"><span class="text-caption">Body / 16px Regular</span><br><span class="text-body">Liquor jugs remix the text body style for readability.</span></div>
+                    <div><span class="text-caption">Caption / 12px Grey</span><br><span class="text-caption">METADATA LABEL EXAMPLE</span></div>
+                </div>
+            </div>
+
+            <!-- Color Palette -->
+            <div class="mb-lg">
+                <h3 class="text-h3">Color Palette</h3>
+                <div class="d-flex gap-md flex-wrap">
+                    <div style="width: 80px;">
+                        <div style="height: 80px; background: var(--primary-color); border-radius: 12px; margin-bottom: 8px;"></div>
+                        <div class="text-caption text-center">Primary</div>
                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-secondary" style="font-size: 14px;">Save</button>
-                        <button class="btn btn-primary" style="font-size: 14px;">Apply Now</button>
+                    <div style="width: 80px;">
+                        <div style="height: 80px; background: var(--success-color); border-radius: 12px; margin-bottom: 8px;"></div>
+                        <div class="text-caption text-center">Success</div>
+                    </div>
+                    <div style="width: 80px;">
+                        <div style="height: 80px; background: var(--danger-color); border-radius: 12px; margin-bottom: 8px;"></div>
+                        <div class="text-caption text-center">Danger</div>
+                    </div>
+                    <div style="width: 80px;">
+                        <div style="height: 80px; background: var(--bg-glass); border: 1px solid #ddd; border-radius: 12px; margin-bottom: 8px;"></div>
+                        <div class="text-caption text-center">Glass</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section>
-            <h2>4. AI Chat Interface (New)</h2>
-            <p style="color: var(--text-light); margin-bottom: 12px;">Simulated interview conversation with typing indicators.</p>
-            
-            <div class="chat-container" style="max-width: 500px;">
-                <!-- Message List -->
-                <div class="chat-messages">
-                    <!-- 1. AI Message -->
-                    <div class="message message-ai">
-                        <div class="avatar avatar-ai">🤖</div>
-                        <div class="bubble">
-                            Hello! I'm your AI Career Agent. Are you ready to start the mock interview for the <strong>Vue.js Developer</strong> role?
-                        </div>
-                    </div>
-
-                    <!-- 2. User Message -->
-                    <div class="message message-user">
-                        <div class="bubble">
-                            Yes, I'm ready! Let's do this. 🚀
-                        </div>
-                        <div class="avatar avatar-user">👤</div>
-                    </div>
-
-                    <!-- 3. AI Typing Indicator -->
-                    <div class="message message-ai">
-                        <div class="avatar avatar-ai">🤖</div>
-                        <div class="typing-indicator">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                        </div>
-                    </div>
+        <!-- 2. Layout Rules -->
+        <section id="layout" class="mb-xl">
+            <h2 class="text-h2 mb-lg">2. Layout Rules (8px Grid)</h2>
+            <div class="card">
+                <div class="d-flex gap-md align-center flex-wrap">
+                    <div style="background: #e0e0e0; padding: 8px; border-radius: 4px;">Spacing SM (8px)</div>
+                    <div style="background: #e0e0e0; padding: 16px; border-radius: 4px;">Spacing MD (16px)</div>
+                    <div style="background: #e0e0e0; padding: 24px; border-radius: 4px;">Spacing LG (24px)</div>
                 </div>
-
-                <!-- Input Area -->
-                <div class="chat-input-area">
-                    <button class="btn btn-secondary" style="padding: 8px; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-                        🎤
-                    </button>
-                    <input type="text" class="chat-input" placeholder="Type your answer...">
-                    <button class="btn btn-primary" style="padding: 8px 16px; border-radius: 20px;">Send</button>
-                </div>
+                <p class="text-caption mt-md">All margins and paddings follow the 8px multiple rule.</p>
             </div>
         </section>
 
-        <section>
-            <h2>5. Career Map (Gamified)</h2>
-            <p style="color: var(--text-light); margin-bottom: 12px;">Horizontal scrollable progression map with status indicators.</p>
+        <!-- 3. Core Components & Interaction -->
+        <section id="components" class="mb-xl">
+            <h2 class="text-h2 mb-lg">3. Core Components & Interaction</h2>
             
-            <div class="map-container">
-                <!-- Node 1: Completed -->
-                <div class="map-node status-completed">
-                    <div class="node-icon">✓</div>
-                    <div class="node-content">
-                        <div class="node-title">HTML & CSS</div>
-                        <div class="node-desc">Master the building blocks of the web.</div>
-                    </div>
-                </div>
-
-                <!-- Node 2: Active (Current) -->
-                <div class="map-node status-active">
-                    <div class="node-icon">⚡️</div>
-                    <div class="node-content">
-                        <div class="node-title">JavaScript</div>
-                        <div class="node-desc">Learn interactivity and logic. <br><span style="color:var(--primary-color); font-weight:600;">In Progress (80%)</span></div>
-                    </div>
-                </div>
-
-                <!-- Node 3: Locked -->
-                <div class="map-node status-locked">
-                    <div class="node-icon">🔒</div>
-                    <div class="node-content">
-                        <div class="node-title">Vue 3 Basics</div>
-                        <div class="node-desc">Component based architecture.</div>
-                    </div>
-                </div>
-
-                <!-- Node 4: Locked -->
-                <div class="map-node status-locked">
-                    <div class="node-icon">🔒</div>
-                    <div class="node-content">
-                        <div class="node-title">State Mgmt</div>
-                        <div class="node-desc">Pinia & Vuex mastery.</div>
-                    </div>
-                </div>
-                
-                 <!-- Node 5: Locked -->
-                 <div class="map-node status-locked">
-                    <div class="node-icon">🏆</div>
-                    <div class="node-content">
-                        <div class="node-title">Senior Dev</div>
-                        <div class="node-desc">Full stack capabilities.</div>
+            <!-- Buttons -->
+            <div class="mb-lg">
+                <h3 class="text-h3">Buttons (Interactive)</h3>
+                <div class="card">
+                    <div class="d-flex gap-md flex-wrap align-center">
+                        <button class="btn btn-primary">Primary Action</button>
+                        <button class="btn btn-secondary">Secondary</button>
+                        <button class="btn btn-danger">Delete</button>
+                        <!-- Interaction: Loading State -->
+                        <button class="btn btn-primary is-loading">Loading...</button>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <section>
-            <h2>6. Resume Workshop (Split View)</h2>
-            <p style="color: var(--text-light); margin-bottom: 12px;">Editor layout with AI analysis and diff highlighting.</p>
-            
-            <div class="resume-workspace">
-                <!-- Left Panel: Original Resume -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-title">Original Resume</div>
-                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">Upload New</button>
-                    </div>
-
-                    <div class="upload-zone">
-                        <span class="upload-icon">📄</span>
-                        <div>Drag & drop your PDF here or click to upload</div>
-                    </div>
-
+            <!-- Inputs -->
+            <div class="mb-lg">
+                <h3 class="text-h3">Input Fields</h3>
+                <div class="card" style="max-width: 400px;">
                     <div class="input-group">
-                        <label class="input-label">Professional Summary</label>
-                        <textarea class="input-field" style="height: 100px; resize: none;">I am a junior developer looking for a job. I know HTML and CSS well.</textarea>
+                        <label class="input-label">Full Name</label>
+                        <input type="text" class="input-field" placeholder="Enter your name">
                     </div>
-
-                    <div class="skill-tag-container" style="margin-top: 20px;">
-                        <span class="skill-tag">HTML</span>
-                        <span class="skill-tag">CSS</span>
-                        <span class="skill-tag">JavaScript</span>
-                    </div>
-                </div>
-
-                <!-- Right Panel: AI Analysis -->
-                <div class="panel" style="background: #fcfcfc;">
-                    <div class="panel-header">
-                        <div class="panel-title">✨ AI Suggestions</div>
-                        <div style="font-size: 12px; color: var(--success-color);">● Analysis Complete</div>
-                    </div>
-
-                    <!-- Score Card -->
-                    <div class="score-card">
-                        <div class="score-circle">85</div>
-                        <div class="score-info">
-                            <h4>Resume Score</h4>
-                            <p>Good foundation, but needs more action verbs and metrics.</p>
-                        </div>
-                    </div>
-
-                    <!-- Feedback Items -->
-                    <div class="feedback-item">
-                        <span class="feedback-label">Summary Optimization</span>
-                        <div class="diff-content">
-                            <span class="diff-remove">I am a junior developer looking for a job.</span>
-                            <br><br>
-                            <span class="diff-add">Motivated Junior Web Developer with a strong foundation in front-end technologies...</span>
-                        </div>
-                    </div>
-
-                    <div class="feedback-item">
-                        <span class="feedback-label">Missing Keywords</span>
-                        <div class="skill-tag-container">
-                            <span class="skill-tag low">React</span>
-                            <span class="skill-tag medium">Git</span>
-                            <span class="skill-tag high">Responsive Design</span>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;">Accept All Changes</button>
                 </div>
             </div>
         </section>
+
+        <!-- 4. Complex Modules -->
+        <section id="modules" class="mb-xl">
+            <h2 class="text-h2 mb-lg">4. Complex Modules</h2>
+
+            <!-- Chat UI -->
+            <div class="mb-xl">
+                <h3 class="text-h3">Chat Interface</h3>
+                <div class="chat-container" style="height: 400px;">
+                    <div class="chat-messages">
+                        <div class="message message-ai">
+                            <div class="avatar avatar-ai">🤖</div>
+                            <div class="bubble">Hello! I'm your AI Agent.</div>
+                        </div>
+                        <div class="message message-user">
+                            <div class="bubble">Show me the design system.</div>
+                            <div class="avatar avatar-user">👤</div>
+                        </div>
+                        <div class="message message-ai">
+                            <div class="avatar avatar-ai">🤖</div>
+                            <div class="typing-indicator">
+                                <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" placeholder="Type...">
+                        <button class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Map -->
+            <div class="mb-xl">
+                <h3 class="text-h3">Gamified Career Map</h3>
+                <div class="map-container">
+                    <div class="map-node status-completed">
+                        <div class="node-icon">✓</div>
+                        <div class="node-content"><div class="node-title">Stage 1</div></div>
+                    </div>
+                    <div class="map-node status-active">
+                        <div class="node-icon">⚡️</div>
+                        <div class="node-content"><div class="node-title">Current</div></div>
+                    </div>
+                    <div class="map-node status-locked">
+                        <div class="node-icon">🔒</div>
+                        <div class="node-content"><div class="node-title">Locked</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Workshop -->
+            <div class="mb-xl">
+                <h3 class="text-h3">Resume Workshop</h3>
+                <div class="resume-workspace">
+                    <div class="panel">
+                        <div class="upload-zone"><span class="upload-icon">📄</span>Drag Resume</div>
+                    </div>
+                    <div class="panel">
+                        <div class="feedback-item">
+                            <span class="feedback-label">Suggestion</span>
+                            <div class="diff-content">
+                                <span class="diff-remove">Old Text</span> <span class="diff-add">New Optimized Text</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
     </div>
 
     <script src="js/script.js"></script>

@@ -3,6 +3,8 @@
 /* 1. Global Foundation */
 @import 'base/variables.css';
 @import 'base/reset.css';
+@import 'base/typography.css';
+@import 'base/layout.css';
 
 /* 2. Core Components */
 @import 'components/buttons.css';
