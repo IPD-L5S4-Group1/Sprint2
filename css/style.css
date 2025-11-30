@@ -27,6 +27,7 @@ body {
 /* 2. Core Components */
 @import 'components/buttons.css';
 @import 'components/inputs.css';
+@import 'components/forms.css';
 @import 'components/cards.css';
 @import 'components/navbar.css';
 @import 'components/chat.css';

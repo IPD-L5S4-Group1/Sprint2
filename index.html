@@ -108,13 +108,54 @@
                 </div>
             </div>
 
-            <!-- Inputs -->
+            <!-- Form Controls (New) -->
             <div class="mb-lg">
-                <h3 class="text-h3">Input Fields</h3>
-                <div class="card" style="max-width: 400px;">
-                    <div class="input-group">
-                        <label class="input-label">Full Name</label>
-                        <input type="text" class="input-field" placeholder="Enter your name">
+                <h3 class="text-h3">Form Controls</h3>
+                <div class="card">
+                    <div class="d-flex flex-column gap-md">
+                        <!-- Toggle -->
+                        <div class="d-flex justify-between align-center">
+                            <span class="text-body">Enable Notifications</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <hr style="opacity: 0.1;">
+
+                        <!-- Checkbox & Radio -->
+                        <div class="d-flex gap-lg flex-wrap">
+                            <label class="checkbox-container">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                Agree to Terms
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="radio" checked>
+                                <span class="radio-mark"></span>
+                                Option A
+                            </label>
+                            <label class="radio-container">
+                                <input type="radio" name="radio">
+                                <span class="radio-mark"></span>
+                                Option B
+                            </label>
+                        </div>
+
+                        <!-- Select & Slider -->
+                        <div class="grid-2 gap-md">
+                            <div class="custom-select-wrapper">
+                                <select class="custom-select">
+                                    <option>Select Role...</option>
+                                    <option>Developer</option>
+                                    <option>Designer</option>
+                                </select>
+                            </div>
+                            <div class="d-flex align-center">
+                                <input type="range" min="1" max="100" value="50" class="range-slider">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,24 +170,39 @@
                 <h3 class="text-h3">Chat Interface</h3>
                 <div class="chat-container" style="height: 400px;">
                     <div class="chat-messages">
+                        <!-- 1. AI Message -->
                         <div class="message message-ai">
                             <div class="avatar avatar-ai">🤖</div>
-                            <div class="bubble">Hello! I'm your AI Agent.</div>
+                            <div class="bubble">
+                                Hello! I'm your AI Career Agent. Are you ready to start the mock interview for the <strong>Vue.js Developer</strong> role?
+                            </div>
                         </div>
+
+                        <!-- 2. User Message -->
                         <div class="message message-user">
-                            <div class="bubble">Show me the design system.</div>
+                            <div class="bubble">
+                                Yes, I'm ready! Let's do this. 🚀
+                            </div>
                             <div class="avatar avatar-user">👤</div>
                         </div>
+
+                        <!-- 3. AI Typing Indicator -->
                         <div class="message message-ai">
                             <div class="avatar avatar-ai">🤖</div>
                             <div class="typing-indicator">
-                                <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="chat-input-area">
-                        <input type="text" class="chat-input" placeholder="Type...">
-                        <button class="btn btn-primary">Send</button>
+                        <button class="btn btn-secondary" style="padding: 8px; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: none;">
+                            🎤
+                        </button>
+                        <input type="text" class="chat-input" placeholder="Type your answer...">
+                        <button class="btn btn-primary" style="padding: 8px 16px; border-radius: 20px;">Send</button>
                     </div>
                 </div>
             </div>
@@ -155,17 +211,49 @@
             <div class="mb-xl">
                 <h3 class="text-h3">Gamified Career Map</h3>
                 <div class="map-container">
+                    <!-- Node 1: Completed -->
                     <div class="map-node status-completed">
                         <div class="node-icon">✓</div>
-                        <div class="node-content"><div class="node-title">Stage 1</div></div>
+                        <div class="node-content">
+                            <div class="node-title">HTML & CSS</div>
+                            <div class="node-desc">Master the building blocks of the web.</div>
+                        </div>
                     </div>
+
+                    <!-- Node 2: Active (Current) -->
                     <div class="map-node status-active">
                         <div class="node-icon">⚡️</div>
-                        <div class="node-content"><div class="node-title">Current</div></div>
+                        <div class="node-content">
+                            <div class="node-title">JavaScript</div>
+                            <div class="node-desc">Learn interactivity and logic. <br><span style="color:var(--primary-color); font-weight:600;">In Progress (80%)</span></div>
+                        </div>
                     </div>
+
+                    <!-- Node 3: Locked -->
                     <div class="map-node status-locked">
                         <div class="node-icon">🔒</div>
-                        <div class="node-content"><div class="node-title">Locked</div></div>
+                        <div class="node-content">
+                            <div class="node-title">Vue 3 Basics</div>
+                            <div class="node-desc">Component based architecture.</div>
+                        </div>
+                    </div>
+
+                    <!-- Node 4: Locked -->
+                    <div class="map-node status-locked">
+                        <div class="node-icon">🔒</div>
+                        <div class="node-content">
+                            <div class="node-title">State Mgmt</div>
+                            <div class="node-desc">Pinia & Vuex mastery.</div>
+                        </div>
+                    </div>
+                    
+                     <!-- Node 5: Locked -->
+                     <div class="map-node status-locked">
+                        <div class="node-icon">🏆</div>
+                        <div class="node-content">
+                            <div class="node-title">Senior Dev</div>
+                            <div class="node-desc">Full stack capabilities.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,16 +262,66 @@
             <div class="mb-xl">
                 <h3 class="text-h3">Resume Workshop</h3>
                 <div class="resume-workspace">
+                    <!-- Left Panel: Original Resume -->
                     <div class="panel">
-                        <div class="upload-zone"><span class="upload-icon">📄</span>Drag Resume</div>
+                        <div class="panel-header">
+                            <div class="panel-title">Original Resume</div>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">Upload New</button>
+                        </div>
+
+                        <div class="upload-zone">
+                            <span class="upload-icon">📄</span>
+                            <div>Drag & drop your PDF here or click to upload</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Professional Summary</label>
+                            <textarea class="input-field" style="height: 100px; resize: none;">I am a junior developer looking for a job. I know HTML and CSS well.</textarea>
+                        </div>
+
+                        <div class="skill-tag-container" style="margin-top: 20px;">
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">CSS</span>
+                            <span class="skill-tag">JavaScript</span>
+                        </div>
                     </div>
-                    <div class="panel">
-                        <div class="feedback-item">
-                            <span class="feedback-label">Suggestion</span>
-                            <div class="diff-content">
-                                <span class="diff-remove">Old Text</span> <span class="diff-add">New Optimized Text</span>
+
+                    <!-- Right Panel: AI Analysis -->
+                    <div class="panel" style="background: rgba(255,255,255,0.6);">
+                        <div class="panel-header">
+                            <div class="panel-title">✨ AI Suggestions</div>
+                            <div style="font-size: 12px; color: var(--success-color);">● Analysis Complete</div>
+                        </div>
+
+                        <!-- Score Card -->
+                        <div class="score-card">
+                            <div class="score-circle">85</div>
+                            <div class="score-info">
+                                <h4>Resume Score</h4>
+                                <p>Good foundation, but needs more action verbs and metrics.</p>
                             </div>
                         </div>
+
+                        <!-- Feedback Items -->
+                        <div class="feedback-item">
+                            <span class="feedback-label">Summary Optimization</span>
+                            <div class="diff-content">
+                                <span class="diff-remove">I am a junior developer looking for a job.</span>
+                                <br><br>
+                                <span class="diff-add">Motivated Junior Web Developer with a strong foundation in front-end technologies...</span>
+                            </div>
+                        </div>
+
+                        <div class="feedback-item">
+                            <span class="feedback-label">Missing Keywords</span>
+                            <div class="skill-tag-container">
+                                <span class="skill-tag low">React</span>
+                                <span class="skill-tag medium">Git</span>
+                                <span class="skill-tag high">Responsive Design</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; margin-top: auto;">Accept All Changes</button>
                     </div>
                 </div>
             </div>
