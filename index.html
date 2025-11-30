@@ -328,6 +328,94 @@
 
         </section>
 
+        <!-- Feedback & Display Components -->
+        <section id="feedback">
+            <h2 class="text-h2 mb-lg">Feedback & Display Components</h2>
+
+            <!-- Toast -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Toast Notification</h3>
+                <button class="btn btn-primary" onclick="showToast()">Show Toast</button>
+                <button class="btn btn-success ml-sm" onclick="showToast('success')">Success Toast</button>
+                <button class="btn btn-danger ml-sm" onclick="showToast('error')">Error Toast</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Modal Dialog</h3>
+                <button class="btn btn-primary" onclick="showModal()">Open Modal</button>
+            </div>
+
+            <!-- Badge -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Badge / Notification</h3>
+                <div class="d-flex gap-md" style="align-items: center;">
+                    <span class="badge">9</span>
+                    <span class="badge">99+</span>
+                    <span class="badge-dot"></span>
+                    <div class="position-relative" style="display: inline-block;">
+                        <button class="btn btn-primary">Messages</button>
+                        <span class="badge badge-top-right">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Progress Bar</h3>
+                <div class="mb-md">
+                    <p class="text-small mb-sm">Normal Progress</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-small mb-sm">Animated Striped Progress</p>
+                    <div class="progress-container">
+                        <div class="progress-bar striped" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Avatar Stack -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Avatar Stack</h3>
+                <div class="avatar-stack">
+                    <div class="avatar-sm" style="background: linear-gradient(135deg, #667eea, #764ba2);">A</div>
+                    <div class="avatar-sm" style="background: linear-gradient(135deg, #f093fb, #f5576c);">B</div>
+                    <div class="avatar-sm" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">C</div>
+                    <div class="avatar-sm" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">+5</div>
+                </div>
+            </div>
+
+            <!-- Tags / Chips -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Tags / Chips</h3>
+                <div class="d-flex gap-sm" style="flex-wrap: wrap;">
+                    <span class="chip">React <span class="chip-close" onclick="this.parentElement.remove()">×</span></span>
+                    <span class="chip">Vue <span class="chip-close" onclick="this.parentElement.remove()">×</span></span>
+                    <span class="chip">CSS <span class="chip-close" onclick="this.parentElement.remove()">×</span></span>
+                    <span class="chip">JavaScript <span class="chip-close" onclick="this.parentElement.remove()">×</span></span>
+                </div>
+            </div>
+
+            <!-- Skeleton Loader -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Skeleton Loader</h3>
+                <div class="card" style="max-width: 400px;">
+                    <div class="d-flex gap-md mb-md">
+                        <div class="skeleton skeleton-circle"></div>
+                        <div style="flex: 1;">
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text w-75"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton skeleton-rect"></div>
+                </div>
+            </div>
+
+        </section>
+
     </div>
 
     <script src="js/script.js"></script>
