@@ -1,0 +1,44 @@
+/* Core Component: Input Fields */
+
+/* Container for Label + Input */
+.input-group {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label Style */
+.input-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Input Field Style */
+.input-field {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid #ccc;
+    /* Default border */
+    border-radius: 6px;
+    font-size: 16px;
+    color: var(--text-main);
+    background-color: white;
+    outline: none;
+    /* Remove default browser outline */
+    transition: all 0.2s ease;
+}
+
+/* Interaction Rule: Focus State (User clicks inside) */
+.input-field:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    /* Glow effect using primary color */
+}
+
+/* Interaction Rule: Disabled State */
+.input-field:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
