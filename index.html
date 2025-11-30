@@ -68,6 +68,51 @@
                 </div>
             </div>
         </section>
+
+        <section>
+            <h2>4. AI Chat Interface (New)</h2>
+            <p style="color: var(--text-light); margin-bottom: 12px;">Simulated interview conversation with typing indicators.</p>
+            
+            <div class="chat-container" style="max-width: 500px;">
+                <!-- Message List -->
+                <div class="chat-messages">
+                    <!-- 1. AI Message -->
+                    <div class="message message-ai">
+                        <div class="avatar avatar-ai">🤖</div>
+                        <div class="bubble">
+                            Hello! I'm your AI Career Agent. Are you ready to start the mock interview for the <strong>Vue.js Developer</strong> role?
+                        </div>
+                    </div>
+
+                    <!-- 2. User Message -->
+                    <div class="message message-user">
+                        <div class="bubble">
+                            Yes, I'm ready! Let's do this. 🚀
+                        </div>
+                        <div class="avatar avatar-user">👤</div>
+                    </div>
+
+                    <!-- 3. AI Typing Indicator -->
+                    <div class="message message-ai">
+                        <div class="avatar avatar-ai">🤖</div>
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="chat-input-area">
+                    <button class="btn btn-secondary" style="padding: 8px; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+                        🎤
+                    </button>
+                    <input type="text" class="chat-input" placeholder="Type your answer...">
+                    <button class="btn btn-primary" style="padding: 8px 16px; border-radius: 20px;">Send</button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="js/script.js"></script>
