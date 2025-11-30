@@ -15,6 +15,23 @@
     margin-bottom: 24px;
 }
 
+/* Mobile Responsive for Chat */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 400px; /* Smaller height on mobile */
+        border-radius: 12px;
+    }
+
+    .chat-messages {
+        padding: 16px;
+    }
+
+    .bubble {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+}
+
 /* 2. Message List Area */
 .chat-messages {
     flex: 1;

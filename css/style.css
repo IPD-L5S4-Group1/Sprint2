@@ -14,9 +14,36 @@
 @import 'components/resume.css';
 
 .container {
-    padding: 20px;
-    max-width: 1200px;
-    /* Optional: Add a max-width for better readability on large screens */
-    margin: 0 auto;
-    /* Center the container */
+    width: 100%;
+    padding-right: var(--spacing-md); /* 16px */
+    padding-left: var(--spacing-md);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Responsive Breakpoints */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+        padding-right: var(--spacing-lg); /* 24px */
+        padding-left: var(--spacing-lg);
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
 }
