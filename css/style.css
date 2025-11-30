@@ -9,6 +9,7 @@
 @import 'components/inputs.css';
 @import 'components/cards.css';
 @import 'components/navbar.css';
+@import 'components/chat.css';
 
 .container {
     padding: 20px;
