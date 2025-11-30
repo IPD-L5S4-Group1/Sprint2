@@ -1,29 +1,43 @@
 :root {
-    /* 1. Color Palette - Modern & Vibrant */
-    --primary-color: #007AFF;
-    --primary-gradient: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
-    --secondary-color: #5AC8FA;
-    --success-color: #34C759;
-    --danger-color: #FF3B30;
+    /* 1. Color Palette - "Future Tech" Theme */
+    /* Primary: Vivid Blue-Purple */
+    --primary-color: #4F46E5; 
+    --primary-hover: #4338CA;
+    --primary-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    
+    /* Secondary: Cyan/Teal */
+    --secondary-color: #0EA5E9;
+
+    /* Status Colors (Vibrant) */
+    --success-color: #10B981;
+    --danger-color: #EF4444;
+    --warning-color: #F59E0B;
 
     /* 2. Typography Colors */
-    --text-main: #1D1D1F;
-    --text-light: #86868B;
+    --text-main: #1E293B; /* Slate 800 - Softer than pure black */
+    --text-light: #64748B; /* Slate 500 */
+    --text-inverse: #FFFFFF;
     
     /* 3. Backgrounds for Glassmorphism */
-    --bg-body: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-    --bg-glass: rgba(255, 255, 255, 0.7);
-    --border-glass: rgba(255, 255, 255, 0.5);
-
-    /* 4. Spacing & Shape (Radius 12px as requested) */
+    /* Complex Mesh Gradient Background */
+    --bg-body: #F3F4F6; /* Fallback */
+    --bg-glass: rgba(255, 255, 255, 0.65); /* More transparent for better effect */
+    --bg-glass-hover: rgba(255, 255, 255, 0.8);
+    
+    /* 4. Borders & Effects */
+    --border-glass: rgba(255, 255, 255, 0.6);
+    --backdrop-blur: blur(16px); /* Stronger blur */
+    
+    /* 5. Spacing & Shape */
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
-    --border-radius: 12px;
+    --border-radius: 16px; /* Slightly more rounded for modern look */
 
-    /* 5. Effects (Soft Shadows & Transitions) */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+    /* 6. Shadows (Colored Shadows for depth) */
+    --shadow-sm: 0 2px 8px rgba(31, 38, 135, 0.05);
+    --shadow-md: 0 8px 32px rgba(31, 38, 135, 0.1);
+    --shadow-glow: 0 0 15px rgba(79, 70, 229, 0.3);
+
     --transition-speed: 0.3s;
-    --backdrop-blur: blur(12px);
 }
