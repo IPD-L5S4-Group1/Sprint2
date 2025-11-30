@@ -165,6 +165,75 @@
                 </div>
             </div>
         </section>
+
+        <section>
+            <h2>6. Resume Workshop (Split View)</h2>
+            <p style="color: var(--text-light); margin-bottom: 12px;">Editor layout with AI analysis and diff highlighting.</p>
+            
+            <div class="resume-workspace">
+                <!-- Left Panel: Original Resume -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Original Resume</div>
+                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">Upload New</button>
+                    </div>
+
+                    <div class="upload-zone">
+                        <span class="upload-icon">📄</span>
+                        <div>Drag & drop your PDF here or click to upload</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Professional Summary</label>
+                        <textarea class="input-field" style="height: 100px; resize: none;">I am a junior developer looking for a job. I know HTML and CSS well.</textarea>
+                    </div>
+
+                    <div class="skill-tag-container" style="margin-top: 20px;">
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+
+                <!-- Right Panel: AI Analysis -->
+                <div class="panel" style="background: #fcfcfc;">
+                    <div class="panel-header">
+                        <div class="panel-title">✨ AI Suggestions</div>
+                        <div style="font-size: 12px; color: var(--success-color);">● Analysis Complete</div>
+                    </div>
+
+                    <!-- Score Card -->
+                    <div class="score-card">
+                        <div class="score-circle">85</div>
+                        <div class="score-info">
+                            <h4>Resume Score</h4>
+                            <p>Good foundation, but needs more action verbs and metrics.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Items -->
+                    <div class="feedback-item">
+                        <span class="feedback-label">Summary Optimization</span>
+                        <div class="diff-content">
+                            <span class="diff-remove">I am a junior developer looking for a job.</span>
+                            <br><br>
+                            <span class="diff-add">Motivated Junior Web Developer with a strong foundation in front-end technologies...</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-item">
+                        <span class="feedback-label">Missing Keywords</span>
+                        <div class="skill-tag-container">
+                            <span class="skill-tag low">React</span>
+                            <span class="skill-tag medium">Git</span>
+                            <span class="skill-tag high">Responsive Design</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;">Accept All Changes</button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="js/script.js"></script>
