@@ -10,6 +10,7 @@
 @import 'components/cards.css';
 @import 'components/navbar.css';
 @import 'components/chat.css';
+@import 'components/map.css';
 
 .container {
     padding: 20px;
