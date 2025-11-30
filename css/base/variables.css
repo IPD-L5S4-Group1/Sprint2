@@ -1,0 +1,24 @@
+:root {
+    /* 1. Color Palette */
+    --primary-color: #007AFF;
+    /* Brand Blue */
+    --secondary-color: #5AC8FA;
+    /* Light Blue */
+    --success-color: #34C759;
+    /* Green */
+    --danger-color: #FF3B30;
+    /* Red */
+
+    /* 2. Typography Colors */
+    --text-main: #333333;
+    /* Main Body Text */
+    --text-light: #888888;
+    /* Secondary Text */
+    --bg-color: #F5F5F7;
+    /* Background Gray */
+
+    /* 3. Spacing System */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
