@@ -1,0 +1,57 @@
+/* Core Component: Navigation Bar */
+
+/* The main container */
+.navbar {
+    background-color: white;
+    /* Use flexbox for layout - Layout Rules */
+    display: flex;
+    justify-content: space-between;
+    /* Space between Logo and Links */
+    align-items: center;
+    /* Vertical center */
+    padding: var(--spacing-md) var(--spacing-lg);
+
+    /* Stick to the top of the page */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    /* Add shadow for separation */
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Brand/Logo Area */
+.navbar-brand {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+/* Links Container */
+.navbar-menu {
+    display: flex;
+    gap: var(--spacing-lg);
+    /* Space between links */
+}
+
+/* Individual Links */
+.nav-link {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.2s ease;
+}
+
+/* Interaction Rule: Hover State */
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* Interaction Rule: Active State (Current Page) */
+.nav-link.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}

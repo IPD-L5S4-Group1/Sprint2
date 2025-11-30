@@ -8,6 +8,7 @@
 @import 'components/buttons.css';
 @import 'components/inputs.css';
 @import 'components/cards.css';
+@import 'components/navbar.css';
 
 .container {
     padding: 20px;
