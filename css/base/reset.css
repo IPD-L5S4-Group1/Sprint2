@@ -1,5 +1,4 @@
-/* Basic Browser Reset & Global Mesh Background */
-
+/* Basic Browser Reset & Global Visuals */
 * {
     margin: 0;
     padding: 0;
@@ -7,54 +6,46 @@
 }
 
 body {
-    /* System Fonts */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-body);
     min-height: 100vh;
+    color: var(--text-main);
     position: relative;
-    overflow-x: hidden;
-
-    /* Mesh Gradient Background */
-    background-color: #eef2ff; /* Fallback */
-    background-image: 
-        radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.15) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%);
-    background-attachment: fixed; /* Keeps gradient in place while scrolling */
+    overflow-x: hidden; /* Prevent scrollbar from blurred orbs */
 }
 
-/* Ambient Orbs (Floating decorations) */
-/* We will use a dedicated class .ambient-orb in HTML */
-.ambient-orb {
+/* Ambient Light Orbs (The "Visual Texture") */
+body::before,
+body::after {
+    content: '';
     position: fixed;
+    width: 600px;
+    height: 600px;
     border-radius: 50%;
-    filter: blur(80px);
-    z-index: -1;
-    animation: float 10s infinite ease-in-out;
+    filter: blur(100px); /* Extreme blur for soft light */
+    z-index: -1; /* Behind everything */
     opacity: 0.6;
 }
 
-.orb-1 {
-    top: -10%;
-    left: -10%;
-    width: 50vw;
-    height: 50vw;
-    background: rgba(124, 58, 237, 0.3); /* Purple */
-    animation-delay: 0s;
+/* Orb 1: Purple/Pink (Top Left) */
+body::before {
+    top: -100px;
+    left: -100px;
+    background: linear-gradient(to right, #a8edea 0%, #fed6e3 100%); 
+    animation: float 20s infinite alternate;
 }
 
-.orb-2 {
-    bottom: -10%;
-    right: -10%;
-    width: 40vw;
-    height: 40vw;
-    background: rgba(14, 165, 233, 0.3); /* Blue/Cyan */
-    animation-delay: -5s;
+/* Orb 2: Blue/Teal (Bottom Right) */
+body::after {
+    bottom: -100px;
+    right: -100px;
+    background: linear-gradient(to right, #f5f7fa 0%, #c3cfe2 100%);
+    background: #CDDAFD;
+    animation: float 15s infinite alternate-reverse;
 }
 
+/* Floating Animation */
 @keyframes float {
-    0% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(20px, 30px) scale(1.1); }
-    100% { transform: translate(0, 0) scale(1); }
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
 }

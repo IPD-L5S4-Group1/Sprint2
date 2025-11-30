@@ -1,22 +1,25 @@
-/* Navbar Component - Responsive */
+/* Navbar Component - Responsive & Glass */
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white; /* Clean white background */
+    /* Stronger Glass Effect for Navbar */
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px) saturate(180%); /* Apple-like blur */
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    
     padding: 16px 24px;
     box-shadow: var(--shadow-sm);
-    position: sticky; /* Stick to top */
+    position: sticky;
     top: 0;
-    z-index: 1000; /* Ensure it stays on top */
-    backdrop-filter: blur(10px); /* Frosted glass effect */
-    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 1000;
 }
 
 .navbar-brand {
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 800; /* Extra bold */
     color: var(--text-main);
     text-decoration: none;
     background: var(--primary-gradient);
@@ -36,7 +39,7 @@
 .nav-link {
     text-decoration: none;
     color: var(--text-light);
-    font-weight: 500;
+    font-weight: 600;
     font-size: 15px;
     transition: color 0.2s ease;
     position: relative;
@@ -90,17 +93,17 @@
 @media (max-width: 768px) {
     .navbar {
         padding: 16px;
-        flex-wrap: wrap; /* Allow items to wrap */
+        flex-wrap: wrap;
     }
 
     .navbar-toggler {
-        display: flex; /* Show hamburger */
+        display: flex;
     }
 
     .navbar-menu {
-        display: none; /* Hide menu by default */
-        width: 100%; /* Full width */
-        flex-direction: column; /* Stack vertically */
+        display: none;
+        width: 100%;
+        flex-direction: column;
         align-items: flex-start;
         gap: 16px;
         padding-top: 16px;
@@ -108,7 +111,6 @@
         border-top: 1px solid rgba(0,0,0,0.05);
     }
 
-    /* Show menu when active class is added via JS */
     .navbar-menu.active {
         display: flex;
         animation: slideDown 0.3s ease forwards;
@@ -122,7 +124,7 @@
     }
     
     .nav-link::after {
-        display: none; /* Remove underline effect on mobile */
+        display: none;
     }
 }
 
