@@ -1,43 +1,40 @@
-/* Core Component: Cards */
+/* Card Component - Glassmorphism Style */
 
-/* Basic Card Container */
 .card {
-    background-color: white;
-    border-radius: 8px;
-    /* Soft shadow for depth */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-md);
-    border: 1px solid #eee;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: var(--bg-glass);
+    backdrop-filter: var(--backdrop-blur); /* Glass effect blur */
+    -webkit-backdrop-filter: var(--backdrop-blur); /* Safari support */
+    border: 1px solid var(--border-glass);
+    border-radius: var(--border-radius); /* Radius 12px */
+    padding: 24px;
+    box-shadow: var(--shadow-sm); /* Soft Shadow */
+    transition: all var(--transition-speed) ease;
+    margin-bottom: 20px;
 }
 
-/* Interaction Rule: Hover Effect (Lift up) */
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
-/* Card Title */
 .card-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
     color: var(--text-main);
 }
 
-/* Card Content/Body */
 .card-body {
-    font-size: 14px;
     color: var(--text-light);
-    line-height: 1.5;
-    margin-bottom: var(--spacing-md);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
-/* Card Footer (Optional, for buttons) */
 .card-footer {
     display: flex;
     justify-content: flex-end;
-    /* Align buttons to the right */
-    gap: var(--spacing-sm);
+    gap: 12px; /* Space between buttons */
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 16px;
 }
