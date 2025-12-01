@@ -58,22 +58,20 @@
 /* --- Loading State (Interaction Rule) --- */
 .btn.is-loading {
     pointer-events: none; /* Prevent multiple clicks */
-    position: relative;
-    color: transparent; /* Hide text but keep button size */
+    opacity: 0.8;
 }
 
 .btn.is-loading::after {
     content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
+    display: inline-block;
+    margin-left: 8px;
+    width: 14px;
+    height: 14px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     border-top-color: white;
     animation: spin 0.8s linear infinite;
+    vertical-align: middle;
 }
 
 /* Adjust spinner color for secondary/danger buttons */
