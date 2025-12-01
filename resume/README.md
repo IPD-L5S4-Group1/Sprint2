@@ -1,217 +1,217 @@
 # 📱 Resume Center - Mobile Prototype
 
-高级移动端简历管理原型，采用 iPhone 17 Pro Max 尺寸设计。
+An advanced mobile resume management prototype, designed for the iPhone 17 Pro Max.
 
 ![Version](https://img.shields.io/badge/version-2.0-blue)
 ![Device](https://img.shields.io/badge/device-iPhone%2017%20Pro%20Max-purple)
 ![Status](https://img.shields.io/badge/status-Prototype-green)
 
-## ✨ 特性
+## ✨ Features
 
-- 🎨 **现代化设计** - 采用渐变色、玻璃态效果和流畅动画
-- 📱 **iPhone 17 Pro Max** - 430 x 932 像素，支持 Dynamic Island
-- 🤖 **AI 分析模拟** - 简历智能评分和建议系统
-- 💎 **高级交互** - 触觉反馈、平滑过渡和微动画
-- 📊 **可视化评分** - 直观的分数展示和等级系统
-- 🎯 **优先级建议** - 彩色编码的改进建议
+- 🎨 **Modern Design** - Featuring gradient colors, a glassy effect, and smooth animation.
+- 📱 **iPhone 17 Pro Max** - 430 x 932 pixels, supports Dynamic Island
+- 🤖 **AI Analysis Simulation** - Intelligent Resume Scoring and Recommendation System
+- 💎 **Advanced Interaction** - Haptic feedback, smooth transitions, and micro-animations
+- 📊 **Visualized Scoring** - Intuitive score display and grading system
+- 🎯 **Priority Recommendations** - Suggestions for Improving Color Coding
 
-## 📁 项目结构
+## 📁 Project Structure
 
-```
 resume/
-├── index.html              # 主 HTML 文件（干净简洁）
+├── index.html # Main HTML file (clean and concise)
 ├── css/
-│   ├── mobile-frame.css   # 手机模拟器外壳样式
-│   └── resume-custom.css  # Resume 功能自定义样式
+│ ├── mobile-frame.css # Mobile emulator shell style
+│ └── resume-custom.css # Custom styles for the Resume feature
 ├── js/
-│   └── resume-logic.js    # 交互逻辑和动画
-└── README.md              # 本文档
 ```
+│ └── resume-logic.js # Interaction logic and animation
+└── README.md # This document
+## 🚀 Quick Start
 
-## 🚀 快速开始
+### 1. Open the prototype
 
-### 1. 打开原型
+Open `index.html` directly in your browser:
 
-直接在浏览器中打开 `index.html`：
+bash
 
-```bash
-# 使用本地服务器（推荐）
+# Use a local server (recommended)
 cd resume
+```
 python3 -m http.server 8000
 
-# 或者使用 VS Code Live Server
-# 右键 index.html -> Open with Live Server
+# Or use VS Code Live Server
+# Right click index.html -> Open with Live Server
+Then access: `http://localhost:8000`
+
+### 2. Function Demonstration Process
+
+**Basic Process:**
+
+1. Click "New Resume" to create a resume.
+2. Select "Upload PDF" or "Use Template"
+3. After uploading, click "AI Analyze".
+4. Review the analysis report and recommendations.
+5. Use the "Preview" and "Edit" functions.
+**Full functionality:**
+
+- ✅ Resume Upload (Simulated)
+- ✅ AI analysis progress bar
 ```
+- ✅ Rating Display (0-100 points, AF level)
+- ✅ Priority recommendations (high/medium/low)
+- ✅ PDF Preview
+- ✅ Resume editing interface
+- ✅ Toast notification
 
-然后访问：`http://localhost:8000`
+## 🎨 Design Guidelines
 
-### 2. 功能演示流程
+### Equipment Specifications
 
-**基础流程：**
-1. 点击 "New Resume" 创建简历
-2. 选择 "Upload PDF" 或 "Use Template"
-3. 上传完成后点击 "AI Analyze" 
-4. 查看分析报告和建议
-5. 使用 "Preview" 和 "Edit" 功能
-
-**完整功能：**
-- ✅ 简历上传（模拟）
-- ✅ AI 分析进度条
-- ✅ 评分展示（0-100分，A-F等级）
-- ✅ 优先级建议（高/中/低）
-- ✅ PDF 预览
-- ✅ 简历编辑界面
-- ✅ Toast 通知提示
-
-## 🎨 设计规范
-
-### 设备规格
-
-| 属性 | 值 |
+| Attribute | Value |
 |------|-----|
-| 设备型号 | iPhone 17 Pro Max |
-| 屏幕尺寸 | 430 x 932 px |
-| 圆角半径 | 55px |
+| Device Model | iPhone 17 Pro Max |
+| Screen Size | 430 x 932 px |
+| Corner radius | 55px |
 | Dynamic Island | 125 x 37 px |
 
-### 配色方案
+### Color Scheme
+
+/* Main color scheme - purple gradient */
+--primary: linear-gradient(135deg, #667eea, #764ba2);
+/* Functional colors */
+
+--gold: linear-gradient(135deg, #FFD700, #FFA500); /* Integral */
+--high-priority: linear-gradient(135deg, #FFE5E5, #FFB3B3); /* High priority */
+--medium-priority: linear-gradient(135deg, #FFF9E6, #FFE5B3); /* Medium priority */
+--low-priority: linear-gradient(135deg, #E8F4FD, #CDDAFD); /* Low priority */
+### Interaction Specifications
+- **Minimum button height:** 52px (compliant with Apple HIG standard)
+
+- **Touch feedback**: `transform: scale(0.97)`
+
+- **Animation Duration**: 0.3s (Standard), 0.2s (Fast)
+- **Card Spacing**: 12px (Small), 24px (Standard), 32px (Large)
+## 🔧 Technical Details
+### Dependencies
+
+- **Style Library** - Basic component library (relative reference `../Style_Library/`)
+
+- **Font Awesome 6.4.0** - Icon Library
+
+- **No other dependencies** - Pure HTML/CSS/JavaScript
+### Browser Compatibility
+- ✅ Chrome 88+
+
+- ✅ Safari 14+
 
 ```css
-/* 主色调 - 紫色渐变 */
---primary: linear-gradient(135deg, #667eea, #764ba2);
-
-/* 功能色 */
---gold: linear-gradient(135deg, #FFD700, #FFA500);    /* 积分 */
---high-priority: linear-gradient(135deg, #FFE5E5, #FFB3B3);  /* 高优先级 */
---medium-priority: linear-gradient(135deg, #FFF9E6, #FFE5B3); /* 中优先级 */
---low-priority: linear-gradient(135deg, #E8F4FD, #CDDAFD);    /* 低优先级 */
-```
-
-### 交互规范
-
-- **按钮最小高度**: 52px（符合苹果 HIG 标准）
-- **触摸反馈**: `transform: scale(0.97)`
-- **动画时长**: 0.3s (标准), 0.2s (快速)
-- **卡片间距**: 12px (小), 24px (标准), 32px (大)
-
-## 🔧 技术细节
-
-### 依赖项
-
-- **Style Library** - 基础组件库（相对引用 `../Style_Library/`）
-- **Font Awesome 6.4.0** - 图标库
-- **无其他依赖** - 纯 HTML/CSS/JavaScript
-
-### 浏览器兼容性
-
-- ✅ Chrome 88+ 
-- ✅ Safari 14+
 - ✅ Firefox 85+
 - ✅ Edge 88+
+Support required:
 
-需要支持：
 - CSS Variables
 - CSS Grid & Flexbox
-- `backdrop-filter` (玻璃态效果)
+- `backdrop-filter` (glass effect)
 - ES6 JavaScript
+## 📝 Custom Guidelines
 
-## 📝 自定义指南
+```
 
-### 修改颜色主题
+### Change color theme
 
-编辑 `css/resume-custom.css`：
+Edit `css/resume-custom.css`:
 
-```css
-/* 修改主色调 */
+/* Change the main color scheme */
 .hero-card {
-    background: linear-gradient(135deg, #你的颜色1, #你的颜色2) !important;
-}
-
+background: linear-gradient(135deg, #yourcolor1, #yourcolor2) !important;
 .page-title {
-    background: linear-gradient(135deg, #你的颜色1, #你的颜色2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-```
+background: linear-gradient(135deg, #yourcolor1, #yourcolor2);
 
-### 修改手机尺寸
-
-编辑 `css/mobile-frame.css`：
-
-```css
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+### Modify phone size
+Edit `css/mobile-frame.css`:
 .mobile-wrapper {
-    width: 393px;   /* iPhone 15 Pro */
-    height: 852px;
-}
-```
+width: 393px; /* iPhone 15 Pro */
 
-### 添加新建议类型
+height: 852px;
 
-编辑 `js/resume-logic.js` 的 `generateSuggestions()` 函数：
+### Add new suggestion types
 
+Edit the `generateSuggestions()` function in `js/resume-logic.js`:
 ```javascript
 const suggestions = [
-    {
-        icon: '🚀',
-        title: '你的标题',
-        desc: '你的描述',
-        priority: 'high' // 或 'medium', 'low'
-    },
-    // ... 更多建议
+{
+icon: '🚀',
+title: 'Your Title'
+
+desc: 'your description',
+
+priority: 'high' // or 'medium', 'low'
+
+},
+// ... More suggestions
 ];
+## 🎯 User Story Mapping
+User Story corresponding to this prototype:
+As a job-seeking student
+I want to be able to quickly upload and analyze my resume on a mobile device.
+In order to obtain AI-driven optimization suggestions and improve job search success rate.
+**Key Scenarios:**
+1. ✅ Mobile resume upload (PDF)
+2. ✅ AI-powered intelligent analysis and scoring
+
+3. ✅ Tiered suggestions displayed (by priority)
+
+```css
+
+4. ✅ Resume preview and editing
+5. ✅ Points System Display
+## 📊 Performance Optimization
+
+}
+- **CSS separation** - Modular loading for easier maintenance
+- **Animation Optimization** - Use `transform` and `opacity` (GPU accelerated)
+- **Lazy loading** - Suggestion list generated on demand
+- **No image dependency** - Uses Emoji and icon fonts
+## 🐛 Known Constraints
+
+}
+
 ```
+- ⚠️ This prototype is a **static demo** and has no backend integration.
+- ⚠️ The uploaded PDF is a **simulation function** and has not been actually parsed.
+- ⚠️ The AI ​​analysis is for **front-end animation**, with no actual AI calls.
 
-## 🎯 User Story 映射
+- ⚠️ Data is not persistently saved.
 
-本原型对应的 User Story：
+## 🔮 Future Expansion Directions
+```css
+- [ ] Integrates a real PDF parsing API
+- [ ] Connect to backend AI analytics services
 
-> **作为** 求职学生  
-> **我想要** 在移动端快速上传和分析我的简历  
-> **以便** 获得 AI 驱动的优化建议并提高求职成功率
+- [ ] Add more resume templates
 
-**关键场景：**
-1. ✅ 移动端简历上传（PDF）
-2. ✅ AI 智能分析和评分
-3. ✅ 分级建议展示（按优先级）
-4. ✅ 简历预览和编辑
-5. ✅ 积分系统展示
+}
+```
+- [ ] Supports resume export (PDF/Word)
+- [ ] Implement resume version history
+- [ ] Add job tracking feature
+## 📄 License
 
-## 📊 性能优化
+This prototype is for educational and demonstration purposes only.
 
-- **CSS 分离** - 模块化加载，便于维护
-- **动画优化** - 使用 `transform` 和 `opacity`（GPU 加速）
-- **懒加载** - 建议列表按需生成
-- **无图片依赖** - 使用 Emoji 和图标字体
+**Development Team**: IPD L5S4 Group 1
 
-## 🐛 已知限制
+**Updated Date: 2025-12-01**
 
-- ⚠️ 本原型为**静态演示**，无后端集成
-- ⚠️ PDF 上传为**模拟功能**，未实际解析
-- ⚠️ AI 分析为**前端动画**，无真实 AI 调用
-- ⚠️ 数据不会持久化保存
+**Contact Information:** [Project Repository](https://github.com/your-repo)
+## 🎉 Acknowledgements
+- Style Library - Provides basic components
 
-## 🔮 未来扩展方向
+- Font Awesome - Icon Support
 
-- [ ] 集成真实的 PDF 解析 API
-- [ ] 连接后端 AI 分析服务
-- [ ] 添加更多简历模板
-- [ ] 支持简历导出（PDF/Word）
-- [ ] 实现简历版本历史
-- [ ] 添加求职追踪功能
-
-## 📄 许可证
-
-本原型仅供教育和演示用途。
-
+- Apple HIG - Design Guide
+```
 ---
-
-**开发团队**: IPD L5S4 Group 1  
-**更新日期**: 2025-12-01  
-**联系方式**: [项目仓库](https://github.com/your-repo)
-
-## 🎉 致谢
-
-- Style Library - 提供基础组件
-- Font Awesome - 图标支持
-- Apple HIG - 设计指导
 
