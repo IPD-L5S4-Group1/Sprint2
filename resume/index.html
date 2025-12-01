@@ -90,18 +90,8 @@
                 </div>
 
                 <div class="h-scroll">
-                    <!-- Uploaded File Card (Hidden by default) -->
-                    <div id="uploadedFileItem" class="doc-card hidden">
-                        <div style="display: flex; justify-content: space-between;">
-                            <i class="fas fa-file-pdf doc-icon"></i>
-                            <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
-                        </div>
-                        <div>
-                            <div id="uploadedFileName" style="font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #1a1a1a;">Resume.pdf</div>
-                            <div style="font-size: 13px; color: #888;">Just now</div>
-                        </div>
-                    </div>
-
+                    <!-- Resume cards will be dynamically added here -->
+                    
                     <!-- Add New Resume Card -->
                     <div id="addResumeBtn" class="add-doc-card">
                         <div class="add-icon-circle">
@@ -183,6 +173,32 @@
                         <span id="loadingText" style="font-size: 13px; color: #888; font-weight: 600;">Initializing...</span>
                         <span id="progressPercent" style="font-size: 13px; color: #667eea; font-weight: 700;">0%</span>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: AI Chat Assistant -->
+        <div id="viewAiChat" class="full-screen-view hidden">
+            <div class="report-header">
+                <i class="fas fa-times" id="btnCloseChat" style="font-size: 24px; cursor: pointer; color: #1a1a1a;"></i>
+                <span style="font-size: 18px; font-weight: 800;">AI Assistant</span>
+                <i class="fas fa-robot" style="font-size: 20px; color: #667eea;"></i>
+            </div>
+            
+            <div class="chat-container" style="flex: 1; height: auto; border: none; border-radius: 0; margin: 0;">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Initial AI message -->
+                    <div class="message message-ai">
+                        <div class="avatar avatar-ai">🤖</div>
+                        <div class="bubble">
+                            你好！我是你的AI简历助手。我已经分析了你的简历，有什么问题想问我吗？
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="输入你的问题...">
+                    <button id="btnSendChat" class="btn btn-primary" style="padding: 10px 20px; border-radius: 20px; font-weight: 600;">发送</button>
                 </div>
             </div>
         </div>
@@ -301,7 +317,10 @@
                     </div>
                 </div>
 
-                <button id="btnReturnToMain" class="btn-premium w-100" style="margin-top: 8px;">Got It!</button>
+                <button id="btnAskAi" class="btn-ghost w-100" style="margin-bottom: 12px; background: rgba(102, 126, 234, 0.1) !important; border: 2px solid #667eea !important; color: #667eea !important;">
+                    <i class="fas fa-comment-dots"></i> 问AI问题
+                </button>
+                <button id="btnReturnToMain" class="btn-premium w-100">完成!</button>
             </div>
         </div>
 
@@ -435,6 +454,26 @@
                         <input type="text" id="inputTools" placeholder="React, Node.js, Git, Docker, AWS">
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal: Suggestion Detail -->
+        <div id="suggestionDetailModal" class="modal-overlay hidden">
+            <div class="modal" style="max-width: 380px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div id="suggestionDetailIcon" style="width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px;"></div>
+                    <i class="fas fa-times" id="btnCloseSuggestionDetail" style="font-size: 24px; color: #888; cursor: pointer;"></i>
+                </div>
+                <h3 id="suggestionDetailTitle" style="font-size: 22px; font-weight: 800; margin: 0 0 12px 0; color: #1a1a1a;"></h3>
+                <p id="suggestionDetailDesc" style="font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 20px;"></p>
+                
+                <div id="suggestionDetailContent" style="background: #f8f9ff; border-radius: 16px; padding: 20px; margin-bottom: 20px;">
+                    <!-- Detailed content will be inserted here -->
+                </div>
+                
+                <button id="btnApplySuggestion" class="btn-premium w-100">
+                    <i class="fas fa-check"></i> 应用建议
+                </button>
             </div>
         </div>
 

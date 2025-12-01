@@ -23,6 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCloseEdit = document.getElementById('btnCloseEdit');
     const btnSaveResume = document.getElementById('btnSaveResume');
     const btnCloseReport = document.getElementById('btnCloseReport');
+    const btnAskAi = document.getElementById('btnAskAi');
+    const btnCloseChat = document.getElementById('btnCloseChat');
+    const btnSendChat = document.getElementById('btnSendChat');
+    
+    // Global state for multiple resumes
+    let resumes = [];
+    let currentResumeId = null;
+    
+    // Chat state
+    let chatHistory = [];
 
     // Views & Overlays
     const modalOverlay = document.getElementById('modalOverlay');
@@ -33,6 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewReport = document.getElementById('viewReport');
     const viewPdfPreview = document.getElementById('viewPdfPreview');
     const viewEditResume = document.getElementById('viewEditResume');
+    const viewAiChat = document.getElementById('viewAiChat');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const suggestionDetailModal = document.getElementById('suggestionDetailModal');
+    const btnCloseSuggestionDetail = document.getElementById('btnCloseSuggestionDetail');
+    const btnApplySuggestion = document.getElementById('btnApplySuggestion');
 
     // State Elements
     const headerDefault = document.getElementById('headerDefaultContent');
@@ -135,6 +151,39 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUIToUploadedState('My Resume');
         }, 500);
     });
+    
+    // Open AI Chat
+    btnAskAi?.addEventListener('click', () => {
+        hideView(viewReport);
+        showView(viewAiChat);
+        addHapticFeedback();
+    });
+    
+    btnCloseChat?.addEventListener('click', () => {
+        hideView(viewAiChat);
+    });
+    
+    // Send Chat Message
+    btnSendChat?.addEventListener('click', () => {
+        sendChatMessage();
+    });
+    
+    chatInput?.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendChatMessage();
+        }
+    });
+    
+    // Suggestion Detail Modal
+    btnCloseSuggestionDetail?.addEventListener('click', () => {
+        hideView(suggestionDetailModal);
+    });
+    
+    btnApplySuggestion?.addEventListener('click', () => {
+        hideView(suggestionDetailModal);
+        showToast('✅ 建议已保存到笔记本', 1500);
+        addHapticFeedback();
+    });
 
     // ========================================
     // 3. CORE FUNCTIONS
@@ -208,26 +257,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Update main UI after file upload
+     * Update main UI after file upload - supports multiple resumes
      */
     function updateUIToUploadedState(filename) {
+        // Create new resume object
+        const resumeId = 'resume_' + Date.now();
+        const newResume = {
+            id: resumeId,
+            name: filename,
+            uploadDate: new Date(),
+            score: 0,
+            analyzed: false,
+            data: null
+        };
+        
+        // Add to resumes array
+        resumes.push(newResume);
+        currentResumeId = resumeId;
+        
         // Switch header card content
         headerDefault?.classList.add('hidden');
         headerUploaded?.classList.remove('hidden');
         
-        // Show file in horizontal list
-        if (uploadedFileItem) {
-            uploadedFileItem.classList.remove('hidden');
-            uploadedFileItem.style.display = 'flex';
-            
-            // Update filename display
-            if (uploadedFileName) {
-                let name = filename.length > 15 
-                    ? filename.substring(0, 12) + '...' 
-                    : filename;
-                uploadedFileName.textContent = name;
-            }
-        }
+        // Add resume card to horizontal scroll
+        addResumeCard(newResume);
+        
+        // Update preview for current resume
+        updatePreviewForCurrentResume();
         
         // Reset suggestions
         suggestionsEmpty?.classList.remove('hidden');
@@ -243,6 +299,250 @@ document.addEventListener('DOMContentLoaded', () => {
             mainScoreBadge.innerHTML = '<span style="font-size: 32px;">-</span>';
         }
         if (lastUpdateText) lastUpdateText.textContent = 'NEVER ANALYZED';
+    }
+    
+    /**
+     * Add a resume card to the horizontal scroll
+     */
+    function addResumeCard(resume) {
+        const container = document.querySelector('.h-scroll');
+        if (!container) return;
+        
+        // Create card element
+        const card = document.createElement('div');
+        card.className = 'doc-card';
+        card.dataset.resumeId = resume.id;
+        
+        // Add selected class if it's the current resume
+        if (resume.id === currentResumeId) {
+            card.classList.add('doc-card-selected');
+        }
+        
+        const displayName = resume.name.length > 15 
+            ? resume.name.substring(0, 12) + '...' 
+            : resume.name;
+        
+        card.innerHTML = `
+            <div style="display: flex; justify-content: space-between;">
+                <i class="fas fa-file-pdf doc-icon"></i>
+                <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
+            </div>
+            <div>
+                <div style="font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #1a1a1a;">${displayName}</div>
+                <div style="font-size: 13px; color: #888;">Just now</div>
+            </div>
+        `;
+        
+        // Add click handler
+        card.addEventListener('click', () => {
+            selectResume(resume.id);
+        });
+        
+        // Insert before the "Add New" button
+        container.insertBefore(card, addResumeBtn);
+        
+        // Scroll to show the new card
+        setTimeout(() => {
+            card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }, 100);
+    }
+    
+    /**
+     * Select a resume and update UI
+     */
+    function selectResume(resumeId) {
+        currentResumeId = resumeId;
+        
+        // Update card selection visuals
+        document.querySelectorAll('.doc-card').forEach(card => {
+            if (card.dataset.resumeId === resumeId) {
+                card.classList.add('doc-card-selected');
+            } else {
+                card.classList.remove('doc-card-selected');
+            }
+        });
+        
+        // Update preview and main UI
+        const resume = resumes.find(r => r.id === resumeId);
+        if (resume) {
+            updatePreviewForCurrentResume();
+            
+            // Update score display
+            if (resume.analyzed) {
+                if (mainScoreText) mainScoreText.textContent = resume.score;
+                if (mainScoreBadge && resume.score > 0) {
+                    const grade = resume.score >= 85 ? 'A' : resume.score >= 70 ? 'B' : 'C';
+                    mainScoreBadge.innerHTML = `<span style="font-size: 32px; font-weight: 800;">${grade}</span>`;
+                }
+                if (lastUpdateText) {
+                    const now = new Date();
+                    const hours = now.getHours();
+                    const minutes = String(now.getMinutes()).padStart(2, '0');
+                    lastUpdateText.textContent = `UPDATED: ${hours}:${minutes}`;
+                }
+            } else {
+                if (mainScoreText) mainScoreText.textContent = '0';
+                if (mainScoreBadge) {
+                    mainScoreBadge.innerHTML = '<span style="font-size: 32px;">-</span>';
+                }
+                if (lastUpdateText) lastUpdateText.textContent = 'NEVER ANALYZED';
+            }
+            
+            addHapticFeedback();
+        }
+    }
+    
+    /**
+     * Update preview for the current selected resume
+     */
+    function updatePreviewForCurrentResume() {
+        const resume = resumes.find(r => r.id === currentResumeId);
+        if (!resume) return;
+        
+        // This will be used when preview is opened
+        // The actual rendering happens in renderResumePreview()
+    }
+    
+    /**
+     * Send chat message to AI
+     */
+    async function sendChatMessage() {
+        const message = chatInput?.value.trim();
+        if (!message) return;
+        
+        // Clear input
+        chatInput.value = '';
+        
+        // Add user message to UI
+        addChatMessage(message, 'user');
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Prepare chat history for API
+        chatHistory.push({
+            role: 'user',
+            content: message
+        });
+        
+        try {
+            // Call Alibaba Cloud API
+            const response = await callAlibabaCloudAPI(chatHistory);
+            
+            // Remove typing indicator
+            removeTypingIndicator();
+            
+            // Add AI response to UI
+            if (response) {
+                addChatMessage(response, 'ai');
+                chatHistory.push({
+                    role: 'assistant',
+                    content: response
+                });
+            }
+        } catch (error) {
+            console.error('AI Chat Error:', error);
+            removeTypingIndicator();
+            addChatMessage('抱歉，我现在遇到了一些问题。请稍后再试。', 'ai');
+        }
+    }
+    
+    /**
+     * Call Alibaba Cloud Qwen API
+     */
+    async function callAlibabaCloudAPI(messages) {
+        const API_KEY = 'sk-d1a79240645449428802d0755537479c';
+        const API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+        
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'qwen-max',
+                    messages: [
+                        {
+                            role: 'system',
+                            content: '你是一个专业的简历分析助手。你的任务是帮助用户改进他们的简历，提供具体的建议和指导。请用中文回答，保持专业、友好和鼓励的语气。'
+                        },
+                        ...messages
+                    ],
+                    stream: false
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.choices[0]?.message?.content || '抱歉，我无法生成回复。';
+        } catch (error) {
+            console.error('API Call Error:', error);
+            throw error;
+        }
+    }
+    
+    /**
+     * Add chat message to UI
+     */
+    function addChatMessage(content, sender) {
+        if (!chatMessages) return;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message message-${sender}`;
+        
+        if (sender === 'ai') {
+            messageDiv.innerHTML = `
+                <div class="avatar avatar-ai">🤖</div>
+                <div class="bubble">${content}</div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="bubble">${content}</div>
+                <div class="avatar avatar-user">👤</div>
+            `;
+        }
+        
+        chatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    /**
+     * Show typing indicator
+     */
+    function showTypingIndicator() {
+        if (!chatMessages) return;
+        
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message message-ai';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="avatar avatar-ai">🤖</div>
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        `;
+        
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    /**
+     * Remove typing indicator
+     */
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) {
+            indicator.remove();
+        }
     }
 
     /**
@@ -286,8 +586,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function closeReportAndSyncData() {
         hideView(viewReport);
 
+        const score = 72; // Mock score
+        
+        // Update current resume's analyzed status
+        const resume = resumes.find(r => r.id === currentResumeId);
+        if (resume) {
+            resume.analyzed = true;
+            resume.score = score;
+            // Save to localStorage
+            localStorage.setItem('allResumes', JSON.stringify(resumes));
+        }
+
         // Animate score update
-        animateScore(0, 72, 1000);
+        animateScore(0, score, 1000);
         
         // Update score badge
         if (mainScoreBadge) {
@@ -349,34 +660,108 @@ document.addEventListener('DOMContentLoaded', () => {
         const suggestions = [
             {
                 icon: '⚡',
-                title: 'Add Quantifiable Results',
-                desc: 'Include metrics like "Increased efficiency by 30%" to demonstrate impact.',
-                priority: 'high'
+                title: '添加量化成果',
+                desc: '包含具体数据如"提升效率30%"来展示影响力',
+                priority: 'high',
+                detailContent: `
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">为什么重要？</h4>
+                    <p style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px;">
+                        量化的成果能让招聘者快速了解你的实际贡献，比模糊的描述更有说服力。
+                    </p>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">示例对比</h4>
+                    <div style="background: #ffe5e5; border-left: 4px solid #ff6b6b; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #ff6b6b; margin-bottom: 4px;">❌ 不好的写法</div>
+                        <div style="font-size: 14px; color: #555;">"参与了团队项目开发"</div>
+                    </div>
+                    <div style="background: #e5ffe5; border-left: 4px solid #00b894; padding: 12px; border-radius: 8px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #00b894; margin-bottom: 4px;">✅ 好的写法</div>
+                        <div style="font-size: 14px; color: #555;">"优化数据库查询，将页面加载时间从3秒减少到0.8秒，用户满意度提升45%"</div>
+                    </div>
+                `
             },
             {
                 icon: '💼',
-                title: 'Expand Project Section',
-                desc: 'Your experience is light. Add your capstone project details.',
-                priority: 'medium'
+                title: '扩展项目经历',
+                desc: '你的经验较少，添加你的毕业设计项目详情',
+                priority: 'medium',
+                detailContent: `
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">建议添加的内容</h4>
+                    <ul style="margin: 0; padding-left: 20px; list-style: none;">
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 8px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">1.</span>
+                            项目背景和目标
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 8px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">2.</span>
+                            使用的技术栈（前端、后端、数据库）
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 8px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">3.</span>
+                            你的具体职责和贡献
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">4.</span>
+                            项目成果（用户数、性能指标等）
+                        </li>
+                    </ul>
+                `
             },
             {
                 icon: '📊',
-                title: 'Include Key Technologies',
-                desc: 'Add: React, Node.js, AWS. These keywords help pass ATS filters.',
-                priority: 'medium'
+                title: '添加关键技术词',
+                desc: '添加：React、Node.js、AWS 等关键词帮助通过ATS筛选',
+                priority: 'medium',
+                detailContent: `
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">推荐添加的技术</h4>
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">前端技术</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                            <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">React</span>
+                            <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Vue.js</span>
+                            <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">TypeScript</span>
+                        </div>
+                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">后端技术</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                            <span style="background: #00b894; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Node.js</span>
+                            <span style="background: #00b894; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Python</span>
+                            <span style="background: #00b894; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Express</span>
+                        </div>
+                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">云服务</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="background: #fdcb6e; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">AWS</span>
+                            <span style="background: #fdcb6e; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Docker</span>
+                            <span style="background: #fdcb6e; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Git</span>
+                        </div>
+                    </div>
+                `
             },
             {
                 icon: '🎓',
-                title: 'Highlight Your GPA',
-                desc: 'Move your education section higher - your 3.8 GPA is impressive!',
-                priority: 'low'
+                title: '突出你的GPA',
+                desc: '将教育经历提前 - 你的3.8 GPA很优秀！',
+                priority: 'low',
+                detailContent: `
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">为什么要突出？</h4>
+                    <p style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px;">
+                        3.8/4.0的GPA属于优秀水平，对于应届生来说是重要的竞争优势。
+                    </p>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">优化建议</h4>
+                    <div style="background: #f8f9ff; border-radius: 12px; padding: 16px;">
+                        <p style="font-size: 14px; color: #555; line-height: 1.6; margin: 0;">
+                            • 将教育背景移到简历靠前位置<br>
+                            • 突出显示GPA（使用<strong>加粗</strong>）<br>
+                            • 添加相关荣誉和奖学金<br>
+                            • 列出核心课程（如果与应聘岗位相关）
+                        </p>
+                    </div>
+                `
             }
         ];
 
         let html = '';
         suggestions.forEach((item, index) => {
             html += `
-            <div class="suggestion-card" style="animation: slideUp 0.3s ease ${index * 0.1}s backwards;">
+            <div class="suggestion-card" data-suggestion-index="${index}" style="animation: slideUp 0.3s ease ${index * 0.1}s backwards;">
                 <div class="suggestion-icon priority-${item.priority}">
                     ${item.icon}
                 </div>
@@ -398,14 +783,48 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add click handlers to suggestion cards
         document.querySelectorAll('.suggestion-card').forEach(card => {
             card.addEventListener('click', () => {
-                showToast('💡 Tip saved to notebook', 1500);
+                const index = parseInt(card.dataset.suggestionIndex);
+                showSuggestionDetail(suggestions[index]);
                 addHapticFeedback();
             });
         });
     }
+    
+    /**
+     * Show suggestion detail modal
+     */
+    function showSuggestionDetail(suggestion) {
+        const iconEl = document.getElementById('suggestionDetailIcon');
+        const titleEl = document.getElementById('suggestionDetailTitle');
+        const descEl = document.getElementById('suggestionDetailDesc');
+        const contentEl = document.getElementById('suggestionDetailContent');
+        
+        if (iconEl) {
+            iconEl.textContent = suggestion.icon;
+            iconEl.className = '';
+            iconEl.style.cssText = `
+                width: 56px; 
+                height: 56px; 
+                border-radius: 16px; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                font-size: 32px;
+                background: ${suggestion.priority === 'high' ? 'linear-gradient(135deg, #FFE5E5, #FFB3B3)' : 
+                            suggestion.priority === 'medium' ? 'linear-gradient(135deg, #FFF9E6, #FFE5B3)' : 
+                            'linear-gradient(135deg, #E8F4FD, #CDDAFD)'};
+            `;
+        }
+        
+        if (titleEl) titleEl.textContent = suggestion.title;
+        if (descEl) descEl.textContent = suggestion.desc;
+        if (contentEl) contentEl.innerHTML = suggestion.detailContent;
+        
+        showView(suggestionDetailModal);
+    }
 
     /**
-     * Save resume data to localStorage
+     * Save resume data to the current resume
      */
     function saveResumeData() {
         const resumeData = {
@@ -429,35 +848,44 @@ document.addEventListener('DOMContentLoaded', () => {
             tools: document.getElementById('inputTools')?.value || ''
         };
         
-        localStorage.setItem('resumeData', JSON.stringify(resumeData));
+        // Save to current resume
+        const resume = resumes.find(r => r.id === currentResumeId);
+        if (resume) {
+            resume.data = resumeData;
+        }
+        
+        // Also save all resumes to localStorage
+        localStorage.setItem('allResumes', JSON.stringify(resumes));
+        localStorage.setItem('currentResumeId', currentResumeId);
     }
 
     /**
-     * Load resume data from localStorage
+     * Load resume data for the current resume
      */
     function loadResumeData() {
-        const data = localStorage.getItem('resumeData');
+        const resume = resumes.find(r => r.id === currentResumeId);
+        const data = resume?.data;
+        
         if (data) {
-            const resumeData = JSON.parse(data);
-            document.getElementById('inputName').value = resumeData.name || '';
-            document.getElementById('inputEmail').value = resumeData.email || '';
-            document.getElementById('inputPhone').value = resumeData.phone || '';
-            document.getElementById('inputLocation').value = resumeData.location || '';
-            document.getElementById('inputSummary').value = resumeData.summary || '';
-            document.getElementById('inputSchool').value = resumeData.school || '';
-            document.getElementById('inputDegree').value = resumeData.degree || '';
-            document.getElementById('inputGpa').value = resumeData.gpa || '';
-            document.getElementById('inputGraduation').value = resumeData.graduation || '';
-            document.getElementById('inputCompany').value = resumeData.company || '';
-            document.getElementById('inputPosition').value = resumeData.position || '';
-            document.getElementById('inputDuration').value = resumeData.duration || '';
-            document.getElementById('inputExperience').value = resumeData.experience || '';
-            document.getElementById('inputProjectName').value = resumeData.projectName || '';
-            document.getElementById('inputTechnologies').value = resumeData.technologies || '';
-            document.getElementById('inputProject').value = resumeData.project || '';
-            document.getElementById('inputLanguages').value = resumeData.languages || '';
-            document.getElementById('inputTools').value = resumeData.tools || '';
-            return resumeData;
+            document.getElementById('inputName').value = data.name || '';
+            document.getElementById('inputEmail').value = data.email || '';
+            document.getElementById('inputPhone').value = data.phone || '';
+            document.getElementById('inputLocation').value = data.location || '';
+            document.getElementById('inputSummary').value = data.summary || '';
+            document.getElementById('inputSchool').value = data.school || '';
+            document.getElementById('inputDegree').value = data.degree || '';
+            document.getElementById('inputGpa').value = data.gpa || '';
+            document.getElementById('inputGraduation').value = data.graduation || '';
+            document.getElementById('inputCompany').value = data.company || '';
+            document.getElementById('inputPosition').value = data.position || '';
+            document.getElementById('inputDuration').value = data.duration || '';
+            document.getElementById('inputExperience').value = data.experience || '';
+            document.getElementById('inputProjectName').value = data.projectName || '';
+            document.getElementById('inputTechnologies').value = data.technologies || '';
+            document.getElementById('inputProject').value = data.project || '';
+            document.getElementById('inputLanguages').value = data.languages || '';
+            document.getElementById('inputTools').value = data.tools || '';
+            return data;
         }
         return null;
     }
@@ -590,6 +1018,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('✅ Resume Center loaded successfully');
     console.log('📱 Device: iPhone 17 Pro Max (430 x 932)');
+    
+    // Load saved resumes from localStorage
+    const savedResumes = localStorage.getItem('allResumes');
+    const savedCurrentId = localStorage.getItem('currentResumeId');
+    if (savedResumes) {
+        resumes = JSON.parse(savedResumes);
+        currentResumeId = savedCurrentId;
+        
+        // Restore UI state if we have resumes
+        if (resumes.length > 0) {
+            headerDefault?.classList.add('hidden');
+            headerUploaded?.classList.remove('hidden');
+            
+            // Recreate all resume cards
+            resumes.forEach(resume => {
+                addResumeCard(resume);
+            });
+            
+            // Update UI for current resume
+            if (currentResumeId) {
+                selectResume(currentResumeId);
+            }
+        }
+    }
     
     // Load saved resume data when opening edit view
     btnEditResume?.addEventListener('click', () => {
