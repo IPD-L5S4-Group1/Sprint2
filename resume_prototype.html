@@ -152,6 +152,7 @@
             bottom: 0;
             width: 100%;
             padding-bottom: 10px; /* Home Indicator Space */
+            z-index: 90;
         }
 
         .tab-item {
@@ -172,6 +173,122 @@
             font-size: 20px;
         }
 
+        /* --- New Views (Loading & Report) --- */
+        .full-screen-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 200; /* Above everything */
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        /* Loading View Styles */
+        .loading-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%);
+        }
+
+        .robot-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .progress-bar-container {
+            width: 80%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-top: 24px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #667eea;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Report View Styles */
+        .report-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px 30px 20px;
+            border-radius: 0 0 24px 24px;
+            text-align: center;
+        }
+
+        .score-circle-lg {
+            width: 100px;
+            height: 100px;
+            border: 6px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            margin: 0 auto 16px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .report-content {
+            padding: 24px;
+        }
+
+        .report-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* --- PDF Preview Styles --- */
+        .preview-header {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background: #667eea;
+            color: white;
+        }
+        
+        .pdf-container {
+            flex: 1;
+            background: #525659;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .pdf-page {
+            width: 90%;
+            min-height: 120%;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            font-size: 8px; /* Simulate small text */
+            color: #333;
+            overflow: hidden;
+        }
+
     </style>
 </head>
 <body>
@@ -189,8 +306,8 @@
             </div>
         </div>
 
-        <!-- Scrollable App Content -->
-        <div class="app-content">
+        <!-- View 1: Main App Content (Resume Center) -->
+        <div class="app-content" id="viewMain">
             
             <!-- Header Title -->
             <div class="d-flex justify-between align-center mt-md mb-md" style="padding: 0 16px;">
@@ -213,13 +330,13 @@
                     <div>
                         <div style="font-size: 12px; opacity: 0.8;">简历评分</div>
                         <div class="d-flex align-center justify-between">
-                            <span style="font-size: 48px; font-weight: 700;">0</span>
-                            <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">未评分</div>
+                            <span id="mainScoreText" style="font-size: 48px; font-weight: 700;">0</span>
+                            <div id="mainScoreBadge" style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">未评分</div>
                         </div>
                     </div>
                     <div class="d-flex justify-end gap-sm mt-auto" style="width: 100%;">
-                        <button class="btn btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; border-radius: 20px; padding: 4px 12px;">AI 诊断</button>
-                        <button class="btn btn-sm" style="background: white; color: #667eea; border-radius: 20px; padding: 4px 12px;">预览 PDF</button>
+                        <button id="btnAiDiagnosis" class="btn btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; border-radius: 20px; padding: 4px 12px;">AI 诊断</button>
+                        <button id="btnPreviewPdf" class="btn btn-sm" style="background: white; color: #667eea; border-radius: 20px; padding: 4px 12px;">预览 PDF</button>
                     </div>
                 </div>
             </div>
@@ -262,7 +379,88 @@
                     <!-- Dynamic Items will be injected here -->
                 </div>
             </div>
+        </div>
 
+        <!-- View 2: AI Loading (Hidden) -->
+        <div id="viewLoading" class="full-screen-view hidden" style="display: none;">
+            <div class="loading-container">
+                <div class="robot-icon">🤖</div>
+                <h3 class="text-h3 mb-sm">AI 深度分析中</h3>
+                <p class="text-light" id="loadingText">识别关键信息中...</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <p class="text-light mt-md" style="font-size: 12px;">预计需要 10-20 秒，请耐心等待...</p>
+            </div>
+        </div>
+
+        <!-- View 3: Analysis Report (Hidden) -->
+        <div id="viewReport" class="full-screen-view hidden" style="display: none;">
+            <div class="report-header">
+                <div class="score-circle-lg">
+                    <span style="font-size: 36px; font-weight: 700;">72</span>
+                    <span style="font-size: 12px;">/100</span>
+                </div>
+                <div style="font-size: 24px; font-weight: 600; margin-bottom: 4px;">B</div>
+                <div style="font-size: 12px; opacity: 0.9;">良好</div>
+                <div style="margin-top: 12px; font-size: 14px; opacity: 0.9;">您的简历已超过 72% 的求职者</div>
+            </div>
+
+            <div class="report-content">
+                <div class="d-flex align-center mb-md">
+                    <i class="fas fa-clipboard-list" style="color: #667eea; margin-right: 8px;"></i>
+                    <h3 class="text-h3">详细分析报告</h3>
+                </div>
+
+                <div class="report-card">
+                    <h4 class="mb-sm" style="font-weight: 600;">### 简历综合分析报告</h4>
+                    <p style="font-size: 13px; line-height: 1.6; color: #4a5568; margin-bottom: 16px;">
+                        **优点：**<br>
+                        - 教育背景优秀，GPA高达4.25/5.00，位列专业前1%，体现了较强的学习能力和学术水平。<br>
+                        - 求职意向明确，目标岗位（软件测试工程师）清晰。<br><br>
+                        **不足之处：**<br>
+                        - **工作经历留白**：目前缺乏具体的实习或项目经验描述，建议补充。<br>
+                        - **技能描述泛泛**：缺乏对具体测试工具（如Selenium, Junit）的掌握程度描述。
+                    </p>
+                </div>
+
+                <button id="btnReturnToMain" class="btn btn-primary w-100" style="border-radius: 25px; padding: 12px;">返回简历中心</button>
+                <div style="height: 40px;"></div> <!-- Spacer -->
+            </div>
+        </div>
+
+        <!-- View 4: PDF Preview (Hidden) -->
+        <div id="viewPdfPreview" class="full-screen-view hidden" style="display: none;">
+            <div class="preview-header">
+                <i class="fas fa-chevron-left" id="btnClosePreview" style="cursor: pointer;"></i>
+                <span style="font-weight: 600;">简历预览</span>
+                <i class="fas fa-ellipsis-h"></i>
+            </div>
+            <div class="pdf-container">
+                <div class="pdf-page">
+                    <!-- Mock Resume Content -->
+                    <div style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                        <h2 style="font-size: 16px; margin-bottom: 4px;">ALEX CHEN</h2>
+                        <p style="color: #666;">alex.chen@example.com | 138-0000-0000</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <h3 style="font-size: 12px; color: #667eea; border-bottom: 1px solid #eee; margin-bottom: 5px;">EDUCATION</h3>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <strong>University of Technology</strong>
+                            <span>2021 - 2025</span>
+                        </div>
+                        <p>B.S. Computer Science, GPA 4.25/5.0</p>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <h3 style="font-size: 12px; color: #667eea; border-bottom: 1px solid #eee; margin-bottom: 5px;">PROJECTS</h3>
+                        <p><strong>E-commerce Platform</strong></p>
+                        <p>Built a full-stack web application using React and Node.js.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 16px; background: white; border-top: 1px solid #eee;">
+                <button id="btnEditResume" class="btn btn-primary w-100" style="border-radius: 25px; padding: 12px;">编辑</button>
+            </div>
         </div>
 
         <!-- Bottom Tab Bar -->
