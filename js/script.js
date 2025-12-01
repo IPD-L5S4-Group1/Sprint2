@@ -56,6 +56,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 4. Accordion Interaction Logic
+    const allAccordions = document.querySelectorAll('[data-accordion]');
+    
+    allAccordions.forEach(accordion => {
+        const accordionItems = accordion.querySelectorAll('.accordion-item');
+        const isSingleOpen = accordion.getAttribute('data-single-open') === 'true';
+        
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            
+            header.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // If single-open mode, close all other items
+                if (isSingleOpen && !isActive) {
+                    accordionItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                }
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+    });
+
     // Future: Add logic for Career Map or Chat interactions here
     console.log('Style Library Loaded Successfully');
 });
