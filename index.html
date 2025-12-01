@@ -1370,6 +1370,219 @@
 
         </section>
 
+        <!-- Tabs -->
+        <section id="tabs">
+            <h2 class="text-h2 mb-lg">Tabs</h2>
+            <p class="text-body mb-xl">Content organization and navigation between sections</p>
+
+            <!-- Basic Tabs -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Basic Tabs</h3>
+                <div class="card p-lg">
+                    <div class="tabs" data-tabs="basic">
+                        <nav class="tab-nav">
+                            <button class="tab-btn active" data-tab="profile">Profile</button>
+                            <button class="tab-btn" data-tab="activity">Activity</button>
+                            <button class="tab-btn" data-tab="settings">Settings</button>
+                            <button class="tab-btn" data-tab="notifications">Notifications</button>
+                        </nav>
+                        <div class="tab-contents">
+                            <div class="tab-content active" data-content="profile">
+                                <h4 class="text-h3 mb-sm">Profile Information</h4>
+                                <p class="text-body">View and edit your personal information, career goals, and preferences.</p>
+                            </div>
+                            <div class="tab-content" data-content="activity">
+                                <h4 class="text-h3 mb-sm">Recent Activity</h4>
+                                <p class="text-body">Track your assessments, interviews, and resume improvements over time.</p>
+                            </div>
+                            <div class="tab-content" data-content="settings">
+                                <h4 class="text-h3 mb-sm">Account Settings</h4>
+                                <p class="text-body">Manage your account preferences, privacy settings, and notifications.</p>
+                            </div>
+                            <div class="tab-content" data-content="notifications">
+                                <h4 class="text-h3 mb-sm">Notification Center</h4>
+                                <p class="text-body">View all your notifications and alerts from your career preparation journey.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs with Badges -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Tabs with Badges</h3>
+                <div class="card p-lg">
+                    <div class="tabs" data-tabs="badges">
+                        <nav class="tab-nav">
+                            <button class="tab-btn active" data-tab="inbox">
+                                <span class="tab-btn-icon">Inbox<span class="tab-badge">12</span></span>
+                            </button>
+                            <button class="tab-btn" data-tab="completed">
+                                <span class="tab-btn-icon">Completed<span class="tab-badge">5</span></span>
+                            </button>
+                            <button class="tab-btn" data-tab="pending">
+                                <span class="tab-btn-icon">Pending<span class="tab-badge">3</span></span>
+                            </button>
+                        </nav>
+                        <div class="tab-contents">
+                            <div class="tab-content active" data-content="inbox">
+                                <p class="text-body">You have 12 new items in your inbox requiring attention.</p>
+                            </div>
+                            <div class="tab-content" data-content="completed">
+                                <p class="text-body">5 tasks have been completed this week.</p>
+                            </div>
+                            <div class="tab-content" data-content="pending">
+                                <p class="text-body">3 tasks are pending your review.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pill Style Tabs -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Pill Style Tabs</h3>
+                <div class="card p-lg">
+                    <div class="tabs pills" data-tabs="pills">
+                        <nav class="tab-nav">
+                            <button class="tab-btn active" data-tab="all">All</button>
+                            <button class="tab-btn" data-tab="interviews">Interviews</button>
+                            <button class="tab-btn" data-tab="assessments">Assessments</button>
+                            <button class="tab-btn" data-tab="resume">Resume</button>
+                        </nav>
+                        <div class="tab-contents">
+                            <div class="tab-content active" data-content="all">
+                                <p class="text-body">Showing all activities from your career preparation.</p>
+                            </div>
+                            <div class="tab-content" data-content="interviews">
+                                <p class="text-body">Practice interviews and mock session results.</p>
+                            </div>
+                            <div class="tab-content" data-content="assessments">
+                                <p class="text-body">Technical assessments and skill evaluations.</p>
+                            </div>
+                            <div class="tab-content" data-content="resume">
+                                <p class="text-body">Resume optimization and improvement suggestions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Width Tabs -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Full Width Tabs</h3>
+                <div class="card p-lg">
+                    <div class="tabs full-width" data-tabs="fullwidth">
+                        <nav class="tab-nav">
+                            <button class="tab-btn active" data-tab="overview">Overview</button>
+                            <button class="tab-btn" data-tab="progress">Progress</button>
+                            <button class="tab-btn" data-tab="achievements">Achievements</button>
+                        </nav>
+                        <div class="tab-contents">
+                            <div class="tab-content active" data-content="overview">
+                                <p class="text-body">Quick overview of your career preparation journey.</p>
+                            </div>
+                            <div class="tab-content" data-content="progress">
+                                <p class="text-body">Detailed progress tracking across all modules.</p>
+                            </div>
+                            <div class="tab-content" data-content="achievements">
+                                <p class="text-body">Milestones and achievements earned.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Style Tabs -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Card Style Tabs</h3>
+                <div class="tabs card" data-tabs="card" style="max-width: 800px;">
+                    <nav class="tab-nav">
+                        <button class="tab-btn active" data-tab="details">Details</button>
+                        <button class="tab-btn" data-tab="comments">Comments</button>
+                        <button class="tab-btn" data-tab="history">History</button>
+                    </nav>
+                    <div class="tab-contents">
+                        <div class="tab-content active" data-content="details">
+                            <h4 class="text-h3 mb-sm">Interview Details</h4>
+                            <p class="text-body">Comprehensive information about your interview session including duration, performance metrics, and feedback.</p>
+                        </div>
+                        <div class="tab-content" data-content="comments">
+                            <h4 class="text-h3 mb-sm">Interviewer Comments</h4>
+                            <p class="text-body">Detailed feedback and suggestions from your practice interview session.</p>
+                        </div>
+                        <div class="tab-content" data-content="history">
+                            <h4 class="text-h3 mb-sm">Session History</h4>
+                            <p class="text-body">View your past interview sessions and track improvement over time.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vertical Tabs -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Vertical Tabs</h3>
+                <div class="card p-lg">
+                    <div class="tabs vertical" data-tabs="vertical" style="min-height: 300px;">
+                        <nav class="tab-nav">
+                            <button class="tab-btn active" data-tab="general">General</button>
+                            <button class="tab-btn" data-tab="security">Security</button>
+                            <button class="tab-btn" data-tab="privacy">Privacy</button>
+                            <button class="tab-btn" data-tab="notifications-v">Notifications</button>
+                        </nav>
+                        <div class="tab-contents">
+                            <div class="tab-content active" data-content="general">
+                                <h4 class="text-h3 mb-sm">General Settings</h4>
+                                <p class="text-body">Configure your basic account settings and preferences.</p>
+                            </div>
+                            <div class="tab-content" data-content="security">
+                                <h4 class="text-h3 mb-sm">Security Settings</h4>
+                                <p class="text-body">Manage your password, two-factor authentication, and security options.</p>
+                            </div>
+                            <div class="tab-content" data-content="privacy">
+                                <h4 class="text-h3 mb-sm">Privacy Settings</h4>
+                                <p class="text-body">Control your data privacy and sharing preferences.</p>
+                            </div>
+                            <div class="tab-content" data-content="notifications-v">
+                                <h4 class="text-h3 mb-sm">Notification Preferences</h4>
+                                <p class="text-body">Choose how and when you want to receive notifications.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compact Tabs -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Compact Tabs</h3>
+                <div class="card p-lg">
+                    <div class="tabs compact" data-tabs="compact">
+                        <nav class="tab-nav">
+                            <button class="tab-btn active" data-tab="day">Day</button>
+                            <button class="tab-btn" data-tab="week">Week</button>
+                            <button class="tab-btn" data-tab="month">Month</button>
+                            <button class="tab-btn" data-tab="year">Year</button>
+                        </nav>
+                        <div class="tab-contents">
+                            <div class="tab-content active" data-content="day">
+                                <p class="text-body">Daily activity summary</p>
+                            </div>
+                            <div class="tab-content" data-content="week">
+                                <p class="text-body">Weekly activity summary</p>
+                            </div>
+                            <div class="tab-content" data-content="month">
+                                <p class="text-body">Monthly activity summary</p>
+                            </div>
+                            <div class="tab-content" data-content="year">
+                                <p class="text-body">Yearly activity summary</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
     </div>
 
     <script src="js/script.js"></script>

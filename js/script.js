@@ -31,6 +31,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 3. Tabs Interaction Logic
+    const allTabGroups = document.querySelectorAll('[data-tabs]');
+    
+    allTabGroups.forEach(tabGroup => {
+        const tabButtons = tabGroup.querySelectorAll('.tab-btn');
+        const tabContents = tabGroup.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents in this group
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                const targetContent = tabGroup.querySelector(`[data-content="${targetTab}"]`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+    });
+
     // Future: Add logic for Career Map or Chat interactions here
     console.log('Style Library Loaded Successfully');
 });
