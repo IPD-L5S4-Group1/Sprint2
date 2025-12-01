@@ -1,12 +1,12 @@
 # Style Library
 
-A lightweight CSS component library for rapid web development. Built with modern design principles including glassmorphism effects and responsive layouts.
+A complete design system for building modern web applications. Built with glassmorphism effects, responsive layouts, and 40+ production-ready components.
 
 ## Features
 
 - **Zero config** - link CSS and start building
 - **Fully responsive** - mobile-first design  
-- **30+ components** - buttons, forms, cards, modals, and more
+- **40+ components** - complete UI toolkit for any application
 - **No dependencies** - pure CSS with optional JS helpers
 - **Themeable** - easy customization via CSS variables
 - **8px grid system** - consistent spacing throughout
@@ -39,32 +39,45 @@ For interactive components (navbar, modals, etc.), also include:
 
 ## Component Categories
 
-### Core Components
+### Basic UI
 - **Buttons** - Primary, secondary, danger states with loading animation
 - **Input Fields** - Text inputs, textareas with focus states
 - **Cards** - Glassmorphism containers with hover effects
 - **Navbar** - Responsive navigation with mobile hamburger menu
 
 ### Form Controls
-- **Toggle Switch** - iOS-style on/off switch
-- **Checkbox** - Custom styled checkboxes
-- **Radio Buttons** - Custom styled radio inputs
-- **Select Dropdown** - Styled select elements
-- **Range Slider** - Custom range input
+- **Toggle Switch** - iOS-style on/off switch for settings
+- **Checkbox** - Custom checkboxes for selections
+- **Radio Buttons** - Single-choice option selector
+- **Select Dropdown** - Styled dropdown menus
+- **Range Slider** - Numeric value slider
+
+### Selection & Display
+- **Option Cards** - Quiz and selection interfaces with A/B/C/D labels
+- **Grid Cards** - Position/category selection in grid layout
+- **Segment Control** - iOS-style tab switcher for options
+- **List Items** - History and records display with icons/avatars
+- **Empty State** - No-data placeholders with CTAs
+- **Score Display** - Star ratings, progress bars, circular scores
+
+### Navigation
+- **Tabs** - Content organization with multiple tab styles
+- **Accordion** - Expandable FAQ and detail sections
+- **Timeline** - Progress visualization and history tracking
+
+### Feedback
+- **Toast** - Temporary notifications (success/error/info)
+- **Modal** - Centered dialogs with overlay backdrop
+- **Badge** - Notification counts and status indicators
+- **Progress Bar** - Task completion and loading states
+- **Avatar Stack** - User group display with overlap
+- **Tags/Chips** - Removable labels and filters
+- **Skeleton** - Loading placeholders with shimmer effect
 
 ### Complex Modules
-- **Chat Interface** - AI-style chat UI with message bubbles
-- **Career Map** - Horizontal scrolling gamified skill tree
-- **Resume Workshop** - Split-pane AI resume optimization UI
-
-### Feedback Components
-- **Toast** - Temporary notifications from bottom
-- **Modal** - Centered dialogs with overlay
-- **Badge** - Number badges and notification dots
-- **Progress Bar** - Horizontal progress indicators
-- **Avatar Stack** - Overlapping avatar display
-- **Tags/Chips** - Closable colored tags
-- **Skeleton** - Loading placeholders with shimmer animation
+- **Chat Interface** - AI conversation UI with typing indicator
+- **Career Map** - Gamified horizontal skill progression
+- **Resume Workshop** - AI-powered resume editor with diff view
 
 ## Key Design Tokens
 
@@ -147,21 +160,30 @@ Requires modern CSS features (CSS Grid, Variables, `backdrop-filter`). IE11 is n
 ```
 css/
 ├── base/
-│   ├── variables.css
-│   ├── reset.css
-│   ├── typography.css
-│   └── layout.css
+│   ├── variables.css      # Design tokens (colors, spacing)
+│   ├── reset.css          # Browser normalization
+│   ├── typography.css     # Text styles and scales
+│   └── layout.css         # Spacing utilities and grid
 ├── components/
-│   ├── buttons.css
-│   ├── inputs.css
-│   ├── cards.css
-│   ├── navbar.css
-│   ├── chat.css
-│   ├── map.css
-│   ├── resume.css
-│   ├── forms.css
-│   └── feedback.css
-└── style.css (main entry)
+│   ├── buttons.css        # Button variants
+│   ├── inputs.css         # Input fields
+│   ├── cards.css          # Card containers
+│   ├── navbar.css         # Navigation bar
+│   ├── forms.css          # Form controls (switch, checkbox, etc.)
+│   ├── feedback.css       # Toast, modal, badge, progress
+│   ├── options.css        # Option cards for quizzes
+│   ├── grid-cards.css     # Grid selection cards
+│   ├── segment-control.css # Tab switcher
+│   ├── list-items.css     # List and history items
+│   ├── empty-state.css    # No-data placeholders
+│   ├── score-display.css  # Ratings and metrics
+│   ├── tabs.css           # Tab navigation
+│   ├── accordion.css      # Expandable sections
+│   ├── timeline.css       # Progress timeline
+│   ├── chat.css           # Chat interface
+│   ├── map.css            # Career progression map
+│   └── resume.css         # Resume workshop
+└── style.css (main entry point)
 ```
 
 ## Examples

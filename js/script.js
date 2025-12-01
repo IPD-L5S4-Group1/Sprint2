@@ -31,6 +31,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // 3. Tabs Interaction Logic
+    const allTabGroups = document.querySelectorAll('[data-tabs]');
+    
+    allTabGroups.forEach(tabGroup => {
+        const tabButtons = tabGroup.querySelectorAll('.tab-btn');
+        const tabContents = tabGroup.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents in this group
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                const targetContent = tabGroup.querySelector(`[data-content="${targetTab}"]`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+    });
+
+    // 4. Accordion Interaction Logic
+    const allAccordions = document.querySelectorAll('[data-accordion]');
+    
+    allAccordions.forEach(accordion => {
+        const accordionItems = accordion.querySelectorAll('.accordion-item');
+        const isSingleOpen = accordion.getAttribute('data-single-open') === 'true';
+        
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            
+            header.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // If single-open mode, close all other items
+                if (isSingleOpen && !isActive) {
+                    accordionItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                }
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+    });
+
     // Future: Add logic for Career Map or Chat interactions here
     console.log('Style Library Loaded Successfully');
 });
