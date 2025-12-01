@@ -215,3 +215,46 @@ input:checked + .slider:before {
     cursor: pointer;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .checkbox-container,
+    .radio-container {
+        font-size: 14px;
+        padding-left: 28px;
+    }
+
+    .checkmark,
+    .radio-mark {
+        height: 18px;
+        width: 18px;
+    }
+
+    .checkmark:after {
+        left: 5px;
+        top: 1px;
+        width: 4px;
+        height: 9px;
+    }
+
+    .custom-select {
+        padding: 10px 36px 10px 12px;
+        font-size: 14px;
+    }
+
+    .switch {
+        width: 44px;
+        height: 24px;
+    }
+
+    .slider:before {
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+}

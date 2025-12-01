@@ -15,6 +15,44 @@
         grid-template-columns: 1fr;
         height: auto;
     }
+
+    .panel {
+        padding: 16px;
+    }
+
+    .panel-title {
+        font-size: 16px;
+    }
+
+    .upload-zone {
+        padding: 24px 16px; /* Smaller padding on mobile */
+    }
+
+    .upload-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .score-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .score-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+
+    .feedback-item {
+        padding: 12px;
+    }
+
+    .skill-tag {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
 }
 
 /* 2. Panels */
