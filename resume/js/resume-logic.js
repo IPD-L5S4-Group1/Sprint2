@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Preview PDF
     btnPreviewPdf?.addEventListener('click', () => {
+        renderResumePreview();
         showView(viewPdfPreview);
     });
 
@@ -126,10 +127,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnSaveResume?.addEventListener('click', () => {
+        saveResumeData();
         showToast('💾 Changes Saved', 1500);
         addHapticFeedback();
         setTimeout(() => {
             hideView(viewEditResume);
+            updateUIToUploadedState('My Resume');
         }, 500);
     });
 
@@ -401,12 +404,204 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * Save resume data to localStorage
+     */
+    function saveResumeData() {
+        const resumeData = {
+            name: document.getElementById('inputName')?.value || '',
+            email: document.getElementById('inputEmail')?.value || '',
+            phone: document.getElementById('inputPhone')?.value || '',
+            location: document.getElementById('inputLocation')?.value || '',
+            summary: document.getElementById('inputSummary')?.value || '',
+            school: document.getElementById('inputSchool')?.value || '',
+            degree: document.getElementById('inputDegree')?.value || '',
+            gpa: document.getElementById('inputGpa')?.value || '',
+            graduation: document.getElementById('inputGraduation')?.value || '',
+            company: document.getElementById('inputCompany')?.value || '',
+            position: document.getElementById('inputPosition')?.value || '',
+            duration: document.getElementById('inputDuration')?.value || '',
+            experience: document.getElementById('inputExperience')?.value || '',
+            projectName: document.getElementById('inputProjectName')?.value || '',
+            technologies: document.getElementById('inputTechnologies')?.value || '',
+            project: document.getElementById('inputProject')?.value || '',
+            languages: document.getElementById('inputLanguages')?.value || '',
+            tools: document.getElementById('inputTools')?.value || ''
+        };
+        
+        localStorage.setItem('resumeData', JSON.stringify(resumeData));
+    }
+
+    /**
+     * Load resume data from localStorage
+     */
+    function loadResumeData() {
+        const data = localStorage.getItem('resumeData');
+        if (data) {
+            const resumeData = JSON.parse(data);
+            document.getElementById('inputName').value = resumeData.name || '';
+            document.getElementById('inputEmail').value = resumeData.email || '';
+            document.getElementById('inputPhone').value = resumeData.phone || '';
+            document.getElementById('inputLocation').value = resumeData.location || '';
+            document.getElementById('inputSummary').value = resumeData.summary || '';
+            document.getElementById('inputSchool').value = resumeData.school || '';
+            document.getElementById('inputDegree').value = resumeData.degree || '';
+            document.getElementById('inputGpa').value = resumeData.gpa || '';
+            document.getElementById('inputGraduation').value = resumeData.graduation || '';
+            document.getElementById('inputCompany').value = resumeData.company || '';
+            document.getElementById('inputPosition').value = resumeData.position || '';
+            document.getElementById('inputDuration').value = resumeData.duration || '';
+            document.getElementById('inputExperience').value = resumeData.experience || '';
+            document.getElementById('inputProjectName').value = resumeData.projectName || '';
+            document.getElementById('inputTechnologies').value = resumeData.technologies || '';
+            document.getElementById('inputProject').value = resumeData.project || '';
+            document.getElementById('inputLanguages').value = resumeData.languages || '';
+            document.getElementById('inputTools').value = resumeData.tools || '';
+            return resumeData;
+        }
+        return null;
+    }
+
+    /**
+     * Render real resume preview
+     */
+    function renderResumePreview() {
+        const data = loadResumeData();
+        const previewContainer = document.getElementById('resumePreviewContent');
+        
+        if (!previewContainer) return;
+        
+        if (!data) {
+            previewContainer.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: #888;">
+                <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+                <div style="font-size: 15px; font-weight: 600;">No resume data yet</div>
+                <div style="font-size: 13px; margin-top: 8px;">Create a resume to see the preview</div>
+            </div>`;
+            return;
+        }
+
+        // Generate real resume HTML
+        let html = '';
+        
+        // Name Header
+        if (data.name) {
+            html += `<h1 style="font-size: 24px; font-weight: 800; margin: 0 0 4px 0; color: #1a1a1a;">${data.name}</h1>`;
+        }
+        
+        // Contact Info
+        let contactInfo = [];
+        if (data.email) contactInfo.push(data.email);
+        if (data.phone) contactInfo.push(data.phone);
+        if (data.location) contactInfo.push(data.location);
+        if (contactInfo.length > 0) {
+            html += `<p style="font-size: 12px; color: #666; margin: 0 0 20px 0;">${contactInfo.join(' • ')}</p>`;
+        }
+        
+        // Summary
+        if (data.summary) {
+            html += `<div style="margin-bottom: 20px;">
+                <h2 style="font-size: 14px; font-weight: 800; color: #667eea; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;">Summary</h2>
+                <p style="font-size: 13px; color: #333; line-height: 1.6; margin: 0;">${data.summary.replace(/\n/g, '<br>')}</p>
+            </div>`;
+        }
+        
+        // Education
+        if (data.school || data.degree) {
+            html += `<div style="margin-bottom: 20px;">
+                <h2 style="font-size: 14px; font-weight: 800; color: #667eea; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;">Education</h2>`;
+            if (data.school) {
+                html += `<div style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">${data.school}</div>`;
+            }
+            if (data.degree) {
+                html += `<div style="font-size: 13px; color: #333; margin-bottom: 4px;">${data.degree}</div>`;
+            }
+            if (data.gpa || data.graduation) {
+                let eduDetails = [];
+                if (data.gpa) eduDetails.push(`GPA: ${data.gpa}`);
+                if (data.graduation) eduDetails.push(data.graduation);
+                html += `<div style="font-size: 12px; color: #666;">${eduDetails.join(' • ')}</div>`;
+            }
+            html += `</div>`;
+        }
+        
+        // Experience
+        if (data.company || data.position) {
+            html += `<div style="margin-bottom: 20px;">
+                <h2 style="font-size: 14px; font-weight: 800; color: #667eea; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;">Experience</h2>`;
+            if (data.position) {
+                html += `<div style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">${data.position}</div>`;
+            }
+            if (data.company) {
+                html += `<div style="font-size: 13px; color: #333; margin-bottom: 4px;">${data.company}</div>`;
+            }
+            if (data.duration) {
+                html += `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">${data.duration}</div>`;
+            }
+            if (data.experience) {
+                html += `<div style="font-size: 13px; color: #333; line-height: 1.6;">${data.experience.replace(/\n/g, '<br>')}</div>`;
+            }
+            html += `</div>`;
+        }
+        
+        // Projects
+        if (data.projectName || data.project) {
+            html += `<div style="margin-bottom: 20px;">
+                <h2 style="font-size: 14px; font-weight: 800; color: #667eea; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;">Projects</h2>`;
+            if (data.projectName) {
+                html += `<div style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">${data.projectName}</div>`;
+            }
+            if (data.technologies) {
+                html += `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">Technologies: ${data.technologies}</div>`;
+            }
+            if (data.project) {
+                html += `<div style="font-size: 13px; color: #333; line-height: 1.6;">${data.project.replace(/\n/g, '<br>')}</div>`;
+            }
+            html += `</div>`;
+        }
+        
+        // Skills
+        if (data.languages || data.tools) {
+            html += `<div style="margin-bottom: 20px;">
+                <h2 style="font-size: 14px; font-weight: 800; color: #667eea; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 1px;">Skills</h2>`;
+            if (data.languages) {
+                html += `<div style="font-size: 13px; color: #333; margin-bottom: 6px;"><strong>Languages:</strong> ${data.languages}</div>`;
+            }
+            if (data.tools) {
+                html += `<div style="font-size: 13px; color: #333;"><strong>Tools & Frameworks:</strong> ${data.tools}</div>`;
+            }
+            html += `</div>`;
+        }
+        
+        // If no data at all, show placeholder
+        if (!html) {
+            html = `<div style="text-align: center; padding: 40px 20px; color: #888;">
+                <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+                <div style="font-size: 15px; font-weight: 600;">No resume data yet</div>
+                <div style="font-size: 13px; margin-top: 8px;">Create a resume to see the preview</div>
+            </div>`;
+        }
+        
+        previewContainer.innerHTML = html;
+    }
+
     // ========================================
     // 4. INITIALIZATION
     // ========================================
 
     console.log('✅ Resume Center loaded successfully');
     console.log('📱 Device: iPhone 17 Pro Max (430 x 932)');
+    
+    // Load saved resume data when opening edit view
+    btnEditResume?.addEventListener('click', () => {
+        loadResumeData();
+    });
+    
+    // Load data when using template
+    actionTemplate?.addEventListener('click', () => {
+        setTimeout(() => {
+            loadResumeData();
+        }, 100);
+    });
     
     // Add smooth scroll behavior
     document.querySelector('.app-content')?.addEventListener('scroll', () => {
