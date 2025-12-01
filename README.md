@@ -2,6 +2,22 @@
 
 A complete design system for building modern web applications. Built with glassmorphism effects, responsive layouts, and 40+ production-ready components.
 
+## 🎉 Latest Update (v2.0)
+
+**Updated: December 1, 2025**
+
+Style Library has been enhanced based on the modern design patterns from our Resume Center prototype! 
+
+**What's New:**
+- ✨ **Premium & Ghost Buttons** - New button styles perfect for gradient backgrounds
+- 🎨 **Enhanced Gradients** - Beautiful purple and gold gradient variables
+- 📊 **Animated Score Bars** - Smooth progress animations with gradient fills
+- 📝 **Form Sections** - Mobile-optimized form components with enhanced styling
+- 🎯 **Larger Border Radius** - More modern 20px-24px rounded corners
+- 💎 **Improved Shadows** - Better depth and elevation effects
+
+👉 See [UPDATES.md](UPDATES.md) for detailed changelog.
+
 ## Features
 
 - **Zero config** - link CSS and start building
@@ -40,9 +56,9 @@ For interactive components (navbar, modals, etc.), also include:
 ## Component Categories
 
 ### Basic UI
-- **Buttons** - Primary, secondary, danger states with loading animation
+- **Buttons** - Primary, secondary, danger, premium, ghost states with loading animation
 - **Input Fields** - Text inputs, textareas with focus states
-- **Cards** - Glassmorphism containers with hover effects
+- **Cards** - Glassmorphism containers with hover effects (enhanced with larger radius)
 - **Navbar** - Responsive navigation with mobile hamburger menu
 
 ### Form Controls
@@ -51,6 +67,8 @@ For interactive components (navbar, modals, etc.), also include:
 - **Radio Buttons** - Single-choice option selector
 - **Select Dropdown** - Styled dropdown menus
 - **Range Slider** - Numeric value slider
+- **Form Sections** - NEW! Mobile-optimized form groups with styled fields
+- **Form Fields** - NEW! Enhanced input and textarea with uppercase labels
 
 ### Selection & Display
 - **Option Cards** - Quiz and selection interfaces with A/B/C/D labels
@@ -58,7 +76,7 @@ For interactive components (navbar, modals, etc.), also include:
 - **Segment Control** - iOS-style tab switcher for options
 - **List Items** - History and records display with icons/avatars
 - **Empty State** - No-data placeholders with CTAs
-- **Score Display** - Star ratings, progress bars, circular scores
+- **Score Display** - Star ratings, progress bars, circular scores, animated score bars (NEW!)
 
 ### Navigation
 - **Tabs** - Content organization with multiple tab styles
