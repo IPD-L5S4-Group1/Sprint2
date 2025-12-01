@@ -1,0 +1,152 @@
+/* ===================================
+   MOBILE SIMULATOR FRAME
+   iPhone 17 Pro Max (430 x 932px)
+   =================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 40px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+/* iPhone 17 Pro Max Dimensions */
+.mobile-wrapper {
+    width: 430px;
+    height: 932px;
+    background: var(--bg-body);
+    border-radius: 55px;
+    box-shadow: 
+        0 0 0 14px #1a1a1a,
+        0 0 0 16px #3a3a3a,
+        0 40px 80px rgba(0,0,0,0.6);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dynamic Island Simulation */
+.dynamic-island {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 125px;
+    height: 37px;
+    background: #000;
+    border-radius: 25px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Decorative Orbs */
+.mobile-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.orb-1 {
+    top: -100px; 
+    left: -100px; 
+    width: 400px; 
+    height: 400px;
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    animation: float 25s infinite alternate;
+}
+
+.orb-2 {
+    bottom: -100px; 
+    right: -100px; 
+    width: 350px; 
+    height: 350px;
+    background: linear-gradient(135deg, #CDDAFD 0%, #DDA0DD 100%);
+    animation: float 20s infinite alternate-reverse;
+}
+
+/* ===================================
+   STATUS BAR
+   =================================== */
+.status-bar {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 30px 8px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.status-icons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 16px;
+}
+
+/* ===================================
+   ANIMATIONS
+   =================================== */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ===================================
+   RESPONSIVE (For smaller screens)
+   =================================== */
+@media (max-height: 1000px) {
+    .mobile-wrapper {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-height: 850px) {
+    body {
+        padding: 20px 10px;
+    }
+    
+    .mobile-wrapper {
+        transform: scale(0.8);
+    }
+}
+

@@ -1,0 +1,437 @@
+/* ===================================
+   RESUME CENTER - CUSTOM STYLES
+   Mobile-First Design
+   =================================== */
+
+/* ===================================
+   MAIN CONTENT AREA
+   =================================== */
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 80px 24px 120px 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.app-content::-webkit-scrollbar { 
+    display: none; 
+}
+
+/* ===================================
+   PAGE HEADER
+   =================================== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.page-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.points-badge {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+/* ===================================
+   HERO CARD
+   =================================== */
+.hero-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 32px !important;
+    border-radius: 24px !important;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4) !important;
+    margin-bottom: 32px;
+}
+
+.hero-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+.hero-card * {
+    color: white !important;
+    position: relative;
+    z-index: 1;
+}
+
+.score-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.score-number {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.score-badge {
+    width: 72px;
+    height: 72px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+/* ===================================
+   PREMIUM BUTTONS
+   =================================== */
+.btn-premium {
+    background: white !important;
+    color: #667eea !important;
+    border: none !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 14px 24px !important;
+    border-radius: 16px !important;
+    min-height: 52px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+}
+
+.btn-premium:active {
+    transform: scale(0.97);
+}
+
+.btn-ghost {
+    background: rgba(255,255,255,0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    color: white !important;
+}
+
+/* ===================================
+   DOCUMENT CARDS
+   =================================== */
+.doc-card {
+    min-width: 160px;
+    height: 200px;
+    background: white;
+    border: 3px solid #667eea;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.doc-card:active {
+    transform: scale(0.95);
+}
+
+.doc-icon {
+    font-size: 48px;
+    color: #667eea;
+}
+
+.add-doc-card {
+    min-width: 160px;
+    height: 200px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+    border: 3px dashed rgba(102, 126, 234, 0.3);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.add-doc-card:hover {
+    border-color: #667eea;
+    background: rgba(255,255,255,1);
+}
+
+.add-icon-circle {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+}
+
+/* ===================================
+   SUGGESTION CARDS
+   =================================== */
+.suggestion-card {
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.suggestion-card:active {
+    transform: scale(0.98);
+}
+
+.suggestion-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.suggestion-icon.priority-high {
+    background: linear-gradient(135deg, #FFE5E5, #FFB3B3);
+}
+
+.suggestion-icon.priority-medium {
+    background: linear-gradient(135deg, #FFF9E6, #FFE5B3);
+}
+
+.suggestion-icon.priority-low {
+    background: linear-gradient(135deg, #E8F4FD, #CDDAFD);
+}
+
+/* ===================================
+   BOTTOM TAB BAR
+   =================================== */
+.tab-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 95px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(30px);
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 12px 8px 8px 8px;
+    z-index: 90;
+}
+
+.tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #888;
+    font-size: 11px;
+    font-weight: 600;
+    gap: 6px;
+    min-width: 60px;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.tab-item i {
+    font-size: 26px;
+}
+
+.tab-item.active {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* ===================================
+   MODAL & OVERLAYS
+   =================================== */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    width: 90%;
+    max-width: 340px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    font-size: 22px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.modal-body {
+    text-align: center;
+    color: #666;
+    margin-bottom: 24px;
+    font-size: 15px;
+}
+
+.option-card {
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+    border: 2px solid #e8ecff;
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+}
+
+.option-card:active {
+    transform: scale(0.97);
+    border-color: #667eea;
+}
+
+.option-label {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* ===================================
+   FULL SCREEN VIEWS
+   =================================== */
+.full-screen-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-body);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+}
+
+.view-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+}
+
+/* Loading Animation */
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* ===================================
+   UTILITY CLASSES
+   =================================== */
+.hidden { 
+    display: none !important; 
+}
+
+.h-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.h-scroll::-webkit-scrollbar { 
+    display: none; 
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+/* ===================================
+   TOAST NOTIFICATION
+   =================================== */
+.toast {
+    position: absolute;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
+}
+

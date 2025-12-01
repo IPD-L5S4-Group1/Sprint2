@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Resume Center - Mobile Prototype</title>
+    
+    <!-- Style Library Base -->
+    <link rel="stylesheet" href="Style_Library/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ===================================
+           MOBILE SIMULATOR FRAME
+           =================================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+        }
+
+        /* iPhone 17 Pro Max Dimensions */
+        .mobile-wrapper {
+            width: 430px;
+            height: 932px;
+            background: var(--bg-body);
+            border-radius: 55px;
+            box-shadow: 
+                0 0 0 14px #1a1a1a,
+                0 0 0 16px #3a3a3a,
+                0 40px 80px rgba(0,0,0,0.6);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dynamic Island Simulation */
+        .dynamic-island {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 125px;
+            height: 37px;
+            background: #000;
+            border-radius: 25px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Decorative Orbs */
+        .mobile-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .orb-1 {
+            top: -100px; 
+            left: -100px; 
+            width: 400px; 
+            height: 400px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            animation: float 25s infinite alternate;
+        }
+        .orb-2 {
+            bottom: -100px; 
+            right: -100px; 
+            width: 350px; 
+            height: 350px;
+            background: linear-gradient(135deg, #CDDAFD 0%, #DDA0DD 100%);
+            animation: float 20s infinite alternate-reverse;
+        }
+
+        /* ===================================
+           STATUS BAR
+           =================================== */
+        .status-bar {
+            height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 30px 8px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        /* ===================================
+           MAIN CONTENT AREA
+           =================================== */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 80px 24px 120px 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .app-content::-webkit-scrollbar { 
+            display: none; 
+        }
+
+        /* ===================================
+           ENHANCED COMPONENTS
+           =================================== */
+        
+        /* Header Section */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .points-badge {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Hero Card Enhancement */
+        .hero-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            border: none !important;
+            padding: 32px !important;
+            border-radius: 24px !important;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4) !important;
+            margin-bottom: 32px;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .hero-card * {
+            color: white !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .score-number {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .score-badge {
+            width: 72px;
+            height: 72px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* Premium Buttons */
+        .btn-premium {
+            background: white !important;
+            color: #667eea !important;
+            border: none !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+            padding: 14px 24px !important;
+            border-radius: 16px !important;
+            min-height: 52px !important;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .btn-premium:active {
+            transform: scale(0.97);
+        }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.15) !important;
+            backdrop-filter: blur(10px) !important;
+            border: 2px solid rgba(255,255,255,0.3) !important;
+            color: white !important;
+        }
+
+        /* Document Cards */
+        .doc-card {
+            min-width: 160px;
+            height: 200px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .doc-card:active {
+            transform: scale(0.95);
+        }
+
+        .doc-icon {
+            font-size: 48px;
+            color: #667eea;
+        }
+
+        .add-doc-card {
+            min-width: 160px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+            border: 3px dashed rgba(102, 126, 234, 0.3);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-doc-card:hover {
+            border-color: #667eea;
+            background: rgba(255,255,255,1);
+        }
+
+        .add-icon-circle {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Suggestion Cards */
+        .suggestion-card {
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            transition: all 0.2s;
+        }
+
+        .suggestion-card:active {
+            transform: scale(0.98);
+        }
+
+        .suggestion-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .suggestion-icon.priority-high {
+            background: linear-gradient(135deg, #FFE5E5, #FFB3B3);
+        }
+
+        .suggestion-icon.priority-medium {
+            background: linear-gradient(135deg, #FFF9E6, #FFE5B3);
+        }
+
+        .suggestion-icon.priority-low {
+            background: linear-gradient(135deg, #E8F4FD, #CDDAFD);
+        }
+
+        /* ===================================
+           BOTTOM TAB BAR
+           =================================== */
+        .tab-bar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 95px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            border-top: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 12px 8px 8px 8px;
+            z-index: 90;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #888;
+            font-size: 11px;
+            font-weight: 600;
+            gap: 6px;
+            min-width: 60px;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .tab-item i {
+            font-size: 26px;
+        }
+
+        .tab-item.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        /* ===================================
+           MODAL & OVERLAYS
+           =================================== */
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            width: 90%;
+            max-width: 340px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-size: 22px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .modal-body {
+            text-align: center;
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .option-card {
+            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+            border: 2px solid #e8ecff;
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .option-card:active {
+            transform: scale(0.97);
+            border-color: #667eea;
+        }
+
+        .option-label {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        /* ===================================
+           FULL SCREEN VIEWS
+           =================================== */
+        .full-screen-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-body);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .view-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 32px;
+        }
+
+        /* Loading Animation */
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Utility Classes */
+        .hidden { display: none !important; }
+        .h-scroll {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            margin: 0 -24px;
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+        .h-scroll::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+
+<body>
+    <div class="mobile-wrapper">
+        <!-- Dynamic Island -->
+        <div class="dynamic-island"></div>
+
+        <!-- Decorative Orbs -->
+        <div class="mobile-orb orb-1"></div>
+        <div class="mobile-orb orb-2"></div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="app-content" id="viewMain">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Resume</h1>
+                <div class="points-badge">
+                    <i class="fas fa-star"></i> 2,380
+                </div>
+            </div>
+
+            <!-- Hero Card -->
+            <div class="hero-card">
+                <!-- Default State (No Resume) -->
+                <div id="headerDefaultContent" class="text-center">
+                    <div style="font-size: 64px; margin-bottom: 16px;">📄</div>
+                    <h2 style="font-size: 28px; font-weight: 800; margin: 0 0 8px 0;">No Resume Yet</h2>
+                    <p style="font-size: 16px; opacity: 0.9;">Create one to unlock AI-powered insights</p>
+                </div>
+
+                <!-- Uploaded State (With Score) -->
+                <div id="headerUploadedContent" class="hidden">
+                    <div class="score-display">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; letter-spacing: 1px; opacity: 0.8; margin-bottom: 8px;">YOUR SCORE</div>
+                            <div style="display: flex; align-items: baseline; gap: 4px;">
+                                <span id="mainScoreText" class="score-number">0</span>
+                                <span style="font-size: 24px; opacity: 0.7;">/100</span>
+                            </div>
+                        </div>
+                        <div class="score-badge">
+                            <span style="font-size: 32px;">-</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <span id="lastUpdateText" style="font-size: 12px; opacity: 0.7; font-weight: 600;">NEVER ANALYZED</span>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button id="btnAiDiagnosis" class="btn-premium" style="flex: 1;">
+                            <i class="fas fa-sparkles"></i> AI Analyze
+                        </button>
+                        <button id="btnPreviewPdf" class="btn-ghost" style="flex: 1;">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Documents Section -->
+            <div style="margin-bottom: 40px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="font-size: 22px; font-weight: 800; margin: 0;">My Documents</h3>
+                    <i class="fas fa-cog" style="color: #888; font-size: 20px;"></i>
+                </div>
+
+                <div class="h-scroll">
+                    <!-- Uploaded File Card (Hidden by default) -->
+                    <div id="uploadedFileItem" class="doc-card hidden">
+                        <div style="display: flex; justify-content: space-between;">
+                            <i class="fas fa-file-pdf doc-icon"></i>
+                            <i class="fas fa-ellipsis-v" style="color: #ccc;"></i>
+                        </div>
+                        <div>
+                            <div id="uploadedFileName" style="font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #1a1a1a;">Resume.pdf</div>
+                            <div style="font-size: 13px; color: #888;">Just now</div>
+                        </div>
+                    </div>
+
+                    <!-- Add New Resume Card -->
+                    <div id="addResumeBtn" class="add-doc-card">
+                        <div class="add-icon-circle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <span style="font-weight: 700; font-size: 15px; color: #667eea;">New Resume</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggestions Section -->
+            <div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <h3 style="font-size: 22px; font-weight: 800; margin: 0;">Suggestions</h3>
+                    <span id="suggestionCount" class="badge hidden" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 700;">5</span>
+                </div>
+
+                <!-- Empty State -->
+                <div id="suggestionsEmpty" style="text-align: center; padding: 60px 20px; background: white; border-radius: 20px;">
+                    <div style="font-size: 56px; margin-bottom: 16px;">💡</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;">No Suggestions Yet</div>
+                    <div style="font-size: 14px; color: #888;">Run AI analysis to get personalized feedback</div>
+                </div>
+
+                <!-- Suggestions List (Hidden by default) -->
+                <div id="suggestionsList" class="hidden"></div>
+            </div>
+        </div>
+
+        <!-- Modal: New Resume Options -->
+        <div id="modalOverlay" class="modal-overlay hidden">
+            <div class="modal">
+                <div class="modal-header">Create New Resume</div>
+                <div class="modal-body">Choose how you'd like to get started</div>
+
+                <div id="actionTemplate" class="option-card">
+                    <span class="option-label">A</span>
+                    <div style="flex: 1;">
+                        <div style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Use Template</div>
+                        <div style="font-size: 13px; color: #888;">Start with pre-made design</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                </div>
+
+                <div id="actionUploadPdf" class="option-card">
+                    <span class="option-label">B</span>
+                    <div style="flex: 1;">
+                        <div style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Upload PDF</div>
+                        <div style="font-size: 13px; color: #888;">Import existing resume</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                </div>
+
+                <button id="actionCancel" class="btn btn-secondary w-100" style="margin-top: 16px; border-radius: 16px; min-height: 48px; font-weight: 600;">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Loading View: Upload -->
+        <div id="viewUploadLoading" class="full-screen-view hidden">
+            <div class="view-center">
+                <div class="spinner" style="margin-bottom: 24px;"></div>
+                <h3 style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;">Uploading PDF...</h3>
+                <p style="font-size: 14px; color: #888;">Parsing your resume content</p>
+            </div>
+        </div>
+
+        <!-- Loading View: AI Analysis -->
+        <div id="viewLoading" class="full-screen-view hidden">
+            <div class="view-center">
+                <div style="background: white; border-radius: 24px; padding: 40px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                    <div style="font-size: 72px; margin-bottom: 24px; animation: float 2s infinite; text-align: center;">🤖</div>
+                    <h2 style="font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 24px; color: #1a1a1a;">Analyzing Resume...</h2>
+                    
+                    <div style="background: #f3f4f6; border-radius: 12px; height: 12px; overflow: hidden; margin-bottom: 16px;">
+                        <div id="progressBar" style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between;">
+                        <span id="loadingText" style="font-size: 13px; color: #888; font-weight: 600;">Initializing...</span>
+                        <span id="progressPercent" style="font-size: 13px; color: #667eea; font-weight: 700;">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Analysis Report -->
+        <div id="viewReport" class="full-screen-view hidden">
+            <div style="background: white; padding: 20px 24px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center;">
+                <i class="fas fa-times" id="btnCloseReport" style="font-size: 24px; cursor: pointer; color: #1a1a1a;"></i>
+                <span style="font-size: 18px; font-weight: 800;">Analysis Report</span>
+                <i class="fas fa-share-alt" style="font-size: 20px; color: #667eea;"></i>
+            </div>
+
+            <div style="padding: 24px; overflow-y: auto; flex: 1;">
+                <!-- Score Summary -->
+                <div style="text-align: center; margin-bottom: 32px;">
+                    <div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: 900; margin: 0 auto 16px; box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);">72</div>
+                    <h3 style="font-size: 24px; font-weight: 800; margin: 0 0 8px 0; color: #1a1a1a;">Good Start!</h3>
+                    <p style="font-size: 15px; color: #888; line-height: 1.6;">Your resume has a solid foundation but could use more quantifiable achievements.</p>
+                </div>
+
+                <!-- Details Card -->
+                <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
+                    <h4 style="font-size: 18px; font-weight: 800; margin: 0 0 16px 0; color: #00B894;">✓ Highlights</h4>
+                    <p style="font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 24px;">Strong educational background with impressive GPA and relevant coursework.</p>
+                    
+                    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+
+                    <h4 style="font-size: 18px; font-weight: 800; margin: 0 0 16px 0; color: #FF6B6B;">⚠ Improvements</h4>
+                    <p style="font-size: 15px; color: #555; line-height: 1.6;">Add more specific technical skills and certifications to match job requirements.</p>
+                </div>
+
+                <button id="btnReturnToMain" class="btn-premium w-100" style="margin-top: 24px;">Got It!</button>
+            </div>
+        </div>
+
+        <!-- View: PDF Preview -->
+        <div id="viewPdfPreview" class="full-screen-view hidden">
+            <div style="background: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <i class="fas fa-times" id="btnClosePreview" style="font-size: 24px; cursor: pointer;"></i>
+                <span style="font-weight: 700;">Resume Preview</span>
+                <span id="btnEditResume" style="color: #667eea; font-weight: 700; cursor: pointer;">Edit</span>
+            </div>
+            <div style="flex: 1; background: #525659; display: flex; justify-content: center; padding: 20px;">
+                <div style="width: 100%; max-width: 360px; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.5); padding: 32px; overflow-y: auto; border-radius: 8px;">
+                    <!-- PDF Mock Content -->
+                    <div style="height: 14px; width: 70%; background: #1a1a1a; margin-bottom: 24px; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 100%; background: #e5e7eb; margin-bottom: 10px; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 100%; background: #e5e7eb; margin-bottom: 10px; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 85%; background: #e5e7eb; margin-bottom: 32px; border-radius: 4px;"></div>
+                    <div style="height: 12px; width: 50%; background: #1a1a1a; margin-bottom: 16px; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 100%; background: #e5e7eb; margin-bottom: 10px; border-radius: 4px;"></div>
+                    <div style="height: 10px; width: 90%; background: #e5e7eb; margin-bottom: 10px; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Edit Resume -->
+        <div id="viewEditResume" class="full-screen-view hidden" style="background: #f5f5f7;">
+            <div style="background: white; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <span id="btnCloseEdit" style="color: #FF6B6B; font-weight: 700; cursor: pointer;">Cancel</span>
+                <span style="font-weight: 700;">Edit Resume</span>
+                <span id="btnSaveResume" style="color: #667eea; font-weight: 700; cursor: pointer;">Save</span>
+            </div>
+            <div style="padding: 24px; overflow-y: auto;">
+                <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px;">
+                    <label style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px; display: block;">FULL NAME</label>
+                    <input type="text" value="Student Name" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 600;">
+                </div>
+                <div style="background: white; border-radius: 16px; padding: 20px;">
+                    <label style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px; display: block;">SUMMARY</label>
+                    <textarea rows="5" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 12px; padding: 14px; font-size: 15px; line-height: 1.6; resize: none;">Motivated student seeking opportunities in software development...</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="hidden" style="position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: white; padding: 16px 24px; border-radius: 16px; font-weight: 600; font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000;"></div>
+
+        <!-- Bottom Tab Bar -->
+        <div class="tab-bar">
+            <a href="#" class="tab-item">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Quiz</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Map</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-comment-dots"></i>
+                <span>Chat</span>
+            </a>
+            <a href="#" class="tab-item active">
+                <i class="fas fa-file-alt"></i>
+                <span>Resume</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-video"></i>
+                <span>Interview</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- File Input (Hidden) -->
+    <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+
+    <!-- JavaScript -->
+    <script src="resume_logic.js"></script>
+</body>
+</html>

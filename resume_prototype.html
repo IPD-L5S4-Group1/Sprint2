@@ -1,438 +1,447 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简历中心 - Resume Workshop (Mobile Prototype)</title>
-    <!-- Link to Style Library -->
+    <title>Resume Center - Mobile Prototype</title>
     <link rel="stylesheet" href="Style_Library/css/style.css">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* --- Mobile Simulator Styles (Keep specific to prototype) --- */
+        /* --- Simulator Layout (Desktop wrapper) --- */
         body {
-            background-color: #f0f2f5;
-            /* Desktop background */
+            /* Use a dark neutral backdrop to make the phone pop */
+            background-color: #1a1a1a; 
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            font-family: 'Inter', sans-serif;
         }
 
+        /* --- The Phone Container --- */
         .mobile-wrapper {
             width: 375px;
-            /* Standard Mobile Width */
             height: 812px;
-            /* iPhone X/11/12/13 Height */
-            background-color: #ffffff;
+            /* Apply the Style Library's Body Background HERE */
+            background: var(--bg-body); 
             border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            /* Clip content to rounded corners */
+            box-shadow: 0 0 0 12px #000, 0 20px 50px rgba(0,0,0,0.5); /* Phone bezel */
+            overflow: hidden; /* Clips content strictly to phone shape */
             position: relative;
-            border: 12px solid #1a1a1a;
-            /* Phone Bezel */
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Status Bar Area (Simulation) */
+        /* --- Inject Style Library Orbs INSIDE the phone for the look --- */
+        .mobile-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .orb-1 {
+            top: -50px; left: -50px; width: 300px; height: 300px;
+            background: linear-gradient(to right, #a8edea 0%, #fed6e3 100%);
+            animation: float 20s infinite alternate;
+        }
+        .orb-2 {
+            bottom: -50px; right: -50px; width: 250px; height: 250px;
+            background: #CDDAFD;
+            animation: float 15s infinite alternate-reverse;
+        }
+
+        /* --- Status Bar --- */
         .status-bar {
             height: 44px;
             width: 100%;
-            background: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 24px;
             font-size: 14px;
             font-weight: 600;
-            color: #1a1a1a;
+            color: var(--text-main);
             position: absolute;
             top: 0;
             left: 0;
             z-index: 100;
         }
 
-        /* Main Content Scrollable Area */
+        /* --- Main Scroll Area --- */
         .app-content {
             flex: 1;
             overflow-y: auto;
-            padding-top: 50px;
-            /* Space for Status Bar */
-            padding-bottom: 80px;
-            /* Space for Tab Bar */
-            background-color: #fff;
-            /* App Background */
+            overflow-x: hidden;
+            padding-top: 60px;
+            padding-bottom: 100px;
+            /* GLOBAL PADDING FIX: Ensure cards don't touch edges */
+            padding-left: 24px;
+            padding-right: 24px;
+            position: relative;
+            z-index: 1; /* Above orbs */
         }
+        .app-content::-webkit-scrollbar { display: none; }
 
-        /* Hide Scrollbar for sleek look */
-        .app-content::-webkit-scrollbar {
-            display: none;
+        /* --- Overrides to match Style Library accurately --- */
+        
+        /* 1. Header Card Specifics */
+        .hero-card {
+            /* Force primary gradient from variables */
+            background: var(--primary-gradient) !important;
+            color: white !important;
+            border: none !important;
+            /* Disable the default card hover lift for the header */
+            transform: none !important; 
+            box-shadow: var(--shadow-lg) !important;
         }
+        /* Ensure text inside hero is white */
+        .hero-card .text-h2, 
+        .hero-card .text-caption, 
+        .hero-card .text-h1 { color: white !important; }
 
-        /* --- Custom Overrides for Prototype Specifics --- */
-        /* Gradient Header Card (Custom as library might not have specific gradient) */
-        .card-resume-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-        }
-
-        /* Full Screen View Overlay */
+        /* 2. Full Screen Views (Loading/Result) */
         .full-screen-view {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body); /* Consistency */
             z-index: 200;
-            /* Above everything */
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+        }
+        
+        /* Center content helper */
+        .view-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
         }
 
-        /* Tab Bar (Fixed) - Using Library styles where possible but fixed positioning is custom */
+        /* 3. Modal Fix (Centering inside phone) */
+        .modal-overlay {
+            position: absolute; /* Relative to mobile-wrapper, not window */
+            z-index: 999;
+            backdrop-filter: blur(8px); /* Enhance glass feel */
+            background: rgba(0,0,0,0.4);
+        }
+
+        /* 4. Tab Bar (Glassmorphism) */
         .tab-bar {
-            height: 70px;
-            background: white;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
             position: absolute;
             bottom: 0;
             width: 100%;
-            padding-bottom: 10px;
-            /* Home Indicator Space */
+            height: 85px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.5);
+            display: flex;
+            justify-content: space-around;
+            padding-top: 16px;
             z-index: 90;
         }
-
+        
         .tab-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #999;
-            font-size: 10px;
-            gap: 4px;
             text-decoration: none;
+            color: var(--text-light);
+            font-size: 11px;
+            gap: 6px;
         }
+        
+        .tab-item.active { color: var(--primary-color); }
+        .tab-item i { font-size: 22px; }
 
-        .tab-item.active {
-            color: var(--primary-color, #667eea);
+        /* 5. Horizontal Scroll List */
+        .h-scroll-container {
+            /* Negative margin to counteract padding, allowing full-width scroll */
+            margin-left: -24px;
+            margin-right: -24px;
+            padding-left: 24px;
+            padding-right: 24px;
+            overflow-x: auto;
+            display: flex;
+            gap: 16px;
+            padding-bottom: 20px; /* Space for shadow */
+            -webkit-overflow-scrolling: touch;
         }
+        .h-scroll-container::-webkit-scrollbar { display: none; }
 
-        .tab-item i {
-            font-size: 20px;
-        }
+        /* Animation */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        /* Spin Animation for loader */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 
 <body>
 
-    <!-- Mobile Device Frame -->
     <div class="mobile-wrapper">
+        
+        <div class="mobile-orb orb-1"></div>
+        <div class="mobile-orb orb-2"></div>
 
-        <!-- Status Bar -->
         <div class="status-bar">
             <span>9:41</span>
-            <div class="d-flex gap-sm">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-full"></i>
+            <div style="background: rgba(0,0,0,0.05); padding: 6px 12px; border-radius: 20px;">
+                <i class="fas fa-ellipsis-h" style="font-size: 12px;"></i>
             </div>
         </div>
 
-        <!-- View 1: Main App Content (Resume Center) -->
         <div class="app-content" id="viewMain">
-
-            <!-- Header Title -->
-            <div class="d-flex justify-between align-center mt-md mb-md" style="padding: 0 16px;">
-                <h2 class="text-h2" style="font-size: 24px;">简历中心</h2>
-                <div class="badge"
-                    style="background: #fff8e1; color: #f57f17; display: flex; align-items: center; gap: 4px;">
-                    <i class="fas fa-coins"></i> 2,380
-                    <img src="https://ui-avatars.com/api/?name=Kira&background=random&size=20&rounded=true" alt="avatar"
-                        style="border-radius: 50%; margin-left: 4px;">
+            
+            <div class="d-flex justify-between align-center mb-lg">
+                <h1 class="text-h2" style="margin:0;">Resume</h1>
+                <div class="chip" style="background: rgba(255,255,255,0.5);">
+                    <span>积分 2,380</span>
                 </div>
             </div>
 
-            <!-- 1. Top Section: Resume Header -->
-            <div class="card card-resume-header mb-lg mx-md" id="headerCard"
-                style="min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-                <div id="headerDefaultContent">
-                    <i class="fas fa-file-invoice" style="font-size: 40px; margin-bottom: 12px; opacity: 0.9;"></i>
-                    <h3 class="text-h3" style="color: white; font-size: 16px;">还没有简历，快去创建一个吧</h3>
+            <div class="card hero-card p-lg mb-xl">
+                <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+                
+                <div id="headerDefaultContent" class="text-center">
+                    <div style="font-size: 40px; margin-bottom: 12px;">📄</div>
+                    <h3 class="text-h3" style="color: white; margin-bottom: 4px;">No Resume</h3>
+                    <p class="text-body" style="color: rgba(255,255,255,0.8); font-size: 14px;">Create one to get AI analysis</p>
                 </div>
 
-                <!-- Dynamic Content (Hidden by default) -->
-                <div id="headerUploadedContent" class="hidden w-100 h-100 d-flex flex-column justify-between text-left"
-                    style="width: 100%; padding: 0;">
-                    <div>
-                        <div class="text-caption" style="color: rgba(255,255,255,0.8);">简历评分</div>
-                        <div class="d-flex align-center justify-between">
-                            <span id="mainScoreText" style="font-size: 48px; font-weight: 700;">0</span>
-                            <div id="mainScoreBadge"
-                                style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">
-                                未评分</div>
+                <div id="headerUploadedContent" class="hidden w-100">
+                    <div class="d-flex justify-between align-start mb-md">
+                        <div>
+                            <div class="text-caption" style="color: rgba(255,255,255,0.7);">RESUME SCORE</div>
+                            <div class="d-flex align-baseline gap-sm">
+                                <span id="mainScoreText" style="font-size: 56px; font-weight: 800;">0</span>
+                                <span style="font-size: 18px; opacity: 0.8;">/100</span>
+                            </div>
+                        </div>
+                        <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 24px;">
+                            -
                         </div>
                     </div>
-                    <div class="d-flex justify-end gap-sm mt-auto" style="width: 100%;">
-                        <button id="btnAiDiagnosis" class="btn btn-sm"
-                            style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white;">AI
-                            诊断</button>
-                        <button id="btnPreviewPdf" class="btn btn-sm"
-                            style="background: white; color: var(--primary-color);">预览 PDF</button>
+                    
+                    <div class="d-flex justify-between align-center">
+                        <span class="text-caption" style="color: rgba(255,255,255,0.6);" id="lastUpdateText">UPDATED: NEVER</span>
+                        <div class="d-flex gap-sm">
+                            <button id="btnAiDiagnosis" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white;">
+                                ⚡ Analyze
+                            </button>
+                            <button id="btnPreviewPdf" class="btn btn-secondary btn-sm" style="background: white; color: var(--primary-color);">
+                                Preview
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. Middle Section: My Resume -->
             <div class="mb-xl">
-                <div class="d-flex justify-between align-center mx-md mb-sm">
-                    <span class="text-h3" style="font-size: 18px;">我的简历</span>
-                    <i class="fas fa-cog" style="color: #ccc; font-size: 14px;"></i>
+                <div class="d-flex justify-between align-center mb-md">
+                    <h3 class="text-h3" style="margin:0;">My Documents</h3>
+                    <i class="fas fa-cog text-light"></i>
                 </div>
 
-                <!-- Add Resume Button (Dashed Card) -->
-                <div class="card mx-md d-flex flex-column justify-center align-center" id="addResumeBtn"
-                    style="height: 160px; border: 2px dashed #e0e0e0; background: #f8f9fa; cursor: pointer;">
-                    <i class="fas fa-plus" style="font-size: 32px; color: #a0a0a0; margin-bottom: 8px;"></i>
-                    <span class="text-body" style="color: var(--primary-color); font-weight: 500;">新建简历</span>
-                </div>
-
-                <!-- Uploaded File Item (Hidden by default) -->
-                <div id="uploadedFileItem" class="hidden card mx-md d-flex align-center p-md">
-                    <i class="fas fa-file-pdf"
-                        style="font-size: 24px; color: var(--danger-color); margin-right: 12px;"></i>
-                    <div style="flex: 1;">
-                        <div class="text-body" style="font-weight: 600;">Resume_V1.pdf</div>
-                        <div class="text-caption">最近更新</div>
+                <div class="h-scroll-container">
+                    <div id="uploadedFileItem" class="hidden card p-md" style="min-width: 140px; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--primary-color);">
+                        <div class="d-flex justify-between">
+                            <i class="fas fa-file-pdf" style="font-size: 24px; color: var(--primary-color);"></i>
+                            <i class="fas fa-ellipsis-v text-light"></i>
+                        </div>
+                        <div>
+                            <div class="text-body-bold" style="font-size: 14px; margin-bottom: 4px;" id="uploadedFileName">Resume.pdf</div>
+                            <div class="text-caption">Just Now</div>
+                        </div>
                     </div>
-                    <i class="fas fa-ellipsis-h" style="color: #ccc;"></i>
+
+                    <div id="addResumeBtn" class="card p-md flex-center flex-column" style="min-width: 120px; border: 2px dashed var(--border-glass); background: rgba(255,255,255,0.5); cursor: pointer;">
+                        <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; box-shadow: var(--shadow-sm);">
+                            <i class="fas fa-plus" style="color: var(--primary-color);"></i>
+                        </div>
+                        <span class="text-small" style="font-weight: 600;">New Resume</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- 3. Bottom Section: Optimization Suggestions -->
             <div class="mb-xl">
-                <h3 class="text-h3 mx-md mb-md" style="font-size: 18px;">优化建议</h3>
-
-                <!-- Empty State -->
-                <div class="empty-state" id="suggestionsEmpty" style="padding: 40px 20px;">
-                    <p class="text-body text-light">完成 AI 诊断后，这里会显示优化建议</p>
+                <div class="d-flex align-center gap-sm mb-md">
+                    <h3 class="text-h3" style="margin:0;">Suggestions</h3>
+                    <span id="suggestionCount" class="badge hidden">5</span>
                 </div>
 
-                <!-- Suggestions List (Hidden by default) -->
-                <div id="suggestionsList" class="hidden px-md">
-                    <!-- Dynamic Items will be injected here -->
+                <div class="card p-0">
+                    <div id="suggestionsEmpty" class="empty-state empty-sm">
+                        <div class="empty-icon" style="font-size: 40px; margin-bottom: 16px;">💡</div>
+                        <div class="empty-title" style="font-size: 16px;">No Suggestions Yet</div>
+                        <div class="empty-desc" style="font-size: 13px;">Run analysis to get AI feedback</div>
+                    </div>
+
+                    <div id="suggestionsList" class="hidden">
+                        </div>
+                </div>
+                <div style="height: 20px;"></div>
+            </div>
+        </div>
+
+        <div id="modalOverlay" class="modal-overlay hidden" style="display: none; width: 100%; height: 100%; justify-content: center; align-items: center;">
+            <div class="modal" style="width: 85%; max-width: 300px;">
+                <div class="modal-header text-center">New Resume</div>
+                <div class="modal-body text-center">
+                    Choose how you want to create your resume.
+                </div>
+                <div class="d-flex flex-column gap-sm">
+                    <div id="actionTemplate" class="option-card compact mb-0">
+                        <span class="option-label">A</span>
+                        <div class="option-content">
+                            <div class="option-title">Use Template</div>
+                        </div>
+                    </div>
+                    <div id="actionUploadPdf" class="option-card compact mb-0">
+                        <span class="option-label">B</span>
+                        <div class="option-content">
+                            <div class="option-title">Upload PDF</div>
+                        </div>
+                    </div>
+                    <button id="actionCancel" class="btn btn-secondary w-100 mt-md">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <!-- View 2: Upload Loading (New) -->
-        <div id="viewUploadLoading" class="full-screen-view hidden"
-            style="display: none; justify-content: center; align-items: center; background: rgba(0,0,0,0.8);">
-            <div class="card p-xl d-flex flex-column align-center" style="width: 80%; background: white;">
-                <div class="mb-md">
-                    <i class="fas fa-cloud-upload-alt fa-bounce"
-                        style="font-size: 48px; color: var(--primary-color);"></i>
-                </div>
-                <h3 class="text-h3 mb-sm">正在上传简历...</h3>
-                <div class="progress-container w-100 mb-sm">
-                    <div class="progress-bar striped" style="width: 100%;"></div>
-                </div>
-                <p class="text-caption text-light">请稍候，正在解析文件格式</p>
-            </div>
-        </div>
-
-        <!-- View 3: AI Loading -->
         <div id="viewLoading" class="full-screen-view hidden" style="display: none;">
-            <div class="d-flex flex-column justify-center align-center h-100"
-                style="background: linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%);">
-                <div style="font-size: 80px; margin-bottom: 24px; animation: bounce 2s infinite;">🤖</div>
-                <h3 class="text-h3 mb-sm">AI 深度分析中</h3>
-                <p class="text-body text-light" id="loadingText">识别关键信息中...</p>
-                <div class="progress-container w-75 mt-md">
-                    <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+            <div class="view-center">
+                <div class="card p-xl text-center" style="width: 100%;">
+                    <div style="font-size: 60px; margin-bottom: 24px; animation: float 2s infinite;">🤖</div>
+                    <h2 class="text-h2">Analyzing...</h2>
+                    
+                    <div class="progress-container mb-md">
+                        <div id="progressBar" class="progress-bar striped" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="d-flex justify-between">
+                        <span class="text-caption" id="loadingText">Scanning...</span>
+                        <span class="text-caption" id="progressPercent">0%</span>
+                    </div>
                 </div>
-                <p class="text-caption text-light mt-md">预计需要 10-20 秒，请耐心等待...</p>
             </div>
         </div>
 
-        <!-- View 4: Analysis Report -->
         <div id="viewReport" class="full-screen-view hidden" style="display: none;">
-            <div
-                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 20px 30px 20px; border-radius: 0 0 24px 24px; text-align: center;">
-                <div class="score-circle"
-                    style="width: 100px; height: 100px; margin: 0 auto 16px auto; border: 6px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <span style="font-size: 36px; font-weight: 700;">72</span>
-                    <span style="font-size: 12px;">/100</span>
-                </div>
-                <div class="text-h2 mb-xs">B</div>
-                <div class="text-caption" style="opacity: 0.9;">良好</div>
-                <div class="mt-md text-body" style="opacity: 0.9;">您的简历已超过 72% 的求职者</div>
+            <div class="d-flex justify-between align-center p-lg" style="background: white; border-bottom: 1px solid var(--border-glass);">
+                <i class="fas fa-times" id="btnCloseReport" style="font-size: 20px; cursor: pointer;"></i>
+                <span class="text-h3" style="margin:0;">Analysis Report</span>
+                <i class="fas fa-share-alt"></i>
             </div>
 
-            <div class="p-md">
-                <div class="d-flex align-center mb-md">
-                    <i class="fas fa-clipboard-list" style="color: var(--primary-color); margin-right: 8px;"></i>
-                    <h3 class="text-h3">详细分析报告</h3>
+            <div class="p-lg" style="padding-bottom: 100px;">
+                <div class="score-summary mb-lg">
+                    <div class="score-circle-large good">72</div>
+                    <div class="score-summary-info">
+                        <div class="score-summary-title">Good Start</div>
+                        <div class="score-summary-desc">Your resume has a strong foundation but needs more quantifiable results.</div>
+                    </div>
                 </div>
 
-                <div class="card mb-md">
-                    <h4 class="text-h4 mb-sm">### 简历综合分析报告</h4>
-                    <p class="text-body" style="color: #4a5568;">
-                        **优点：**<br>
-                        - 教育背景优秀，GPA高达4.25/5.00，位列专业前1%，体现了较强的学习能力和学术水平。<br>
-                        - 求职意向明确，目标岗位（软件测试工程师）清晰。<br><br>
-                        **不足之处：**<br>
-                        - **工作经历留白**：目前缺乏具体的实习或项目经验描述，建议补充。<br>
-                        - **技能描述泛泛**：缺乏对具体测试工具（如Selenium, Junit）的掌握程度描述。
-                    </p>
+                <div class="card p-md">
+                    <h3 class="text-h3 mb-md">Highlights</h3>
+                    <div class="d-flex gap-sm align-start mb-md">
+                        <i class="fas fa-check-circle text-success mt-sm"></i>
+                        <p class="text-body">Strong educational background with high GPA.</p>
+                    </div>
+                    
+                    <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 16px 0;">
+
+                    <h3 class="text-h3 mb-md">Improvements</h3>
+                    <div class="d-flex gap-sm align-start">
+                        <i class="fas fa-exclamation-circle text-warning mt-sm"></i>
+                        <p class="text-body">Missing key technical skills for this role.</p>
+                    </div>
                 </div>
 
-                <button id="btnReturnToMain" class="btn btn-primary w-100" style="border-radius: 25px;">返回简历中心</button>
-                <div style="height: 40px;"></div>
+                <button id="btnReturnToMain" class="btn btn-primary w-100 mt-lg">Done</button>
             </div>
         </div>
 
-        <!-- View 5: PDF Preview -->
+        <div id="viewUploadLoading" class="full-screen-view hidden" style="display: none;">
+            <div class="view-center">
+                <div class="mb-md" style="width: 40px; height: 40px; border: 4px solid #eee; border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <h3 class="text-h3">Uploading PDF...</h3>
+                <p class="text-caption">Parsing content</p>
+            </div>
+        </div>
+
         <div id="viewPdfPreview" class="full-screen-view hidden" style="display: none;">
-            <div class="d-flex align-center justify-between px-md"
-                style="height: 50px; background: var(--primary-color); color: white;">
-                <i class="fas fa-chevron-left" id="btnClosePreview" style="cursor: pointer;"></i>
-                <span class="text-h3" style="font-size: 16px; color: white;">简历预览</span>
-                <i class="fas fa-ellipsis-h"></i>
+            <div class="navbar" style="background: white;">
+                <i class="fas fa-times" id="btnClosePreview" style="font-size: 20px; cursor: pointer;"></i>
+                <span class="text-body-bold">Resume Preview</span>
+                <span class="text-link" id="btnEditResume">Edit</span>
             </div>
-            <div class="flex-1 d-flex justify-center py-md" style="background: #525659; overflow-y: auto;">
-                <div class="bg-white shadow-lg p-md" style="width: 90%; min-height: 120%; font-size: 10px;">
-                    <!-- Mock Resume Content -->
-                    <div class="border-bottom pb-sm mb-sm">
-                        <h2 class="text-h3 mb-xs">ALEX CHEN</h2>
-                        <p class="text-caption">alex.chen@example.com | 138-0000-0000</p>
-                    </div>
-                    <div class="mb-md">
-                        <h3 class="text-caption text-primary border-bottom mb-xs">EDUCATION</h3>
-                        <div class="d-flex justify-between mb-xs">
-                            <strong>University of Technology</strong>
-                            <span>2021 - 2025</span>
-                        </div>
-                        <p>B.S. Computer Science, GPA 4.25/5.0</p>
-                    </div>
-                    <div class="mb-md">
-                        <h3 class="text-caption text-primary border-bottom mb-xs">PROJECTS</h3>
-                        <p><strong>E-commerce Platform</strong></p>
-                        <p>Built a full-stack web application using React and Node.js.</p>
-                    </div>
+            <div style="flex: 1; background: #525659; display: flex; justify-content: center; padding: 20px;">
+                <div style="width: 100%; max-width: 320px; background: white; height: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.5); padding: 20px; overflow-y: auto;">
+                    <div style="height: 10px; width: 60%; background: #333; margin-bottom: 20px;"></div>
+                    <div style="height: 8px; width: 100%; background: #eee; margin-bottom: 8px;"></div>
+                    <div style="height: 8px; width: 100%; background: #eee; margin-bottom: 8px;"></div>
+                    <div style="height: 8px; width: 90%; background: #eee; margin-bottom: 20px;"></div>
+                    <div style="height: 10px; width: 40%; background: #333; margin-bottom: 10px;"></div>
+                    <div style="height: 8px; width: 100%; background: #eee; margin-bottom: 8px;"></div>
                 </div>
-            </div>
-            <div class="p-md bg-white border-top">
-                <button id="btnEditResume" class="btn btn-primary w-100" style="border-radius: 25px;">编辑</button>
             </div>
         </div>
 
-        <!-- View 6: Edit Resume (Resume Workshop) (New) -->
-        <div id="viewEditResume" class="full-screen-view hidden" style="display: none;">
-            <div class="d-flex align-center justify-between px-md"
-                style="height: 50px; background: white; border-bottom: 1px solid #eee;">
-                <i class="fas fa-chevron-left" id="btnCloseEdit" style="cursor: pointer; color: #333;"></i>
-                <span class="text-h3" style="font-size: 16px;">编辑简历</span>
-                <button class="btn btn-sm btn-primary" id="btnSaveResume">保存</button>
+        <div id="viewEditResume" class="full-screen-view hidden" style="display: none; background: #f5f5f7;">
+            <div class="navbar" style="background: white;">
+                <span class="text-link" id="btnCloseEdit" style="color: var(--danger-color); cursor: pointer;">Cancel</span>
+                <span class="text-body-bold">Edit Resume</span>
+                <span class="text-link" id="btnSaveResume" style="cursor: pointer;">Save</span>
             </div>
-
-            <div class="resume-workspace flex-1 overflow-y-auto p-md" style="background: #f8f9fa;">
-                <!-- Using Resume Workshop Component Structure -->
-                <div class="panel bg-white p-md rounded-lg shadow-sm mb-md">
-                    <div class="panel-header d-flex justify-between align-center mb-md">
-                        <div class="text-h3">基本信息</div>
+            <div class="p-lg" style="overflow-y: auto;">
+                <div class="card p-md mb-md">
+                    <div class="input-group mb-sm">
+                        <label class="input-label">Full Name</label>
+                        <input type="text" class="input-field" value="Student Name">
                     </div>
-                    <div class="input-group mb-md">
-                        <label class="text-caption mb-xs d-block">姓名</label>
-                        <input type="text" class="input-field w-100 p-sm border rounded" value="Alex Chen">
-                    </div>
-                    <div class="input-group mb-md">
-                        <label class="text-caption mb-xs d-block">联系方式</label>
-                        <input type="text" class="input-field w-100 p-sm border rounded" value="138-0000-0000">
-                    </div>
-                </div>
-
-                <div class="panel bg-white p-md rounded-lg shadow-sm mb-md">
-                    <div class="panel-header d-flex justify-between align-center mb-md">
-                        <div class="text-h3">专业概要</div>
-                        <button class="btn btn-secondary btn-sm" style="font-size: 12px;">AI 优化</button>
-                    </div>
-                    <textarea class="input-field w-100 p-sm border rounded"
-                        style="height: 100px; resize: none;">I am a junior developer looking for a job. I know HTML and CSS well.</textarea>
-                </div>
-
-                <div class="panel bg-white p-md rounded-lg shadow-sm">
-                    <div class="panel-header d-flex justify-between align-center mb-md">
-                        <div class="text-h3">技能标签</div>
-                    </div>
-                    <div class="d-flex flex-wrap gap-sm">
-                        <span class="chip">HTML <span class="chip-close">×</span></span>
-                        <span class="chip">CSS <span class="chip-close">×</span></span>
-                        <span class="chip">JavaScript <span class="chip-close">×</span></span>
-                        <span class="chip" style="border: 1px dashed #ccc; background: white;">+ 添加</span>
+                    <div class="input-group">
+                        <label class="input-label">Summary</label>
+                        <textarea class="input-field" rows="4">Motivated student...</textarea>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Tab Bar -->
+        <div id="toast" class="toast hidden" style="display: none;">Action Successful</div>
+
         <div class="tab-bar">
             <a href="#" class="tab-item">
-                <i class="fas fa-hourglass-start"></i>
-                <span>测评</span>
+                <i class="fas fa-hourglass-half"></i>
+                <span>Quiz</span>
             </a>
             <a href="#" class="tab-item">
-                <i class="fas fa-globe"></i>
-                <span>地图</span>
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Map</span>
             </a>
             <a href="#" class="tab-item">
-                <i class="fas fa-comment-dots"></i>
-                <span>助手</span>
+                <i class="fas fa-comment-alt"></i>
+                <span>Chat</span>
             </a>
             <a href="#" class="tab-item active">
                 <i class="fas fa-file-alt"></i>
-                <span>简历</span>
+                <span>Resume</span>
             </a>
             <a href="#" class="tab-item">
                 <i class="fas fa-video"></i>
-                <span>面试</span>
+                <span>Interview</span>
             </a>
         </div>
 
-    </div>
+    </div> 
+    
+    <input type="file" id="fileInput" accept=".pdf" style="display: none;">
 
-    <!-- Modal Overlay (For Upload Action Sheet) -->
-    <div id="modalOverlay"
-        style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: flex-end;">
-        <!-- Action Sheet -->
-        <div
-            style="width: 375px; background: #f5f5f5; border-radius: 20px 20px 0 0; overflow: hidden; padding-bottom: 20px;">
-            <button
-                style="width: 100%; padding: 16px; background: white; border: none; border-bottom: 1px solid #eee; font-size: 16px; font-weight: 500;">使用模板填写</button>
-            <button id="actionUploadPdf"
-                style="width: 100%; padding: 16px; background: white; border: none; border-bottom: 1px solid #eee; font-size: 16px; font-weight: 500;">上传PDF简历</button>
-            <button id="actionCancel"
-                style="width: 100%; padding: 16px; background: white; border: none; margin-top: 8px; font-size: 16px; font-weight: 600; color: #333;">取消</button>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast"
-        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; display: none; z-index: 1000;">
-        <i class="fas fa-check-circle"></i> 操作成功
-    </div>
-
-    <!-- Scripts -->
     <script src="resume_logic.js"></script>
 </body>
-
 </html>
