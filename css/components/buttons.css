@@ -11,10 +11,11 @@
     text-decoration: none;
     cursor: pointer;
     border: none;
-    border-radius: var(--border-radius); /* Radius 12px */
+    border-radius: var(--border-radius); /* Radius 16px */
     transition: all var(--transition-speed) ease; /* Smooth Transition */
     box-shadow: var(--shadow-sm); /* Soft Shadow */
     position: relative; /* For loading spinner positioning */
+    min-height: 48px;
 }
 
 /* Hover State for all buttons - Lift effect */
@@ -53,6 +54,45 @@
 
 .btn-danger:hover {
     background-color: #fff0f0;
+}
+
+/* Premium Button (from prototype) */
+.btn-premium {
+    background: white !important;
+    color: #667eea !important;
+    border: none !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 14px 24px !important;
+    border-radius: 16px !important;
+    min-height: 52px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+}
+
+.btn-premium:active {
+    transform: scale(0.97);
+}
+
+/* Ghost Button (from prototype) */
+.btn-ghost {
+    background: rgba(255,255,255,0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    padding: 14px 24px !important;
+    border-radius: 16px !important;
+    min-height: 52px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+}
+
+.btn-ghost:active {
+    transform: scale(0.97);
 }
 
 /* --- Loading State (Interaction Rule) --- */

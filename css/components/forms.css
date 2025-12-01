@@ -216,6 +216,69 @@ input:checked + .slider:before {
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
+/* 6. Form Sections (from prototype) */
+.form-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.section-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 16px 0;
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.form-field:last-child {
+    margin-bottom: 0;
+}
+
+.form-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: white;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.form-field textarea {
+    resize: vertical;
+    line-height: 1.6;
+    min-height: 80px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
 /* Responsive Design for Mobile */
 @media (max-width: 768px) {
     .checkbox-container,
@@ -256,5 +319,21 @@ input:checked + .slider:before {
 
     input:checked + .slider:before {
         transform: translateX(20px);
+    }
+
+    .form-section {
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .form-field input,
+    .form-field textarea {
+        padding: 12px;
+        font-size: 14px;
     }
 }

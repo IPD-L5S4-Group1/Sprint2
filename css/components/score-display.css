@@ -113,6 +113,22 @@
     text-align: right;
 }
 
+/* Score Bar Item (from prototype) */
+.score-bar-item {
+    margin-bottom: 20px;
+}
+
+.score-bar-item:last-child {
+    margin-bottom: 0;
+}
+
+.score-bar-fill {
+    height: 100%;
+    background: var(--gradient-purple);
+    border-radius: 10px;
+    transition: width 0.8s ease-out;
+}
+
 /* Score colors based on value */
 .score-bar.excellent {
     background: linear-gradient(90deg, #00B894 0%, #00D9A5 100%);

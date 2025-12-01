@@ -35,6 +35,33 @@
             <p class="text-body text-light">A centralized system for visual and interaction specifications.</p>
         </div>
 
+        <!-- What's New (Updated from Resume Prototype) -->
+        <div class="card mb-xl" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 32px;">
+            <div style="text-align: center; color: white;">
+                <div style="font-size: 48px; margin-bottom: 16px;">✨</div>
+                <h2 style="font-size: 28px; font-weight: 800; margin: 0 0 12px 0; color: white;">What's New</h2>
+                <p style="font-size: 16px; opacity: 0.9; margin-bottom: 24px;">Updated based on Resume Center prototype improvements</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; max-width: 800px; margin: 0 auto;">
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 14px; font-weight: 700; opacity: 0.8; margin-bottom: 4px;">BUTTONS</div>
+                        <div style="font-size: 13px;">Premium & Ghost styles</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 14px; font-weight: 700; opacity: 0.8; margin-bottom: 4px;">FORMS</div>
+                        <div style="font-size: 13px;">Enhanced sections & fields</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 14px; font-weight: 700; opacity: 0.8; margin-bottom: 4px;">SCORES</div>
+                        <div style="font-size: 13px;">Animated progress bars</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 16px 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                        <div style="font-size: 14px; font-weight: 700; opacity: 0.8; margin-bottom: 4px;">COLORS</div>
+                        <div style="font-size: 13px;">New gradient variables</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <hr class="mb-xl" style="opacity: 0.1">
 
         <!-- 1. Global Foundation -->
@@ -56,7 +83,7 @@
             <!-- Color Palette -->
             <div class="mb-lg">
                 <h3 class="text-h3">Color Palette</h3>
-                <div class="d-flex gap-md flex-wrap">
+                <div class="d-flex gap-md flex-wrap mb-md">
                     <div style="width: 80px;">
                         <div style="height: 80px; background: var(--primary-color); border-radius: 12px; margin-bottom: 8px;"></div>
                         <div class="text-caption text-center">Primary</div>
@@ -72,6 +99,19 @@
                     <div style="width: 80px;">
                         <div style="height: 80px; background: var(--bg-glass); border: 1px solid #ddd; border-radius: 12px; margin-bottom: 8px;"></div>
                         <div class="text-caption text-center">Glass</div>
+                    </div>
+                </div>
+                
+                <!-- New Gradient Colors (from prototype) -->
+                <p class="text-small mb-sm" style="font-weight: 600; color: #667eea;">✨ Enhanced Gradients</p>
+                <div class="d-flex gap-md flex-wrap">
+                    <div style="width: 120px;">
+                        <div style="height: 80px; background: var(--gradient-purple); border-radius: 16px; margin-bottom: 8px; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);"></div>
+                        <div class="text-caption text-center">Purple</div>
+                    </div>
+                    <div style="width: 120px;">
+                        <div style="height: 80px; background: var(--gradient-gold); border-radius: 16px; margin-bottom: 8px; box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);"></div>
+                        <div class="text-caption text-center">Gold</div>
                     </div>
                 </div>
             </div>
@@ -99,11 +139,24 @@
                 <h3 class="text-h3">Buttons (Interactive)</h3>
                 <div class="card">
                     <div class="d-flex gap-md flex-wrap align-center">
-                <button class="btn btn-primary">Primary Action</button>
+                        <button class="btn btn-primary">Primary Action</button>
                         <button class="btn btn-secondary">Secondary</button>
                         <button class="btn btn-danger">Delete</button>
                         <!-- Interaction: Loading State -->
                         <button class="btn btn-primary is-loading">Loading...</button>
+                    </div>
+                </div>
+                
+                <!-- New Premium & Ghost Buttons (from prototype) -->
+                <div class="card mt-md" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <p class="text-small mb-md" style="color: white; opacity: 0.9;">Premium & Ghost buttons work great on gradient backgrounds</p>
+                    <div class="d-flex gap-md flex-wrap align-center">
+                        <button class="btn-premium">
+                            <i style="margin-right: 8px;">✨</i> Premium Button
+                        </button>
+                        <button class="btn-ghost">
+                            <i style="margin-right: 8px;">👁️</i> Ghost Button
+                        </button>
                     </div>
                 </div>
             </div>
@@ -156,6 +209,40 @@
                                 <input type="range" min="1" max="100" value="50" class="range-slider">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Form Sections (from prototype) -->
+            <div class="mb-lg">
+                <h3 class="text-h3">Form Sections (Mobile-Optimized)</h3>
+                <div class="form-section">
+                    <h4 class="section-title">📋 Basic Information</h4>
+                    <div class="form-field">
+                        <label>FULL NAME</label>
+                        <input type="text" placeholder="John Doe">
+                    </div>
+                    <div class="form-field">
+                        <label>EMAIL ADDRESS</label>
+                        <input type="email" placeholder="john.doe@example.com">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field" style="flex: 1;">
+                            <label>PHONE</label>
+                            <input type="tel" placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-field" style="flex: 1;">
+                            <label>LOCATION</label>
+                            <input type="text" placeholder="San Francisco, CA">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4 class="section-title">✍️ Professional Summary</h4>
+                    <div class="form-field">
+                        <label>SUMMARY</label>
+                        <textarea rows="4" placeholder="Write a brief professional summary highlighting your experience and goals..."></textarea>
                     </div>
                 </div>
             </div>
@@ -373,6 +460,44 @@
                     <p class="text-small mb-sm">Animated Striped Progress</p>
                     <div class="progress-container">
                         <div class="progress-bar striped" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Score Bars (from prototype) -->
+            <div class="mb-xl">
+                <h3 class="text-h3 mb-md">Score Breakdown (Enhanced)</h3>
+                <div class="card">
+                    <h4 style="font-size: 18px; font-weight: 800; margin: 0 0 20px 0; color: #1a1a1a;">📊 Performance Metrics</h4>
+                    
+                    <div class="score-bar-item">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Content Quality</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">85/100</span>
+                        </div>
+                        <div class="score-bar" style="width: 100%; height: 8px; background: #f3f4f6; border-radius: 10px; overflow: hidden;">
+                            <div class="score-bar-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-bar-item">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Structure</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">75/100</span>
+                        </div>
+                        <div class="score-bar" style="width: 100%; height: 8px; background: #f3f4f6; border-radius: 10px; overflow: hidden;">
+                            <div class="score-bar-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-bar-item" style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Skills & Keywords</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">60/100</span>
+                        </div>
+                        <div class="score-bar" style="width: 100%; height: 8px; background: #f3f4f6; border-radius: 10px; overflow: hidden;">
+                            <div class="score-bar-fill" style="width: 60%;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
