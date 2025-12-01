@@ -14,6 +14,9 @@
 @import 'components/options.css';
 @import 'components/grid-cards.css';
 @import 'components/segment-control.css';
+@import 'components/list-items.css';
+@import 'components/empty-state.css';
+@import 'components/score-display.css';
 @import 'components/cards.css';
 @import 'components/navbar.css';
 @import 'components/chat.css';
