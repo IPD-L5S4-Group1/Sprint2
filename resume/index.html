@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../Style_Library/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- PDF.js Library for PDF Preview -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
     <!-- Custom Styles -->
     <link rel="stylesheet" href="css/mobile-frame.css">
     <link rel="stylesheet" href="css/resume-custom.css">
@@ -37,7 +40,7 @@
         <div class="app-content" id="viewMain">
             <!-- Page Header -->
             <div class="page-header">
-                <h1 class="page-title">Resume</h1>
+                <h1 class="page-title">Resume Center</h1>
                 <div class="points-badge">
                     <i class="fas fa-star"></i> 2,380
                 </div>
@@ -191,14 +194,14 @@
                     <div class="message message-ai">
                         <div class="avatar avatar-ai">🤖</div>
                         <div class="bubble">
-                            你好！我是你的AI简历助手。我已经分析了你的简历，有什么问题想问我吗？
+                            Hi! I'm your AI resume assistant. I've analyzed your resume. What questions do you have for me?
                         </div>
                     </div>
                 </div>
                 
                 <div class="chat-input-area">
-                    <input type="text" id="chatInput" class="chat-input" placeholder="输入你的问题...">
-                    <button id="btnSendChat" class="btn btn-primary" style="padding: 10px 20px; border-radius: 20px; font-weight: 600;">发送</button>
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Type your question...">
+                    <button id="btnSendChat" class="btn btn-primary" style="padding: 10px 20px; border-radius: 20px; font-weight: 600;">Send</button>
                 </div>
             </div>
         </div>
@@ -318,9 +321,9 @@
                 </div>
 
                 <button id="btnAskAi" class="btn-ghost w-100" style="margin-bottom: 12px; background: rgba(102, 126, 234, 0.1) !important; border: 2px solid #667eea !important; color: #667eea !important;">
-                    <i class="fas fa-comment-dots"></i> 问AI问题
+                    <i class="fas fa-comment-dots"></i> Ask AI
                 </button>
-                <button id="btnReturnToMain" class="btn-premium w-100">完成!</button>
+                <button id="btnReturnToMain" class="btn-premium w-100">Done!</button>
             </div>
         </div>
 
@@ -472,7 +475,7 @@
                 </div>
                 
                 <button id="btnApplySuggestion" class="btn-premium w-100">
-                    <i class="fas fa-check"></i> 应用建议
+                    <i class="fas fa-check"></i> Apply Suggestion
                 </button>
             </div>
         </div>

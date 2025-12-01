@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Chat state
     let chatHistory = [];
+    
+    // PDF.js worker configuration
+    if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
 
     // Views & Overlays
     const modalOverlay = document.getElementById('modalOverlay');
@@ -102,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = e.target.files[0];
         if (file) {
             hideView(modalOverlay);
-            simulateUploadProcess(file.name);
+            handlePdfUpload(file);
         }
         fileInput.value = ''; // Reset input
     });
@@ -161,6 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     btnCloseChat?.addEventListener('click', () => {
         hideView(viewAiChat);
+        showView(viewReport);  // Return to report view
     });
     
     // Send Chat Message
@@ -181,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     btnApplySuggestion?.addEventListener('click', () => {
         hideView(suggestionDetailModal);
-        showToast('✅ 建议已保存到笔记本', 1500);
+        showToast('✅ Suggestion Saved', 1500);
         addHapticFeedback();
     });
 
@@ -244,7 +250,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Simulate file upload process
+     * Handle PDF file upload
+     */
+    async function handlePdfUpload(file) {
+        showView(viewUploadLoading);
+        
+        try {
+            // Read PDF file
+            const arrayBuffer = await file.arrayBuffer();
+            
+            // Create new resume object with PDF data
+            const resumeId = 'resume_' + Date.now();
+            const newResume = {
+                id: resumeId,
+                name: file.name,
+                uploadDate: new Date(),
+                score: 0,
+                analyzed: false,
+                data: null,
+                pdfData: arrayBuffer,  // Store PDF binary data
+                isPdf: true
+            };
+            
+            // Add to resumes array
+            resumes.push(newResume);
+            currentResumeId = resumeId;
+            
+            setTimeout(() => {
+                hideView(viewUploadLoading);
+                showToast('✅ Upload Successful', 2000);
+                
+                // Switch header card content
+                headerDefault?.classList.add('hidden');
+                headerUploaded?.classList.remove('hidden');
+                
+                // Add resume card to horizontal scroll
+                addResumeCard(newResume);
+                
+                // Reset suggestions
+                suggestionsEmpty?.classList.remove('hidden');
+                if (suggestionsList) {
+                    suggestionsList.innerHTML = '';
+                    suggestionsList.classList.add('hidden');
+                }
+                suggestionCount?.classList.add('hidden');
+                
+                // Reset score
+                if (mainScoreText) mainScoreText.textContent = '0';
+                if (mainScoreBadge) {
+                    mainScoreBadge.innerHTML = '<span style="font-size: 32px;">-</span>';
+                }
+                if (lastUpdateText) lastUpdateText.textContent = 'NEVER ANALYZED';
+            }, 2000);
+            
+        } catch (error) {
+            console.error('PDF Upload Error:', error);
+            hideView(viewUploadLoading);
+            showToast('❌ Upload Failed', 2000);
+        }
+    }
+    
+    /**
+     * Simulate file upload process (for template)
      */
     function simulateUploadProcess(filename) {
         showView(viewUploadLoading);
@@ -298,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainScoreBadge) {
             mainScoreBadge.innerHTML = '<span style="font-size: 32px;">-</span>';
         }
-        if (lastUpdateText) lastUpdateText.textContent = 'NEVER ANALYZED';
+                if (lastUpdateText) lastUpdateText.textContent = 'NEVER ANALYZED';
     }
     
     /**
@@ -443,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('AI Chat Error:', error);
             removeTypingIndicator();
-            addChatMessage('抱歉，我现在遇到了一些问题。请稍后再试。', 'ai');
+            addChatMessage('Sorry, I encountered an issue. Please try again later.', 'ai');
         }
     }
     
@@ -466,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     messages: [
                         {
                             role: 'system',
-                            content: '你是一个专业的简历分析助手。你的任务是帮助用户改进他们的简历，提供具体的建议和指导。请用中文回答，保持专业、友好和鼓励的语气。'
+                            content: 'You are a professional resume analysis assistant. Your task is to help users improve their resumes by providing specific advice and guidance. Please respond in English, maintaining a professional, friendly, and encouraging tone.'
                         },
                         ...messages
                     ],
@@ -479,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const data = await response.json();
-            return data.choices[0]?.message?.content || '抱歉，我无法生成回复。';
+            return data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
         } catch (error) {
             console.error('API Call Error:', error);
             throw error;
@@ -660,73 +727,73 @@ document.addEventListener('DOMContentLoaded', () => {
         const suggestions = [
             {
                 icon: '⚡',
-                title: '添加量化成果',
-                desc: '包含具体数据如"提升效率30%"来展示影响力',
+                title: 'Add Quantifiable Achievements',
+                desc: 'Include specific data like "Improved efficiency by 30%" to showcase impact',
                 priority: 'high',
                 detailContent: `
-                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">为什么重要？</h4>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">Why It Matters?</h4>
                     <p style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px;">
-                        量化的成果能让招聘者快速了解你的实际贡献，比模糊的描述更有说服力。
+                        Quantifiable achievements help recruiters quickly understand your actual contributions, making them more persuasive than vague descriptions.
                     </p>
-                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">示例对比</h4>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">Example Comparison</h4>
                     <div style="background: #ffe5e5; border-left: 4px solid #ff6b6b; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-                        <div style="font-size: 12px; font-weight: 700; color: #ff6b6b; margin-bottom: 4px;">❌ 不好的写法</div>
-                        <div style="font-size: 14px; color: #555;">"参与了团队项目开发"</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #ff6b6b; margin-bottom: 4px;">❌ Bad Example</div>
+                        <div style="font-size: 14px; color: #555;">"Participated in team project development"</div>
                     </div>
                     <div style="background: #e5ffe5; border-left: 4px solid #00b894; padding: 12px; border-radius: 8px;">
-                        <div style="font-size: 12px; font-weight: 700; color: #00b894; margin-bottom: 4px;">✅ 好的写法</div>
-                        <div style="font-size: 14px; color: #555;">"优化数据库查询，将页面加载时间从3秒减少到0.8秒，用户满意度提升45%"</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #00b894; margin-bottom: 4px;">✅ Good Example</div>
+                        <div style="font-size: 14px; color: #555;">"Optimized database queries, reduced page load time from 3s to 0.8s, increased user satisfaction by 45%"</div>
                     </div>
                 `
             },
             {
                 icon: '💼',
-                title: '扩展项目经历',
-                desc: '你的经验较少，添加你的毕业设计项目详情',
+                title: 'Expand Project Experience',
+                desc: 'Add details about your capstone or thesis projects',
                 priority: 'medium',
                 detailContent: `
-                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">建议添加的内容</h4>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">Suggested Content</h4>
                     <ul style="margin: 0; padding-left: 20px; list-style: none;">
                         <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 8px; position: relative; padding-left: 24px;">
                             <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">1.</span>
-                            项目背景和目标
+                            Project background and objectives
                         </li>
                         <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 8px; position: relative; padding-left: 24px;">
                             <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">2.</span>
-                            使用的技术栈（前端、后端、数据库）
+                            Technology stack (frontend, backend, database)
                         </li>
                         <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 8px; position: relative; padding-left: 24px;">
                             <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">3.</span>
-                            你的具体职责和贡献
+                            Your specific responsibilities and contributions
                         </li>
                         <li style="font-size: 14px; color: #555; line-height: 1.8; position: relative; padding-left: 24px;">
                             <span style="position: absolute; left: 0; color: #667eea; font-weight: 700;">4.</span>
-                            项目成果（用户数、性能指标等）
+                            Project outcomes (user count, performance metrics)
                         </li>
                     </ul>
                 `
             },
             {
                 icon: '📊',
-                title: '添加关键技术词',
-                desc: '添加：React、Node.js、AWS 等关键词帮助通过ATS筛选',
+                title: 'Add Technical Keywords',
+                desc: 'Include keywords like React, Node.js, AWS to pass ATS screening',
                 priority: 'medium',
                 detailContent: `
-                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">推荐添加的技术</h4>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">Recommended Technologies</h4>
                     <div style="margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">前端技术</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">Frontend</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
                             <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">React</span>
                             <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Vue.js</span>
                             <span style="background: #667eea; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">TypeScript</span>
                         </div>
-                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">后端技术</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">Backend</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
                             <span style="background: #00b894; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Node.js</span>
                             <span style="background: #00b894; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Python</span>
                             <span style="background: #00b894; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Express</span>
                         </div>
-                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">云服务</div>
+                        <div style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 8px;">Cloud Services</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                             <span style="background: #fdcb6e; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">AWS</span>
                             <span style="background: #fdcb6e; color: white; padding: 6px 12px; border-radius: 12px; font-size: 13px; font-weight: 600;">Docker</span>
@@ -737,21 +804,21 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 icon: '🎓',
-                title: '突出你的GPA',
-                desc: '将教育经历提前 - 你的3.8 GPA很优秀！',
+                title: 'Highlight Your GPA',
+                desc: 'Move education up - your 3.8 GPA is excellent!',
                 priority: 'low',
                 detailContent: `
-                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">为什么要突出？</h4>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">Why Highlight It?</h4>
                     <p style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px;">
-                        3.8/4.0的GPA属于优秀水平，对于应届生来说是重要的竞争优势。
+                        A 3.8/4.0 GPA is considered excellent and is an important competitive advantage for recent graduates.
                     </p>
-                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">优化建议</h4>
+                    <h4 style="font-size: 16px; font-weight: 800; color: #1a1a1a; margin: 0 0 12px 0;">Optimization Tips</h4>
                     <div style="background: #f8f9ff; border-radius: 12px; padding: 16px;">
                         <p style="font-size: 14px; color: #555; line-height: 1.6; margin: 0;">
-                            • 将教育背景移到简历靠前位置<br>
-                            • 突出显示GPA（使用<strong>加粗</strong>）<br>
-                            • 添加相关荣誉和奖学金<br>
-                            • 列出核心课程（如果与应聘岗位相关）
+                            • Move education section higher in resume<br>
+                            • Highlight GPA (use <strong>bold</strong>)<br>
+                            • Add relevant honors and scholarships<br>
+                            • List core courses (if relevant to target position)
                         </p>
                     </div>
                 `
@@ -893,11 +960,20 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Render real resume preview
      */
-    function renderResumePreview() {
-        const data = loadResumeData();
+    async function renderResumePreview() {
+        const resume = resumes.find(r => r.id === currentResumeId);
         const previewContainer = document.getElementById('resumePreviewContent');
         
         if (!previewContainer) return;
+        
+        // Check if it's a PDF resume
+        if (resume && resume.isPdf && resume.pdfData) {
+            await renderPdfPreview(resume.pdfData, previewContainer);
+            return;
+        }
+        
+        // Otherwise render template-based resume
+        const data = loadResumeData();
         
         if (!data) {
             previewContainer.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: #888;">
@@ -1010,6 +1086,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         previewContainer.innerHTML = html;
+    }
+    
+    /**
+     * Render PDF preview using PDF.js
+     */
+    async function renderPdfPreview(pdfData, container) {
+        try {
+            // Clear container
+            container.innerHTML = '<div style="text-align: center; padding: 20px; color: #888;"><div class="spinner"></div><div style="margin-top: 16px;">Loading PDF...</div></div>';
+            
+            // Check if PDF.js is available
+            if (typeof pdfjsLib === 'undefined') {
+                container.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: #888;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                    <div style="font-size: 15px; font-weight: 600;">PDF Library Not Loaded</div>
+                    <div style="font-size: 13px; margin-top: 8px;">Cannot preview PDF</div>
+                </div>`;
+                return;
+            }
+            
+            // Load PDF document
+            const loadingTask = pdfjsLib.getDocument({ data: pdfData });
+            const pdf = await loadingTask.promise;
+            
+            // Clear container
+            container.innerHTML = '';
+            container.style.padding = '0';
+            
+            // Render all pages
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                
+                // Create canvas for this page
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                
+                // Set scale to fit mobile width (max 360px)
+                const viewport = page.getViewport({ scale: 1 });
+                const scale = Math.min(360 / viewport.width, 2); // Max scale of 2 for quality
+                const scaledViewport = page.getViewport({ scale: scale });
+                
+                canvas.width = scaledViewport.width;
+                canvas.height = scaledViewport.height;
+                canvas.style.width = '100%';
+                canvas.style.height = 'auto';
+                canvas.style.marginBottom = pageNum < pdf.numPages ? '20px' : '0';
+                canvas.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                canvas.style.borderRadius = '8px';
+                
+                // Render page
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: scaledViewport
+                };
+                
+                await page.render(renderContext).promise;
+                
+                container.appendChild(canvas);
+            }
+            
+        } catch (error) {
+            console.error('PDF Render Error:', error);
+            container.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: #888;">
+                <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+                <div style="font-size: 15px; font-weight: 600;">PDF Loading Failed</div>
+                <div style="font-size: 13px; margin-top: 8px;">${error.message}</div>
+            </div>`;
+        }
     }
 
     // ========================================
