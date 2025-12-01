@@ -144,3 +144,41 @@
         box-shadow: 0 0 0 0 rgba(0, 122, 255, 0);
     }
 }
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .map-container {
+        padding: 24px 12px;
+        gap: 24px;
+    }
+
+    .map-node {
+        min-width: 140px; /* Smaller nodes on mobile */
+    }
+
+    .node-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .node-content {
+        padding: 12px;
+    }
+
+    .node-title {
+        font-size: 14px;
+    }
+
+    .node-desc {
+        font-size: 11px;
+    }
+
+    /* Adjust connector for smaller gaps */
+    .map-node:not(:last-child)::after {
+        top: 20px;
+        right: -40%;
+        width: 80%;
+    }
+}
