@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Resume Center - Mobile Prototype</title>
+    
+    <!-- Style Library Base -->
+    <link rel="stylesheet" href="css/lib/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PDF.js Library for PDF Preview -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/mobile-frame.css">
+    <link rel="stylesheet" href="css/resume-custom.css">
+</head>
+
+<body>
+    <div class="mobile-wrapper">
+        <!-- Dynamic Island -->
+        <div class="dynamic-island"></div>
+
+        <!-- Decorative Orbs -->
+        <div class="mobile-orb orb-1"></div>
+        <div class="mobile-orb orb-2"></div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="app-content" id="viewMain">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Resume Center</h1>
+                <div class="points-badge">
+                    <i class="fas fa-star"></i> 2,380
+                </div>
+            </div>
+
+            <!-- Hero Card -->
+            <div class="hero-card">
+                <!-- Default State (No Resume) -->
+                <div id="headerDefaultContent" class="text-center">
+                    <div style="font-size: 64px; margin-bottom: 16px;">📄</div>
+                    <h2 style="font-size: 28px; font-weight: 800; margin: 0 0 8px 0;">No Resume Yet</h2>
+                    <p style="font-size: 16px; opacity: 0.9;">Create one to unlock AI-powered insights</p>
+                </div>
+
+                <!-- Uploaded State (With Score) -->
+                <div id="headerUploadedContent" class="hidden">
+                    <div class="score-display">
+                        <div>
+                            <div style="font-size: 13px; font-weight: 700; letter-spacing: 1px; opacity: 0.8; margin-bottom: 8px;">YOUR SCORE</div>
+                            <div style="display: flex; align-items: baseline; gap: 4px;">
+                                <span id="mainScoreText" class="score-number">0</span>
+                                <span style="font-size: 24px; opacity: 0.7;">/100</span>
+                            </div>
+                        </div>
+                        <div class="score-badge" id="mainScoreBadge">
+                            <span style="font-size: 32px;">-</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <span id="lastUpdateText" style="font-size: 12px; opacity: 0.7; font-weight: 600;">NEVER ANALYZED</span>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button id="btnAiDiagnosis" class="btn-premium" style="flex: 1;">
+                            <i class="fas fa-sparkles"></i> AI Analyze
+                        </button>
+                        <button id="btnPreviewPdf" class="btn-ghost" style="flex: 1;">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Documents Section -->
+            <div style="margin-bottom: 40px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="font-size: 22px; font-weight: 800; margin: 0;">My Documents</h3>
+                    <i class="fas fa-cog" style="color: #888; font-size: 20px;"></i>
+                </div>
+
+                <div class="h-scroll">
+                    <!-- Resume cards will be dynamically added here -->
+                    
+                    <!-- Add New Resume Card -->
+                    <div id="addResumeBtn" class="add-doc-card">
+                        <div class="add-icon-circle">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <span style="font-weight: 700; font-size: 15px; color: #667eea;">New Resume</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suggestions Section -->
+            <div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <h3 style="font-size: 22px; font-weight: 800; margin: 0;">Suggestions</h3>
+                    <span id="suggestionCount" class="badge hidden" style="background: #667eea; color: white; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: 700;">5</span>
+                </div>
+
+                <!-- Empty State -->
+                <div id="suggestionsEmpty" style="text-align: center; padding: 60px 20px; background: white; border-radius: 20px;">
+                    <div style="font-size: 56px; margin-bottom: 16px;">💡</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;">No Suggestions Yet</div>
+                    <div style="font-size: 14px; color: #888;">Run AI analysis to get personalized feedback</div>
+                </div>
+
+                <!-- Suggestions List (Hidden by default) -->
+                <div id="suggestionsList" class="hidden"></div>
+            </div>
+        </div>
+
+        <!-- Modal: New Resume Options -->
+        <div id="modalOverlay" class="modal-overlay hidden">
+            <div class="modal">
+                <div class="modal-header">Create New Resume</div>
+                <div class="modal-body">Choose how you'd like to get started</div>
+
+                <div id="actionTemplate" class="option-card">
+                    <span class="option-label">A</span>
+                    <div style="flex: 1;">
+                        <div style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Use Template</div>
+                        <div style="font-size: 13px; color: #888;">Start with pre-made design</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                </div>
+
+                <div id="actionUploadPdf" class="option-card">
+                    <span class="option-label">B</span>
+                    <div style="flex: 1;">
+                        <div style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px;">Upload PDF</div>
+                        <div style="font-size: 13px; color: #888;">Import existing resume</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+                </div>
+
+                <button id="actionCancel" class="btn btn-secondary w-100" style="margin-top: 16px; border-radius: 16px; min-height: 48px; font-weight: 600;">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Loading View: Upload -->
+        <div id="viewUploadLoading" class="full-screen-view hidden">
+            <div class="view-center">
+                <div class="spinner" style="margin-bottom: 24px;"></div>
+                <h3 style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;">Uploading PDF...</h3>
+                <p style="font-size: 14px; color: #888;">Parsing your resume content</p>
+            </div>
+        </div>
+
+        <!-- Loading View: AI Analysis -->
+        <div id="viewLoading" class="full-screen-view hidden">
+            <div class="view-center">
+                <div style="background: white; border-radius: 24px; padding: 40px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                    <div style="font-size: 72px; margin-bottom: 24px; animation: float 2s infinite; text-align: center;">🤖</div>
+                    <h2 style="font-size: 26px; font-weight: 800; text-align: center; margin-bottom: 24px; color: #1a1a1a;">Analyzing Resume...</h2>
+                    
+                    <div style="background: #f3f4f6; border-radius: 12px; height: 12px; overflow: hidden; margin-bottom: 16px;">
+                        <div id="progressBar" style="background: linear-gradient(90deg, #667eea, #764ba2); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between;">
+                        <span id="loadingText" style="font-size: 13px; color: #888; font-weight: 600;">Initializing...</span>
+                        <span id="progressPercent" style="font-size: 13px; color: #667eea; font-weight: 700;">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: AI Chat Assistant -->
+        <div id="viewAiChat" class="full-screen-view hidden">
+            <div class="report-header">
+                <i class="fas fa-times" id="btnCloseChat" style="font-size: 24px; cursor: pointer; color: #1a1a1a;"></i>
+                <span style="font-size: 18px; font-weight: 800;">AI Assistant</span>
+                <i class="fas fa-robot" style="font-size: 20px; color: #667eea;"></i>
+            </div>
+            
+            <div class="chat-container" style="flex: 1; height: auto; border: none; border-radius: 0; margin: 0;">
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Initial AI message -->
+                    <div class="message message-ai">
+                        <div class="avatar avatar-ai">🤖</div>
+                        <div class="bubble">
+                            Hi! I'm your AI resume assistant. I've analyzed your resume. What questions do you have for me?
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="Type your question...">
+                    <button id="btnSendChat" class="btn btn-primary" style="padding: 10px 20px; border-radius: 20px; font-weight: 600;">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Analysis Report -->
+        <div id="viewReport" class="full-screen-view hidden">
+            <div class="report-header">
+                <i class="fas fa-times" id="btnCloseReport" style="font-size: 24px; cursor: pointer; color: #1a1a1a;"></i>
+                <span style="font-size: 18px; font-weight: 800;">Analysis Report</span>
+                <i class="fas fa-share-alt" style="font-size: 20px; color: #667eea; cursor: pointer;"></i>
+            </div>
+
+            <div class="report-content">
+                <!-- Score Summary -->
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <div style="width: 140px; height: 140px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: 900; margin: 0 auto 16px; box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);">72</div>
+                    <h3 style="font-size: 24px; font-weight: 800; margin: 0 0 8px 0; color: #1a1a1a;">Good Start!</h3>
+                    <p style="font-size: 15px; color: #888; line-height: 1.6; padding: 0 20px;">Your resume has a solid foundation but could use more quantifiable achievements.</p>
+                </div>
+
+                <!-- Score Breakdown -->
+                <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 16px;">
+                    <h4 style="font-size: 18px; font-weight: 800; margin: 0 0 20px 0; color: #1a1a1a;">📊 Score Breakdown</h4>
+                    
+                    <div class="score-bar-item">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Content Quality</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">85/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-bar-item">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Structure</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">75/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-bar-item">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Skills & Keywords</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">60/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 60%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="score-bar-item" style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px; font-weight: 700; color: #333;">Impact & Results</span>
+                            <span style="font-size: 14px; font-weight: 800; color: #667eea;">68/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-bar-fill" style="width: 68%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highlights -->
+                <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 16px;">
+                    <h4 style="font-size: 18px; font-weight: 800; margin: 0 0 16px 0; color: #00B894;">✓ Highlights</h4>
+                    <ul style="margin: 0; padding-left: 20px; list-style: none;">
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 10px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #00B894; font-weight: 700;">✓</span>
+                            Strong educational background with impressive GPA
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 10px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #00B894; font-weight: 700;">✓</span>
+                            Well-organized resume structure
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #00B894; font-weight: 700;">✓</span>
+                            Clear contact information and formatting
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Improvements -->
+                <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 16px;">
+                    <h4 style="font-size: 18px; font-weight: 800; margin: 0 0 16px 0; color: #FF6B6B;">⚠ Areas for Improvement</h4>
+                    <ul style="margin: 0; padding-left: 20px; list-style: none;">
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 12px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #FF6B6B; font-weight: 700;">⚠</span>
+                            <strong style="color: #1a1a1a;">Add quantifiable achievements:</strong> Use metrics like "Improved performance by 30%" or "Reduced costs by $10K"
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 12px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #FF6B6B; font-weight: 700;">⚠</span>
+                            <strong style="color: #1a1a1a;">Expand technical skills:</strong> Add specific frameworks, tools, and certifications relevant to target jobs
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; margin-bottom: 12px; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #FF6B6B; font-weight: 700;">⚠</span>
+                            <strong style="color: #1a1a1a;">Include keywords:</strong> Add industry-specific terms to pass ATS (Applicant Tracking Systems)
+                        </li>
+                        <li style="font-size: 14px; color: #555; line-height: 1.8; position: relative; padding-left: 24px;">
+                            <span style="position: absolute; left: 0; color: #FF6B6B; font-weight: 700;">⚠</span>
+                            <strong style="color: #1a1a1a;">Detail your projects:</strong> Expand project descriptions with specific technologies and outcomes
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Action Tip -->
+                <div style="background: linear-gradient(135deg, #FFF9E6, #FFE5B3); border-radius: 16px; padding: 20px; margin-bottom: 16px; border-left: 4px solid #FFB800;">
+                    <div style="display: flex; gap: 12px;">
+                        <div style="font-size: 28px;">💡</div>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px;">Pro Tip</div>
+                            <div style="font-size: 14px; color: #555; line-height: 1.6;">Focus on adding 2-3 quantifiable achievements to your experience section first. This will have the biggest impact on your score!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btnAskAi" class="btn-ghost w-100" style="margin-bottom: 12px; background: rgba(102, 126, 234, 0.1) !important; border: 2px solid #667eea !important; color: #667eea !important;">
+                    <i class="fas fa-comment-dots"></i> Ask AI
+                </button>
+                <button id="btnReturnToMain" class="btn-premium w-100">Done!</button>
+            </div>
+        </div>
+
+        <!-- View: PDF Preview -->
+        <div id="viewPdfPreview" class="full-screen-view hidden">
+            <div class="preview-header">
+                <i class="fas fa-times" id="btnClosePreview" style="font-size: 24px; cursor: pointer; color: #1a1a1a;"></i>
+                <span style="font-weight: 700; font-size: 17px;">Resume Preview</span>
+                <span id="btnEditResume" style="color: #667eea; font-weight: 700; font-size: 17px; cursor: pointer;">Edit</span>
+            </div>
+            <div style="flex: 1; background: #525659; display: flex; justify-content: center; padding: 20px; overflow-y: auto;">
+                <div id="resumePreviewContent" style="width: 100%; max-width: 360px; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.5); padding: 32px; border-radius: 8px; align-self: flex-start;">
+                    <!-- Content will be dynamically rendered here -->
+                    <div style="text-align: center; padding: 40px 20px; color: #888;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">📄</div>
+                        <div style="font-size: 15px; font-weight: 600;">No resume data yet</div>
+                        <div style="font-size: 13px; margin-top: 8px;">Create a resume to see the preview</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Edit Resume -->
+        <div id="viewEditResume" class="full-screen-view hidden" style="background: #f5f5f7;">
+            <div class="edit-header">
+                <span id="btnCloseEdit" style="color: #FF6B6B; font-weight: 700; font-size: 17px; cursor: pointer;">Cancel</span>
+                <span style="font-weight: 700; font-size: 17px;">Edit Resume</span>
+                <span id="btnSaveResume" style="color: #667eea; font-weight: 700; font-size: 17px; cursor: pointer;">Save</span>
+            </div>
+            <div class="edit-content">
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h4 class="section-title">📋 Basic Information</h4>
+                    <div class="form-field">
+                        <label>FULL NAME</label>
+                        <input type="text" id="inputName" placeholder="John Doe">
+                    </div>
+                    <div class="form-field">
+                        <label>EMAIL</label>
+                        <input type="email" id="inputEmail" placeholder="john.doe@example.com">
+                    </div>
+                    <div class="form-field">
+                        <label>PHONE</label>
+                        <input type="tel" id="inputPhone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    <div class="form-field">
+                        <label>LOCATION</label>
+                        <input type="text" id="inputLocation" placeholder="San Francisco, CA">
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="form-section">
+                    <h4 class="section-title">✍️ Professional Summary</h4>
+                    <div class="form-field">
+                        <label>SUMMARY</label>
+                        <textarea id="inputSummary" rows="4" placeholder="Write a brief professional summary highlighting your experience and goals..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="form-section">
+                    <h4 class="section-title">🎓 Education</h4>
+                    <div class="form-field">
+                        <label>SCHOOL</label>
+                        <input type="text" id="inputSchool" placeholder="University Name">
+                    </div>
+                    <div class="form-field">
+                        <label>DEGREE & MAJOR</label>
+                        <input type="text" id="inputDegree" placeholder="B.S. in Computer Science">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field" style="flex: 1;">
+                            <label>GPA</label>
+                            <input type="text" id="inputGpa" placeholder="3.8/4.0">
+                        </div>
+                        <div class="form-field" style="flex: 1;">
+                            <label>GRADUATION</label>
+                            <input type="text" id="inputGraduation" placeholder="May 2024">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="form-section">
+                    <h4 class="section-title">💼 Work Experience</h4>
+                    <div class="form-field">
+                        <label>COMPANY</label>
+                        <input type="text" id="inputCompany" placeholder="Tech Company Inc.">
+                    </div>
+                    <div class="form-field">
+                        <label>POSITION</label>
+                        <input type="text" id="inputPosition" placeholder="Software Engineering Intern">
+                    </div>
+                    <div class="form-field">
+                        <label>DURATION</label>
+                        <input type="text" id="inputDuration" placeholder="June 2023 - August 2023">
+                    </div>
+                    <div class="form-field">
+                        <label>DESCRIPTION</label>
+                        <textarea id="inputExperience" rows="4" placeholder="• Developed features using React and Node.js&#10;• Improved performance by 30%&#10;• Collaborated with a team of 5 engineers"></textarea>
+                    </div>
+                </div>
+
+                <!-- Projects -->
+                <div class="form-section">
+                    <h4 class="section-title">🚀 Projects</h4>
+                    <div class="form-field">
+                        <label>PROJECT NAME</label>
+                        <input type="text" id="inputProjectName" placeholder="E-commerce Platform">
+                    </div>
+                    <div class="form-field">
+                        <label>TECHNOLOGIES</label>
+                        <input type="text" id="inputTechnologies" placeholder="React, Node.js, MongoDB, AWS">
+                    </div>
+                    <div class="form-field">
+                        <label>DESCRIPTION</label>
+                        <textarea id="inputProject" rows="3" placeholder="Built a full-stack e-commerce platform with payment integration..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="form-section">
+                    <h4 class="section-title">⚡ Skills</h4>
+                    <div class="form-field">
+                        <label>PROGRAMMING LANGUAGES</label>
+                        <input type="text" id="inputLanguages" placeholder="JavaScript, Python, Java, C++">
+                    </div>
+                    <div class="form-field">
+                        <label>FRAMEWORKS & TOOLS</label>
+                        <input type="text" id="inputTools" placeholder="React, Node.js, Git, Docker, AWS">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Suggestion Detail -->
+        <div id="suggestionDetailModal" class="modal-overlay hidden">
+            <div class="modal" style="max-width: 380px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <div id="suggestionDetailIcon" style="width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px;"></div>
+                    <i class="fas fa-times" id="btnCloseSuggestionDetail" style="font-size: 24px; color: #888; cursor: pointer;"></i>
+                </div>
+                <h3 id="suggestionDetailTitle" style="font-size: 22px; font-weight: 800; margin: 0 0 12px 0; color: #1a1a1a;"></h3>
+                <p id="suggestionDetailDesc" style="font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 20px;"></p>
+                
+                <div id="suggestionDetailContent" style="background: #f8f9ff; border-radius: 16px; padding: 20px; margin-bottom: 20px;">
+                    <!-- Detailed content will be inserted here -->
+                </div>
+                
+                <button id="btnApplySuggestion" class="btn-premium w-100">
+                    <i class="fas fa-check"></i> Apply Suggestion
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden"></div>
+
+        <!-- Bottom Tab Bar -->
+        <div class="tab-bar">
+            <a href="#" class="tab-item">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Quiz</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Map</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-comment-dots"></i>
+                <span>Chat</span>
+            </a>
+            <a href="#" class="tab-item active">
+                <i class="fas fa-file-alt"></i>
+                <span>Resume</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-video"></i>
+                <span>Interview</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- File Input (Hidden) -->
+    <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+
+    <!-- JavaScript -->
+    <script src="js/resume-logic.js"></script>
+</body>
+</html>
+
