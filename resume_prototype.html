@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历中心 - Resume Workshop (Mobile Prototype)</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- Mobile Simulator Styles --- */
+        body {
+            background-color: #f0f2f5; /* Desktop background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .mobile-wrapper {
+            width: 375px; /* Standard Mobile Width */
+            height: 812px; /* iPhone X/11/12/13 Height */
+            background-color: #ffffff;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden; /* Clip content to rounded corners */
+            position: relative;
+            border: 12px solid #1a1a1a; /* Phone Bezel */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Status Bar Area (Simulation) */
+        .status-bar {
+            height: 44px;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a1a;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        /* Main Content Scrollable Area */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-top: 50px; /* Space for Status Bar */
+            padding-bottom: 80px; /* Space for Tab Bar */
+            background-color: #fff; /* App Background */
+        }
+
+        /* Hide Scrollbar for sleek look */
+        .app-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* --- Custom Resume Styles --- */
+        
+        /* Top Gradient Card */
+        .card-resume-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 16px;
+            margin: 0 16px 24px 16px; /* Mobile Margins */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resume-header-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        /* Dashed Add Button */
+        .add-resume-btn {
+            border: 2px dashed #e0e0e0;
+            background: #f8f9fa;
+            border-radius: 16px;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 16px; /* Mobile Margins */
+        }
+
+        .add-resume-btn:active {
+            background: #f0f0f0;
+            border-color: #d0d0d0;
+        }
+
+        .add-icon {
+            font-size: 32px;
+            color: #a0a0a0;
+            margin-bottom: 8px;
+        }
+
+        .add-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #667eea;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 16px 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Bottom Empty State */
+        .suggestions-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Bottom Tab Bar (Fixed) */
+        .tab-bar {
+            height: 70px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding-bottom: 10px; /* Home Indicator Space */
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #999;
+            font-size: 10px;
+            gap: 4px;
+            text-decoration: none;
+        }
+
+        .tab-item.active {
+            color: #667eea;
+        }
+
+        .tab-item i {
+            font-size: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Device Frame -->
+    <div class="mobile-wrapper">
+        
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <div class="d-flex gap-sm">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Scrollable App Content -->
+        <div class="app-content">
+            
+            <!-- Header Title -->
+            <div class="d-flex justify-between align-center mt-md mb-md" style="padding: 0 16px;">
+                <h2 style="font-size: 24px; font-weight: 800;">简历中心</h2>
+                <div style="background: #fff8e1; color: #f57f17; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                    <i class="fas fa-coins"></i> 2,380
+                    <img src="https://ui-avatars.com/api/?name=Kira&background=random&size=20&rounded=true" alt="avatar" style="border-radius: 50%; margin-left: 4px;">
+                </div>
+            </div>
+
+            <!-- 1. Top Section: Resume Header -->
+            <div class="card-resume-header" id="headerCard">
+                <div id="headerDefaultContent">
+                    <i class="fas fa-file-invoice resume-header-icon"></i>
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">还没有简历，快去创建一个吧</h3>
+                </div>
+                
+                <!-- Dynamic Content (Hidden by default) -->
+                <div id="headerUploadedContent" class="hidden w-100 h-100 d-flex flex-column justify-between p-md text-left">
+                    <div>
+                        <div style="font-size: 12px; opacity: 0.8;">简历评分</div>
+                        <div class="d-flex align-center justify-between">
+                            <span style="font-size: 48px; font-weight: 700;">0</span>
+                            <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">未评分</div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-end gap-sm mt-auto" style="width: 100%;">
+                        <button class="btn btn-sm" style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; border-radius: 20px; padding: 4px 12px;">AI 诊断</button>
+                        <button class="btn btn-sm" style="background: white; color: #667eea; border-radius: 20px; padding: 4px 12px;">预览 PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Middle Section: My Resume -->
+            <div class="mb-xl">
+                <div class="section-title">
+                    <span>我的简历</span>
+                    <i class="fas fa-cog" style="color: #ccc; font-size: 14px;"></i>
+                </div>
+                
+                <!-- Add Resume Button (Dashed) -->
+                <div class="add-resume-btn" id="addResumeBtn">
+                    <i class="fas fa-plus add-icon"></i>
+                    <span class="add-text">新建简历</span>
+                </div>
+
+                <!-- Uploaded File Item (Hidden by default) -->
+                <div id="uploadedFileItem" class="hidden" style="margin: 0 16px; padding: 16px; background: white; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center;">
+                    <i class="fas fa-file-pdf" style="font-size: 24px; color: #e74c3c; margin-right: 12px;"></i>
+                    <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 2px;">Resume_V1.pdf</div>
+                        <div style="font-size: 12px; color: #999;">最近更新</div>
+                    </div>
+                    <i class="fas fa-ellipsis-h" style="color: #ccc;"></i>
+                </div>
+            </div>
+
+            <!-- 3. Bottom Section: Optimization Suggestions -->
+            <div class="mb-xl">
+                <h3 class="section-title">优化建议</h3>
+                
+                <!-- Empty State -->
+                <div class="suggestions-empty" id="suggestionsEmpty">
+                    <p>完成 AI 诊断后，这里会显示优化建议</p>
+                </div>
+
+                <!-- Suggestions List (Hidden by default) -->
+                <div id="suggestionsList" class="hidden" style="padding: 0 16px;">
+                    <!-- Dynamic Items will be injected here -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Tab Bar -->
+        <div class="tab-bar">
+            <a href="#" class="tab-item">
+                <i class="fas fa-hourglass-start"></i>
+                <span>测评</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-globe"></i>
+                <span>地图</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-comment-dots"></i>
+                <span>助手</span>
+            </a>
+            <a href="#" class="tab-item active">
+                <i class="fas fa-file-alt"></i>
+                <span>简历</span>
+            </a>
+            <a href="#" class="tab-item">
+                <i class="fas fa-video"></i>
+                <span>面试</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Modal Overlay (For Upload Action Sheet) -->
+    <div id="modalOverlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; justify-content: center; align-items: flex-end;">
+        <!-- Action Sheet -->
+        <div style="width: 375px; background: #f5f5f5; border-radius: 20px 20px 0 0; overflow: hidden; padding-bottom: 20px;">
+            <button style="width: 100%; padding: 16px; background: white; border: none; border-bottom: 1px solid #eee; font-size: 16px; font-weight: 500;">使用模板填写</button>
+            <button id="actionUploadPdf" style="width: 100%; padding: 16px; background: white; border: none; border-bottom: 1px solid #eee; font-size: 16px; font-weight: 500;">上传PDF简历</button>
+            <button id="actionCancel" style="width: 100%; padding: 16px; background: white; border: none; margin-top: 8px; font-size: 16px; font-weight: 600; color: #333;">取消</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 12px 24px; border-radius: 8px; font-size: 14px; display: none; z-index: 1000;">
+        <i class="fas fa-check-circle"></i> 操作成功
+    </div>
+
+    <!-- Scripts -->
+    <script src="resume_logic.js"></script>
+</body>
+</html>
