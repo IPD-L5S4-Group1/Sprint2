@@ -59,19 +59,19 @@
 .btn.is-loading {
     pointer-events: none; /* Prevent multiple clicks */
     opacity: 0.8;
-    padding-right: 40px; /* Make space for spinner */
 }
 
 .btn.is-loading::after {
     content: "";
-    position: absolute;
-    right: 16px;
-    width: 16px;
-    height: 16px;
+    display: inline-block;
+    margin-left: 8px;
+    width: 14px;
+    height: 14px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     border-top-color: white;
     animation: spin 0.8s linear infinite;
+    vertical-align: middle;
 }
 
 /* Adjust spinner color for secondary/danger buttons */
