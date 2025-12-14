@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: career-backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/career_db?serverTimezone=UTC
+    username: root
+    password: Root_1234!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+# Knife4j Configuration
+knife4j:
+  enable: true
+  setting:
+    language: en
