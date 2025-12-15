@@ -14,7 +14,7 @@ import java.util.List;
 
 @Tag(name = "Resume API")
 @RestController
-@RequestMapping("/resumes")
+@RequestMapping("/api/resumes")
 @RequiredArgsConstructor
 public class ResumeController {
 
@@ -32,10 +32,10 @@ public class ResumeController {
         ));
     }
 
-    @Operation(summary = "Get Resume Basic Info")
-    @GetMapping("/{id}")
-    public Result<Resume> getResume(@PathVariable Long id) {
-        return Result.success(resumeService.getResumeBasic(id));
+    @Operation(summary = "Get Resume Info (MySQL + Mongo Check)")
+    @GetMapping("/{resumeId}")
+    public Result<Resume> getResume(@PathVariable Long resumeId) {
+        return Result.success(resumeService.getResumeWithDetailCheck(resumeId));
     }
 
     @Operation(summary = "Get Resume Detail (MongoDB)")
