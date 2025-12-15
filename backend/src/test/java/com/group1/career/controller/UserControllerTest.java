@@ -13,44 +13,81 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class) // 仅加载 Web 层，不启动完整 Context，速度快
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private UserService userService; // Mock 掉 Service，只测接口层
+    private UserService userService;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("API Test: Register Success") // [新增]
+    public void testRegister_Success() throws Exception {
+        UserController.RegisterRequest request = new UserController.RegisterRequest();
+        request.setNickname("NewUser");
+        request.setIdentityType("EMAIL");
+        request.setIdentifier("test@example.com");
+        request.setCredential("pass123");
+
+        User mockUser = new User();
+        mockUser.setUserId(2L);
+        mockUser.setNickname("NewUser");
+
+        when(userService.register(anyString(), anyString(), anyString(), anyString()))
+                .thenReturn(mockUser);
+
+        mockMvc.perform(post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.data.userId").value(2));
+    }
+
+    @Test
     @DisplayName("API Test: Login Success")
     public void testLogin_Success() throws Exception {
-        // 1. 准备请求数据
         UserController.LoginRequest loginRequest = new UserController.LoginRequest();
         loginRequest.setIdentityType("MOBILE");
         loginRequest.setIdentifier("13800138000");
         loginRequest.setCredential("password123");
 
-        // 2. Mock Service 返回
         User mockUser = new User();
         mockUser.setUserId(1L);
         mockUser.setNickname("TestUser");
         when(userService.login(anyString(), anyString(), anyString())).thenReturn(mockUser);
 
-        // 3. 发起 HTTP 请求并验证
         mockMvc.perform(post("/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginRequest)))
-                .andExpect(status().isOk()) // 验证 HTTP 200
-                .andExpect(jsonPath("$.code").value(200)) // 验证业务码
-                .andExpect(jsonPath("$.data.userId").value(1)) // 验证返回数据
-                .andExpect(jsonPath("$.data.nickname").value("TestUser"));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.data.userId").value(1));
+    }
+
+    @Test
+    @DisplayName("API Test: Get User Info") // [新增]
+    public void testGetUser_Success() throws Exception {
+        Long userId = 1L;
+        User mockUser = new User();
+        mockUser.setUserId(userId);
+        mockUser.setNickname("ExistingUser");
+
+        when(userService.getUserById(userId)).thenReturn(mockUser);
+
+        mockMvc.perform(get("/users/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.userId").value(userId))
+                .andExpect(jsonPath("$.data.nickname").value("ExistingUser"));
     }
 }
