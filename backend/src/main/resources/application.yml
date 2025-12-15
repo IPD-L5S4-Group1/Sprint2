@@ -4,21 +4,46 @@ server:
 spring:
   application:
     name: career-backend
+
+  # ==============================
+  # 1. MySQL 配置 (主数据源)
+  # ==============================
   datasource:
-    url: jdbc:mysql://localhost:3306/career_db?serverTimezone=UTC
+    # 注意: 如果你是Mac本地安装，密码可能为空，或者你需要改成你设置的密码
+    # serverTimezone 改为 Asia/Shanghai 避免时间差 8 小时
+    url: jdbc:mysql://localhost:3306/career_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: Root_1234!
+    password: Root_1234!  # <--- ⚠️ 这里的密码一定要改成你本地 MySQL 的密码！(如果是空就留空)
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA / Hibernate 配置
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # 开发阶段自动更新表结构
     show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
 
-# Knife4j Configuration
+  # ==============================
+  # 2. MongoDB 配置 (文档存储)
+  # ==============================
+  data:
+    mongodb:
+      # 格式: mongodb://IP:端口/数据库名
+      uri: mongodb://localhost:27017/career_db
+
+    # ==============================
+    # 3. Redis 配置 (缓存)
+    # ==============================
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      # password:  # 如果你本地 Redis 没设密码，这就注释掉
+
+# 接口文档工具配置
 knife4j:
   enable: true
   setting:
