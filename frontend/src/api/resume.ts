@@ -21,7 +21,7 @@ export interface Resume {
   fileUrl: string;
   status?: string;
   mongoDocId?: string;
-  detail: ResumeDetail; // Nested document for MongoDB
+  detail?: ResumeDetail; // Nested document for MongoDB
 }
 
 /**
