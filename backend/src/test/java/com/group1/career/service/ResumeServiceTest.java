@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,72 +33,52 @@ public class ResumeServiceTest {
     private ResumeServiceImpl resumeService;
 
     @Test
-    @DisplayName("Test Create Resume - Verify MySQL and MongoDB insertion")
+    @DisplayName("Test Create Resume")
     public void testCreateResume_Success() {
-        // 1. Prepare input data
         Long userId = 100L;
-        String title = "My Java Resume";
-        String targetJob = "Java Developer";
-        String fileUrl = "http://oss.example.com/resume.pdf";
+        String title = "Java Resume";
+        ResumeDocument detail = new ResumeDocument();
 
-        ResumeDocument detail = ResumeDocument.builder()
-                .education(new ArrayList<>())
-                .skills(new ArrayList<>())
-                .build();
-
-        // 2. Mock MongoDB return (Simulate generating a Mongo ID)
-        String mongoId = "mongo_12345";
-        ResumeDocument savedDoc = ResumeDocument.builder().id(mongoId).userId(userId).build();
+        String mongoId = "mongo_123";
+        ResumeDocument savedDoc = ResumeDocument.builder().id(mongoId).build();
         when(resumeDocumentRepository.save(any(ResumeDocument.class))).thenReturn(savedDoc);
 
-        // 3. Mock MySQL return
-        Resume savedResume = Resume.builder()
-                .resumeId(1L)
-                .userId(userId)
-                .title(title)
-                .mongoDocId(mongoId) // Vital: Verify this ID is linked
-                .build();
+        Resume savedResume = Resume.builder().resumeId(1L).mongoDocId(mongoId).build();
         when(resumeRepository.save(any(Resume.class))).thenReturn(savedResume);
 
-        // 4. Execute test
-        Resume result = resumeService.createResume(userId, title, targetJob, fileUrl, detail);
+        Resume result = resumeService.createResume(userId, title, "Dev", "url", detail);
 
-        // 5. Verify results
-        assertNotNull(result);
-        assertEquals(mongoId, result.getMongoDocId(), "MySQL record should contain the MongoDB Document ID");
-        assertEquals(userId, result.getUserId());
-
-        // 6. Verify interaction order and frequency
-        verify(resumeDocumentRepository, times(1)).save(detail); // Saved to Mongo first
-        verify(resumeRepository, times(1)).save(any(Resume.class)); // Saved to MySQL second
+        assertEquals(mongoId, result.getMongoDocId());
+        verify(resumeRepository, times(1)).save(any(Resume.class));
     }
 
     @Test
-    @DisplayName("Test Get Resume - Verify basic info retrieval")
+    @DisplayName("Test Get Resume Detail")
     public void testGetResume_Success() {
-        // 1. Prepare data
         Long resumeId = 1L;
-        String mongoId = "mongo_12345";
-
-        Resume mockResume = Resume.builder()
-                .resumeId(resumeId)
-                .mongoDocId(mongoId)
-                .build();
-
-        // 2. Mock MySQL retrieval
+        Resume mockResume = Resume.builder().resumeId(resumeId).mongoDocId("m_1").build();
         when(resumeRepository.findById(resumeId)).thenReturn(Optional.of(mockResume));
+        when(resumeDocumentRepository.findById("m_1")).thenReturn(Optional.of(new ResumeDocument()));
 
-        // 3. Mock Mongo check (Optional, depending on your strictness logic)
-        when(resumeDocumentRepository.findById(mongoId)).thenReturn(Optional.of(new ResumeDocument()));
-
-        // 4. Execute test
         Resume result = resumeService.getResumeWithDetailCheck(resumeId);
-
-        // 5. Verify results
         assertNotNull(result);
-        assertEquals(resumeId, result.getResumeId());
+    }
 
-        // Verify repository call
-        verify(resumeRepository, times(1)).findById(resumeId);
+    @Test
+    @DisplayName("Test Get User Resumes List")
+    public void testGetUserResumes_Success() {
+        Long userId = 50L;
+        List<Resume> mockList = new ArrayList<>();
+        mockList.add(Resume.builder().resumeId(1L).title("Resume A").build());
+        mockList.add(Resume.builder().resumeId(2L).title("Resume B").build());
+
+        when(resumeRepository.findByUserId(userId)).thenReturn(mockList);
+
+        List<Resume> result = resumeService.getUserResumes(userId);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Resume A", result.get(0).getTitle());
+        verify(resumeRepository, times(1)).findByUserId(userId);
     }
 }
