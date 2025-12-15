@@ -8,6 +8,7 @@ import java.util.List;
 public interface ResumeService {
     Resume createResume(Long userId, String title, String targetJob, String fileUrl, ResumeDocument detail);
     Resume getResumeBasic(Long resumeId);
+    Resume getResumeWithDetailCheck(Long resumeId);
     ResumeDocument getResumeDetail(String mongoDocId);
     List<Resume> getUserResumes(Long userId);
 }

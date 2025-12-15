@@ -4,6 +4,8 @@ import com.group1.career.model.document.ResumeDocument;
 import com.group1.career.model.entity.Resume;
 import com.group1.career.repository.ResumeDocumentRepository;
 import com.group1.career.repository.ResumeRepository;
+import com.group1.career.common.ErrorCode;
+import com.group1.career.exception.BizException;
 import com.group1.career.service.ResumeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,13 +44,29 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     public Resume getResumeBasic(Long resumeId) {
         return resumeRepository.findById(resumeId)
-                .orElseThrow(() -> new RuntimeException("Resume not found"));
+                .orElseThrow(() -> new BizException(ErrorCode.RESUME_NOT_FOUND));
+    }
+
+    @Override
+    public Resume getResumeWithDetailCheck(Long resumeId) {
+        // 1. Get from MySQL
+        Resume resume = resumeRepository.findById(resumeId)
+                .orElseThrow(() -> new BizException(ErrorCode.RESUME_NOT_FOUND));
+
+        // 2. Check MongoDB (Mock or Real check)
+        if (resume.getMongoDocId() != null) {
+            // Just for demonstration: ensure it exists or log it
+            resumeDocumentRepository.findById(resume.getMongoDocId())
+                    .ifPresent(doc -> log.info("Found Mongo Detail for Resume {}: {}", resumeId, doc.getId()));
+        }
+        
+        return resume;
     }
 
     @Override
     public ResumeDocument getResumeDetail(String mongoDocId) {
         return resumeDocumentRepository.findById(mongoDocId)
-                .orElseThrow(() -> new RuntimeException("Resume detail not found"));
+                .orElseThrow(() -> new BizException("Resume detail not found"));
     }
 
     @Override
