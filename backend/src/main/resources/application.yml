@@ -11,9 +11,9 @@ spring:
   datasource:
     # 注意: 如果你是Mac本地安装，密码可能为空，或者你需要改成你设置的密码
     # serverTimezone 改为 Asia/Shanghai 避免时间差 8 小时
-    url: jdbc:mysql://localhost:3306/career_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: Root_1234!  # <--- ⚠️ 这里的密码一定要改成你本地 MySQL 的密码！(如果是空就留空)
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/career_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PWD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # JPA / Hibernate 配置
